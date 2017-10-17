@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using System.Linq;
 
 namespace Assignment4.Tests
 {
