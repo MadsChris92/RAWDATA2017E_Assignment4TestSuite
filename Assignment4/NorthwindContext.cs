@@ -32,14 +32,18 @@ namespace Assignment4
             modelBuilder.Entity<Product>().Property(x => x.Id).HasColumnName("ProductId");
             modelBuilder.Entity<Product>().Property(x => x.QuantityPerUnit).HasColumnName("QuantityUnit");
 
-            /*
+            //Order
             modelBuilder.Entity<Order>().Property(x => x.Id).HasColumnName("OrderId");
             modelBuilder.Entity<Order>().Property(x => x.Date).HasColumnName("OrderDate");
             modelBuilder.Entity<Order>().Property(x => x.Required).HasColumnName("RequiredDate");
-            */
+            //modelBuilder.Entity<Order>().Property(x => x.OrderDetails).IsRequired();
 
+
+            //OrderDetails
+            modelBuilder.Entity<OrderDetails>().HasKey(x => new { x.OrderId, x.ProductId });
             modelBuilder.Entity<OrderDetails>()
-            .HasKey(c => new { c.OrderId, c.ProductId });
+                .HasOne(orderDetail => orderDetail.Order)
+                .WithMany(order => order.OrderDetails);
 
 
         }

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Threading;
 
 namespace Assignment4
 {
     public class DataService
     {
+
+
         public Category GetCategory(int i)
         {
             using (var db = new NorthwindContext())
@@ -91,20 +92,23 @@ namespace Assignment4
         {
             using (var db = new NorthwindContext())
             {
-                var prod = db.Products.FirstOrDefault(x => x.Id == i);
-                return prod;
+            Product product;
+                product = db.Products
+                    .Include(p => p.Category)
+                    .FirstOrDefault(x => x.Id == i);
+            return product;
             }
         }
 
         public List<Product> GetProductByCatID(int i)
         {
+            List<Product> products;
             using (var db = new NorthwindContext())
             {
-                var products = db.Products.Where(x => x.CategoryId == i).ToList();
-                return products;
+                products = db.Products.Where(x => x.CategoryId == i).ToList();
             }
+            return products;
         }
-
 
         public List<Product> GetProductBySubstring(string s)
         {
@@ -115,20 +119,19 @@ namespace Assignment4
             }
         }
 
-
-
-
         public Order GetOrder(int i)
         {
-            /*
             using (var db = new NorthwindContext())
             {
-                
-                var ord = db.Orders.FirstOrDefault(x => x.Id == i);
-                return ord;
+                var order = db.Orders
+                    .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Order)
+                    .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                    .ThenInclude(od => od.Category)
+                    .FirstOrDefault(x => x.Id == i);
+                return order;
             }
-            */
-            return new Order();
         }
 
         public List<Order> GetOrders()
@@ -146,7 +149,10 @@ namespace Assignment4
         {
             using(var db = new NorthwindContext())
             {
-                var details = db.OrderDetails.Where(x => x.OrderId == i).ToList();
+                var details = db.OrderDetails
+                    .Include(od => od.Product)
+                    .Include(od => od.Order)
+                    .Where(x => x.OrderId == i).ToList();
                 return details;
             }
         }
@@ -155,8 +161,12 @@ namespace Assignment4
         {
             using (var db = new NorthwindContext())
             {
-                var details = db.OrderDetails.Where(x => x.ProductId == i).ToList();
-                return details;
+            List<OrderDetails> details;
+                details = db.OrderDetails
+                    .Include(od => od.Product)
+                    .Include(od => od.Order)
+                    .Where(x => x.ProductId == i).ToList();
+            return details;
             }
         }
     }
@@ -170,78 +180,41 @@ namespace Assignment4
 
     public class OrderDetails
     {
-        [ForeignKey("OrderId")]public int OrderId { get; set; }
-        public Order Order { get; set; }
-        [ForeignKey("ProductId")] public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public int OrderId { get; set; }
+        public virtual Order Order { get; set; }
+        public int ProductId { get; set; }
+        public virtual Product Product { get; set; }
         public double UnitPrice { get; set; }
-        public double Quantity { get; set; }
+        public int Quantity { get; set; }
         public double Discount { get; set; }
     }
 
     public class Order
     {
-        [Column("OrderId")]
-        public int Id { get; set; }
-
+        [Column("OrderId")]public int Id { get; set; }
         public string CustomerId { get; set; }
         public int EmployeeId { get; set; }
-
-        [Column("OrderDate")]
-        public DateTime Date { get; set; }
-
-        [Column("RequiredDate")]
-        public DateTime Required { get; set; }
-
-        [Column("ShippedDate")]
-        public DateTime? Shipped { get; set; }
-
+        [Column("OrderDate")]public DateTime Date { get; set; }
+        [Column("RequiredDate")]public DateTime Required { get; set; }
+        [Column("ShippedDate")]public DateTime? Shipped { get; set; }
         public double Freight { get; set; }
         public string ShipName { get; set; }
         public string ShipAddress { get; set; }
         public string ShipCity { get; set; }
         public string ShipPostalCode { get; set; }
         public string ShipCountry { get; set; }
-
-        public ICollection<OrderDetails> OrderDetails { get; set; }
-        /*{
-            get
-            {
-                DataService d = new DataService();
-                return d.GetOrderDetailsByOrderId(Id);
-            }
-            set { throw new NotImplementedException(); }
-        }*/
+        
+        public virtual List<OrderDetails> OrderDetails { get; set; }
     }
 
     public class Product
     {
-        private int _categoryId;
         public int Id { get; set; }
         public string Name { get; set; }
         public double UnitPrice { get; set; }
-        public String QuantityPerUnit { get; set; }
+        public string QuantityPerUnit { get; set; }
         public int UnitsInStock { get; set; }
-        public Category Category
-        {
-            get
-            {
-                DataService d = new DataService();
-                return d.GetCategory(_categoryId);
-            }
-            set { throw new NotImplementedException(); }
-        }
-
-        public int CategoryId
-        {
-            get { return _categoryId; }
-            set
-            {
-                DataService d = new DataService();
-                Category = d.GetCategory(value);
-                
-                _categoryId = value;
-            }
-        }
+        public virtual Category Category { get; set; }
+        public int CategoryId { get; set; }
     }
 }
