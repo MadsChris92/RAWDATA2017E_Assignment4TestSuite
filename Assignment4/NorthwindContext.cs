@@ -6,7 +6,7 @@ namespace Assignment4
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Order> Orders { get; set; }
+ //       public DbSet<Order> Orders { get; set; }
 
 
 
@@ -30,11 +30,11 @@ namespace Assignment4
             modelBuilder.Entity<Product>().Property(x => x.Id).HasColumnName("ProductId");
             modelBuilder.Entity<Product>().Property(x => x.QuantityPerUnit).HasColumnName("QuantityUnit");
 
-            //Orders
+            /*
             modelBuilder.Entity<Order>().Property(x => x.Id).HasColumnName("OrderId");
             modelBuilder.Entity<Order>().Property(x => x.Date).HasColumnName("OrderDate");
             modelBuilder.Entity<Order>().Property(x => x.Required).HasColumnName("RequiredDate");
-
+            */
 
 
         }
