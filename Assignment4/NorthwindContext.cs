@@ -14,8 +14,9 @@ namespace Assignment4
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseMySql(
-                "server=localhost;database=northwind;uid=marinus;pwd=agergaard");
+            optionsBuilder.UseMySql("server=192.168.1.4;database=northwind;uid=marinus;pwd=agergaard");
+            //optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=frans"); //mads
+            //optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=root"); //alex
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,6 +37,9 @@ namespace Assignment4
             modelBuilder.Entity<Order>().Property(x => x.Date).HasColumnName("OrderDate");
             modelBuilder.Entity<Order>().Property(x => x.Required).HasColumnName("RequiredDate");
             */
+
+            modelBuilder.Entity<OrderDetails>()
+            .HasKey(c => new { c.OrderId, c.ProductId });
 
 
         }
