@@ -24,6 +24,64 @@ namespace Assignment4.Tests
             Assert.Equal("Beverages", category.Name);
         }
 
+        [Fact]
+        public void CreateCategory_ValidData_CreteCategoryAndRetunsNewObject()
+        {
+            var service = new DataService();
+            var category = service.CreateCategory("Test", "CreateCategory_ValidData_CreteCategoryAndRetunsNewObject");
+            Assert.True(category.Id > 0);
+            Assert.Equal("Test", category.Name);
+            Assert.Equal("CreateCategory_ValidData_CreteCategoryAndRetunsNewObject", category.Description);
+
+            // cleanup
+            service.DeleteCategory(category.Id);
+        }
+
+        [Fact]
+        public void DeleteCategory_ValidId_RemoveTheCategory()
+        {
+            var service = new DataService();
+            var category = service.CreateCategory("Test", "DeleteCategory_ValidId_RemoveTheCategory");
+            var result = service.DeleteCategory(category.Id);
+            Assert.True(result);
+            category = service.GetCategory(category.Id);
+            Assert.Null(category);
+        }
+
+        [Fact]
+        public void DeleteCategory_InvalidId_ReturnsFalse()
+        {
+            var service = new DataService();
+            var result = service.DeleteCategory(-1);
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void UpdateCategory_NewNameAndDescription_UpdateWithNewValues()
+        {
+            var service = new DataService();
+            var category = service.CreateCategory("TestingUpdate", "UpdateCategory_NewNameAndDescription_UpdateWithNewValues");
+
+            var result = service.UpdateCategory(category.Id, "UpdatedName", "UpdatedDescription");
+            Assert.True(result);
+
+            category = service.GetCategory(category.Id);
+
+            Assert.Equal("UpdatedName", category.Name);
+            Assert.Equal("UpdatedDescription", category.Description);
+
+            // cleanup
+            service.DeleteCategory(category.Id);
+        }
+
+        [Fact]
+        public void UpdateCategory_InvalidID_ReturnsFalse()
+        {
+            var service = new DataService();
+            var result = service.UpdateCategory(-1, "UpdatedName", "UpdatedDescription");
+            Assert.False(result);
+        }
+
         /* products */
 
         [Fact]
