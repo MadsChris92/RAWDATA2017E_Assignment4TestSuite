@@ -6,7 +6,8 @@ namespace Assignment4
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
- //       public DbSet<Order> Orders { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
 
 
 
@@ -14,7 +15,7 @@ namespace Assignment4
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseMySql(
-                "server=localhost;database=northwind;uid=root;pwd=frans");
+                "server=localhost;database=northwind;uid=marinus;pwd=agergaard");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

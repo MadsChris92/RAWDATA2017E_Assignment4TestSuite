@@ -84,7 +84,7 @@ namespace Assignment4.Tests
         public void OrderDetails_Object_HasOrderProductUnitPriceQuantityAndDiscount()
         {
             var orderDetails = new OrderDetails();
-            Assert.Equal(0, orderDetails.FKOrderId);
+            Assert.Equal(0, orderDetails.OrderId);
             Assert.Null(orderDetails.Order);
             Assert.Equal(0, orderDetails.ProductId);
             Assert.Null(orderDetails.Product);

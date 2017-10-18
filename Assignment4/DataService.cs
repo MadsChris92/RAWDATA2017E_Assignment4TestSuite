@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
@@ -132,25 +133,31 @@ namespace Assignment4
 
         public List<Order> GetOrders()
         {
-            /*
+            
             using (var db = new NorthwindContext())
             {
                 var ord = db.Orders.ToList();
 
                 return ord;
             }
-            */
-            return new List<Order>();
         }
         
         public List<OrderDetails> GetOrderDetailsByOrderId(int i)
         {
-            throw new NotImplementedException();
+            using(var db = new NorthwindContext())
+            {
+                var details = db.OrderDetails.Where(x => x.OrderId == i).ToList();
+                return details;
+            }
         }
 
         public List<OrderDetails> GetOrderDetailsByProductId(int i)
         {
-            throw new NotImplementedException();
+            using (var db = new NorthwindContext())
+            {
+                var details = db.OrderDetails.Where(x => x.ProductId == i).ToList();
+                return details;
+            }
         }
     }
 
@@ -161,28 +168,52 @@ namespace Assignment4
         public string Description { get; set; }
     }
 
-    public class OrderDetails : List<Order>
+    public class OrderDetails
     {
-        public int FKOrderId { get; set; }
+        [ForeignKey("OrderId")]public int OrderId { get; set; }
         public Order Order { get; set; }
-        public int ProductId { get; set; }
+        [ForeignKey("ProductId")] public int ProductId { get; set; }
         public Product Product { get; set; }
         public double UnitPrice { get; set; }
         public double Quantity { get; set; }
         public double Discount { get; set; }
     }
-    
+
     public class Order
     {
+        [Column("OrderId")]
         public int Id { get; set; }
+
+        public string CustomerId { get; set; }
+        public int EmployeeId { get; set; }
+
+        [Column("OrderDate")]
         public DateTime Date { get; set; }
+
+        [Column("RequiredDate")]
         public DateTime Required { get; set; }
-        public OrderDetails OrderDetails { get; set; }
+
+        [Column("ShippedDate")]
+        public DateTime? Shipped { get; set; }
+
+        public double Freight { get; set; }
         public string ShipName { get; set; }
+        public string ShipAddress { get; set; }
         public string ShipCity { get; set; }
-        public Product Product { get; set; }
+        public string ShipPostalCode { get; set; }
+        public string ShipCountry { get; set; }
+
+        public ICollection<OrderDetails> OrderDetails { get; set; }
+        /*{
+            get
+            {
+                DataService d = new DataService();
+                return d.GetOrderDetailsByOrderId(Id);
+            }
+            set { throw new NotImplementedException(); }
+        }*/
     }
-    
+
     public class Product
     {
         private int _categoryId;
