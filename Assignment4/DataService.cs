@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Assignment4
 {
@@ -7,22 +9,39 @@ namespace Assignment4
     {
         public Category GetCategory(int i)
         {
-            throw new NotImplementedException();
+            using (var db = new NorthwindContext())
+            {
+                var cat = db.Categories.FirstOrDefault(x => x.Id == i);
+                return cat;
+            }
         }
 
         public Product GetProduct(int i)
         {
-            throw new NotImplementedException();
+            using (var db = new NorthwindContext())
+            {
+                var prod = db.Products.FirstOrDefault(x => x.Id == i);
+                return prod;
+            }
         }
 
-        public Order GetOrder(int id)
+        public Order GetOrder(int i)
         {
-            throw new NotImplementedException();
+            using (var db = new NorthwindContext())
+            {
+                var ord = db.Orders.FirstOrDefault(x => x.Id == i);
+                return ord;
+            }
         }
 
         public List<Order> GetOrders()
         {
-            throw new NotImplementedException();
+            using (var db = new NorthwindContext())
+            {
+                var ord = db.Orders.ToList();
+
+                return ord;
+            }
         }
 
         public List<OrderDetails> GetOrderDetailsByOrderId(int i)
@@ -45,7 +64,7 @@ namespace Assignment4
 
     public class OrderDetails : List<Order>
     {
-        public int OrderId { get; set; }
+        public int FKOrderId { get; set; }
         public Order Order { get; set; }
         public int ProductId { get; set; }
         public Product Product { get; set; }
@@ -70,7 +89,7 @@ namespace Assignment4
         public int Id { get; set; }
         public string Name { get; set; }
         public double UnitPrice { get; set; }
-        //public double QuantityPerUnit { get; set; }
+        public String QuantityPerUnit { get; set; }
         public int UnitsInStock { get; set; }
         public Category Category { get; set; }
     }
