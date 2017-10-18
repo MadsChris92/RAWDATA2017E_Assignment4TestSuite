@@ -123,6 +123,17 @@ namespace Assignment4.Tests
             Assert.Equal("Guaraná Fantástica", products.Last().Name);
         }
 
+        [Fact]
+        public void GetProductsByCategory_ValidId_ReturnsProductWithCategory()
+        {
+            var service = new DataService();
+            var products = service.GetProductByCategory(1);
+            Assert.Equal(12, products.Count);
+            Assert.Equal("Chai", products.First().Name);
+            Assert.Equal("Beverages", products.First().Category.Name);
+            Assert.Equal("Lakkalikööri", products.Last().Name);
+        }
+
         /* orders */
         [Fact]
         public void Order_Object_HasIdDatesAndOrderDetails()
