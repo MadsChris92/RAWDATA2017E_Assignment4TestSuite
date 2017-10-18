@@ -17,6 +17,15 @@ namespace Assignment4.Tests
         }
 
         [Fact]
+        public void GetAllCategories_NoArgument_ReturnsAllCategories()
+        {
+            var service = new DataService();
+            var categories = service.GetCategories();
+            Assert.Equal(8, categories.Count);
+            Assert.Equal("Beverages", categories.First().Name);
+        }
+
+        [Fact]
         public void GetCategory_ValidId_ReturnsCategoryObject()
         {
             var service = new DataService();
