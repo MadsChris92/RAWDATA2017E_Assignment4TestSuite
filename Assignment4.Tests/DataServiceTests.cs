@@ -104,6 +104,16 @@ namespace Assignment4.Tests
             Assert.Equal("Beverages", product.Category.Name);
         }
 
+        [Fact]
+        public void GetProduct_NameSubString_ReturnsProductsThatMachesTheSubString()
+        {
+            var service = new DataService();
+            var products = service.GetProductByName("ant");
+            Assert.Equal(3, products.Count);
+            Assert.Equal("Chef Anton's Cajun Seasoning", products.First().Name);
+            Assert.Equal("Guaraná Fantástica", products.Last().Name);
+        }
+
         /* orders */
         [Fact]
         public void Order_Object_HasIdDatesAndOrderDetails()
