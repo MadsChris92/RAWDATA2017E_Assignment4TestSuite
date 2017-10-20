@@ -18,11 +18,78 @@ namespace Assignment4.Tests
         }
 
         [Fact]
+        public void GetAllCategories_NoArgument_ReturnsAllCategories()
+        {
+            var service = new DataService();
+            var categories = service.GetCategories();
+            Assert.Equal(8, categories.Count);
+            Assert.Equal("Beverages", categories.First().Name);
+        }
+
+        [Fact]
         public void GetCategory_ValidId_ReturnsCategoryObject()
         {
             var service = new DataService();
             var category = service.GetCategory(1);
             Assert.Equal("Beverages", category.Name);
+        }
+
+        [Fact]
+        public void CreateCategory_ValidData_CreteCategoryAndRetunsNewObject()
+        {
+            var service = new DataService();
+            var category = service.CreateCategory("Test", "CreateCategory_ValidData_CreteCategoryAndRetunsNewObject");
+            Assert.True(category.Id > 0);
+            Assert.Equal("Test", category.Name);
+            Assert.Equal("CreateCategory_ValidData_CreteCategoryAndRetunsNewObject", category.Description);
+
+            // cleanup
+            service.DeleteCategory(category.Id);
+        }
+
+        [Fact]
+        public void DeleteCategory_ValidId_RemoveTheCategory()
+        {
+            var service = new DataService();
+            var category = service.CreateCategory("Test", "DeleteCategory_ValidId_RemoveTheCategory");
+            var result = service.DeleteCategory(category.Id);
+            Assert.True(result);
+            category = service.GetCategory(category.Id);
+            Assert.Null(category);
+        }
+
+        [Fact]
+        public void DeleteCategory_InvalidId_ReturnsFalse()
+        {
+            var service = new DataService();
+            var result = service.DeleteCategory(-1);
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void UpdateCategory_NewNameAndDescription_UpdateWithNewValues()
+        {
+            var service = new DataService();
+            var category = service.CreateCategory("TestingUpdate", "UpdateCategory_NewNameAndDescription_UpdateWithNewValues");
+
+            var result = service.UpdateCategory(category.Id, "UpdatedName", "UpdatedDescription");
+            Assert.True(result);
+
+            category = service.GetCategory(category.Id);
+
+            Assert.Equal("UpdatedName", category.Name);
+            Assert.Equal("UpdatedDescription", category.Description);
+
+            // cleanup
+            service.DeleteCategory(category.Id);
+        }
+
+        [Fact]
+        public void UpdateCategory_InvalidID_ReturnsFalse()
+        {
+            var service = new DataService();
+            var result = service.UpdateCategory(-1, "UpdatedName", "UpdatedDescription");
+            Assert.False(result);
         }
 
         /* products */
@@ -45,6 +112,27 @@ namespace Assignment4.Tests
             var product = service.GetProduct(1);
             Assert.Equal("Chai", product.Name);
             Assert.Equal("Beverages", product.Category.Name);
+        }
+
+        [Fact]
+        public void GetProduct_NameSubString_ReturnsProductsThatMachesTheSubString()
+        {
+            var service = new DataService();
+            var products = service.GetProductByName("ant");
+            Assert.Equal(3, products.Count);
+            Assert.Equal("Chef Anton's Cajun Seasoning", products.First().Name);
+            Assert.Equal("Guaraná Fantástica", products.Last().Name);
+        }
+
+        [Fact]
+        public void GetProductsByCategory_ValidId_ReturnsProductWithCategory()
+        {
+            var service = new DataService();
+            var products = service.GetProductByCategory(1);
+            Assert.Equal(12, products.Count);
+            Assert.Equal("Chai", products.First().Name);
+            Assert.Equal("Beverages", products.First().Category.Name);
+            Assert.Equal("Lakkalikööri", products.Last().Name);
         }
 
         /* orders */
