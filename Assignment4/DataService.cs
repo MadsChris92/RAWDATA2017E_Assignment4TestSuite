@@ -8,17 +8,177 @@ namespace Assignment4
 {
     public class DataService
     {
-
-
-        public Category GetCategory(int i)
+        // Order
+        /// <summary>
+        /// Get a single order by ID
+        /// </summary>
+        /// <param name="id">The order Id</param>
+        /// <returns>
+        /// Return the complete order, i.e. all attributes of the order, the complete list of
+        /// order details. Each order detail should include the product which must include
+        /// the category
+        /// </returns>
+        public Order GetOrder(int id)
         {
             using (var db = new NorthwindContext())
             {
-                var cat = db.Categories.FirstOrDefault(x => x.Id == i);
+                var order = db.Orders
+                    .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Order)
+                    .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                    .ThenInclude(od => od.Category)
+                    .FirstOrDefault(x => x.Id == id);
+                return order;
+            }
+        }
+
+        /// <summary>
+        /// Get order by shipping name
+        /// </summary>
+        /// <param name="shipName">The shipping name</param>
+        /// <returns>
+        /// Return a list of orders with id, date, ship name and city.
+        /// </returns>
+        public List<Order> GetOrderByShipName(string shipName)
+        {
+            using (var db = new NorthwindContext())
+            {
+                var orders = db.Orders
+                    .Where(x => x.ShipName.Equals(shipName))
+                    .ToList();
+                return orders;
+            }
+        }
+
+
+        /// <summary>
+        /// List all orders
+        /// </summary>
+        /// <returns>
+        /// Return a list of orders with the same information as in 2.
+        /// </returns>
+        public List<Order> GetOrders()
+        {
+
+            using (var db = new NorthwindContext())
+            {
+                var orders = db.Orders.ToList();
+
+                return orders;
+            }
+        }
+
+        //Order Details
+        /// <summary>
+        /// Get the details for a specific order ID
+        /// </summary>
+        /// <param name="id">The order Id</param>
+        /// <returns>
+        /// Return the order details with product name, unit price, quantity.
+        /// </returns>
+        public List<OrderDetails> GetOrderDetailsByOrderId(int id)
+        {
+            using (var db = new NorthwindContext())
+            {
+                var details = db.OrderDetails
+                    .Include(od => od.Product)
+                    .Include(od => od.Order)
+                    .Where(x => x.OrderId == id).ToList();
+                return details;
+            }
+        }
+
+        /// <summary>
+        /// Get the details for a specific product ID
+        /// </summary>
+        /// <param name="id">The product Id</param>
+        /// <returns>
+        /// Return the complete list of details, with order date, unit price, quantity
+        /// </returns>
+        public List<OrderDetails> GetOrderDetailsByProductId(int id)
+        {
+            using (var db = new NorthwindContext())
+            {
+                var details = db.OrderDetails
+                    .Include(od => od.Product)
+                    .Include(od => od.Order)
+                    .Where(x => x.ProductId == id).ToList();
+                return details;
+            }
+        }
+
+        // Product
+        /// <summary>
+        /// Get a single product by ID
+        /// </summary>
+        /// <param name="id">The product Id</param>
+        /// <returns>The complete product with name, unit price and category name.</returns>
+        public Product GetProduct(int id)
+        {
+            using (var db = new NorthwindContext())
+            {
+                var product = db.Products
+                    .Include(p => p.Category)
+                    .FirstOrDefault(x => x.Id == id);
+                return product;
+            }
+        }
+
+        /// <summary>
+        /// Get products by category ID
+        /// </summary>
+        /// <param name="id">The category Id</param>
+        /// <returns>
+        /// Return the list of products with the given category. Return the same information as in 6
+        /// </returns>
+        public List<Product> GetProductByCategory(int id)
+        {
+
+            using (var db = new NorthwindContext())
+            {
+                var products = db.Products
+                    .Include(p => p.Category)
+                    .Where(x => x.CategoryId == id).ToList();
+                return products;
+            }
+        }
+
+        /// <summary>
+        /// Get a list of products that contains a substring
+        /// </summary>
+        /// <param name="name">The string to search for</param>
+        /// <returns>
+        /// Search for products where the name matches the given substring. Return a list of product name and category name.
+        /// </returns>
+        public List<Product> GetProductByName(string name)
+        {
+            using (var db = new NorthwindContext())
+            {
+                var products = db.Products.Where(x => x.Name.Contains(name)).ToList();
+                return products;
+            }
+        }
+
+        //Category
+        /// <summary>
+        /// Get Category by ID
+        /// </summary>
+        /// <param name="id">The category Id</param>
+        /// <returns>Return the category if found otherwise return null.</returns>
+        public Category GetCategory(int id)
+        {
+            using (var db = new NorthwindContext())
+            {
+                var cat = db.Categories.FirstOrDefault(x => x.Id == id);
                 return cat;
             }
         }
 
+        /// <summary>
+        /// Get all categories
+        /// </summary>
+        /// <returns>Return the list of categories with id, name and description.</returns>
         public List<Category> GetCategories()
         {
             using (var db = new NorthwindContext())
@@ -28,7 +188,15 @@ namespace Assignment4
             }
         }
 
-        public Category AddCategory(string name, string desc)
+        /// <summary>
+        /// Add a new category to the system. The method takes name and description as
+        /// arguments. The system must provide a new ID. 
+        /// </summary>
+        /// <param name="name">The name of the category to make</param>
+        /// <param name="desc">The description of the category to make</param>
+        /// <returns>
+        /// return the newly created category.        /// </returns>
+        public Category CreateCategory(string name, string desc)
         {
             using (var db = new NorthwindContext())
             {
@@ -44,24 +212,15 @@ namespace Assignment4
             }
         }
 
-        public bool RemoveCategory(int id)
-        {
-            using (var db = new NorthwindContext())
-            {
-                var category = GetCategory(id);
-                if (category != null)
-                {
-                    db.Categories.Remove(category);
-                    db.SaveChanges();
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
+        /// <summary>
+        /// Take as arguments an id, name and description and update name and description. 
+        /// </summary>
+        /// <param name="id">The category Id</param>
+        /// <param name="name">The categories new name</param>
+        /// <param name="desc">The categoriers new description</param>
+        /// <returns>
+        /// If the category is found, update the category and return true, otherwise return false.
+        /// </returns>
         public bool UpdateCategory(int id, string name, string desc)
         {
             using (var db = new NorthwindContext())
@@ -84,89 +243,27 @@ namespace Assignment4
             }
         }
 
-
-
-
-
-        public Product GetProduct(int i)
+        /// <summary>
+        /// Delete category. Take id as argument. 
+        /// </summary>
+        /// <param name="id">The category Id</param>
+        /// <returns>
+        /// Return true if the category is deleted, otherwise return false.        /// </returns>
+        public bool DeleteCategory(int id)
         {
             using (var db = new NorthwindContext())
             {
-            Product product;
-                product = db.Products
-                    .Include(p => p.Category)
-                    .FirstOrDefault(x => x.Id == i);
-            return product;
-            }
-        }
-
-        public List<Product> GetProductByCatID(int i)
-        {
-            List<Product> products;
-            using (var db = new NorthwindContext())
-            {
-                products = db.Products.Where(x => x.CategoryId == i).ToList();
-            }
-            return products;
-        }
-
-        public List<Product> GetProductBySubstring(string s)
-        {
-            using (var db = new NorthwindContext())
-            {
-                var products = db.Products.Where(x => x.Equals(s)).ToList();
-                return products;
-            }
-        }
-
-        public Order GetOrder(int i)
-        {
-            using (var db = new NorthwindContext())
-            {
-                var order = db.Orders
-                    .Include(o => o.OrderDetails)
-                    .ThenInclude(od => od.Order)
-                    .Include(o => o.OrderDetails)
-                    .ThenInclude(od => od.Product)
-                    .ThenInclude(od => od.Category)
-                    .FirstOrDefault(x => x.Id == i);
-                return order;
-            }
-        }
-
-        public List<Order> GetOrders()
-        {
-            
-            using (var db = new NorthwindContext())
-            {
-                var ord = db.Orders.ToList();
-
-                return ord;
-            }
-        }
-        
-        public List<OrderDetails> GetOrderDetailsByOrderId(int i)
-        {
-            using(var db = new NorthwindContext())
-            {
-                var details = db.OrderDetails
-                    .Include(od => od.Product)
-                    .Include(od => od.Order)
-                    .Where(x => x.OrderId == i).ToList();
-                return details;
-            }
-        }
-
-        public List<OrderDetails> GetOrderDetailsByProductId(int i)
-        {
-            using (var db = new NorthwindContext())
-            {
-            List<OrderDetails> details;
-                details = db.OrderDetails
-                    .Include(od => od.Product)
-                    .Include(od => od.Order)
-                    .Where(x => x.ProductId == i).ToList();
-            return details;
+                var category = GetCategory(id);
+                if (category != null)
+                {
+                    db.Categories.Remove(category);
+                    db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }
