@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
-namespace Assignment4
+namespace DAL
 {
-    public class DataService
+    public class DataService : IDataService
     {
         // Order
         /// <summary>
@@ -125,6 +127,11 @@ namespace Assignment4
             }
         }
 
+        public List<Product> GetProducts()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Get products by category ID
         /// </summary>
@@ -155,7 +162,7 @@ namespace Assignment4
         {
             using (var db = new NorthwindContext())
             {
-                var products = db.Products.Where(x => x.Name.Contains(name)).ToList();
+                var products = db.Products.Where(x => x.Name.ToLower().Contains(name.ToLower())).ToList();
                 return products;
             }
         }
@@ -195,7 +202,8 @@ namespace Assignment4
         /// <param name="name">The name of the category to make</param>
         /// <param name="desc">The description of the category to make</param>
         /// <returns>
-        /// return the newly created category.        /// </returns>
+        /// return the newly created category.
+        /// </returns>
         public Category CreateCategory(string name, string desc)
         {
             using (var db = new NorthwindContext())
@@ -248,7 +256,8 @@ namespace Assignment4
         /// </summary>
         /// <param name="id">The category Id</param>
         /// <returns>
-        /// Return true if the category is deleted, otherwise return false.        /// </returns>
+        /// Return true if the category is deleted, otherwise return false.
+        /// </returns>
         public bool DeleteCategory(int id)
         {
             using (var db = new NorthwindContext())
@@ -314,4 +323,14 @@ namespace Assignment4
         public virtual Category Category { get; set; }
         public int CategoryId { get; set; }
     }
+
+
+    public static class Util
+    {
+        public static string ToJson(this object data)
+        {
+            return JsonConvert.SerializeObject(data,
+                new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+        }
+}
 }

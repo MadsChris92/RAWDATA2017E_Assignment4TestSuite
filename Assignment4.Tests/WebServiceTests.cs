@@ -84,7 +84,6 @@ namespace Assignment4.Tests
             Assert.Equal(HttpStatusCode.OK, statusCode);
 
             var (cat, status) = GetObject($"{CategoriesApi}/{category["id"]}");
-
             Assert.Equal(category["name"] + "Updated", cat["name"]);
             Assert.Equal(category["description"] + "Updated", cat["description"]);
 

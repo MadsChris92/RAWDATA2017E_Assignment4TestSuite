@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using System.Linq;
+using DAL;
 
 namespace Assignment4.Tests
 {

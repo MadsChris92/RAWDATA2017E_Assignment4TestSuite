@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Assignment4
+namespace DAL
 {
     class NorthwindContext : DbContext
     {
@@ -14,8 +14,8 @@ namespace Assignment4
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseMySql("server=192.168.1.4;database=northwind;uid=marinus;pwd=agergaard");
-            //optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=frans"); //mads
+            //optionsBuilder.UseMySql("server=192.168.1.4;database=northwind;uid=marinus;pwd=agergaard");
+            optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=frans"); //mads
             //optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=root"); //alex
         }
 

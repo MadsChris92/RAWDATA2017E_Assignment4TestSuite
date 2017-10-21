@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assignment4.Tests", "Assignment4.Tests\Assignment4.Tests.csproj", "{414FCD3F-4644-47CC-89AC-0BEF35BCD769}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataService", "Assignment4\DataService.csproj", "{36A7A7BF-E827-41E7-BC3D-28E28E84A604}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "Assignment4\DAL.csproj", "{36A7A7BF-E827-41E7-BC3D-28E28E84A604}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "WebService\WebService.csproj", "{23685E92-0C33-46D3-921B-C8F28BCF2702}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebService", "WebService\WebService.csproj", "{23685E92-0C33-46D3-921B-C8F28BCF2702}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

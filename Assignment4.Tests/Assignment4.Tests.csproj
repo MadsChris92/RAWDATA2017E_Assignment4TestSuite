@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Assignment4\DataService.csproj" />
+    <ProjectReference Include="..\Assignment4\DAL.csproj" />
   </ItemGroup>
 
 </Project>
