@@ -22,7 +22,7 @@ namespace DAL
         /// </returns>
         public Order GetOrder(int id)
         {
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
                 var order = db.Orders
                     .Include(o => o.OrderDetails)
@@ -44,7 +44,7 @@ namespace DAL
         /// </returns>
         public List<Order> GetOrderByShipName(string shipName)
         {
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
                 var orders = db.Orders
                     .Where(x => x.ShipName.Equals(shipName))
@@ -63,7 +63,7 @@ namespace DAL
         public List<Order> GetOrders()
         {
 
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
                 var orders = db.Orders.ToList();
 
@@ -81,7 +81,7 @@ namespace DAL
         /// </returns>
         public List<OrderDetails> GetOrderDetailsByOrderId(int id)
         {
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
                 var details = db.OrderDetails
                     .Include(od => od.Product)
@@ -100,7 +100,7 @@ namespace DAL
         /// </returns>
         public List<OrderDetails> GetOrderDetailsByProductId(int id)
         {
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
                 var details = db.OrderDetails
                     .Include(od => od.Product)
@@ -118,7 +118,7 @@ namespace DAL
         /// <returns>The complete product with name, unit price and category name.</returns>
         public Product GetProduct(int id)
         {
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
                 var product = db.Products
                     .Include(p => p.Category)
@@ -142,7 +142,7 @@ namespace DAL
         public List<Product> GetProductByCategory(int id)
         {
 
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
                 var products = db.Products
                     .Include(p => p.Category)
@@ -160,7 +160,7 @@ namespace DAL
         /// </returns>
         public List<Product> GetProductByName(string name)
         {
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
                 var products = db.Products.Where(x => x.Name.ToLower().Contains(name.ToLower())).ToList();
                 return products;
@@ -175,7 +175,7 @@ namespace DAL
         /// <returns>Return the category if found otherwise return null.</returns>
         public Category GetCategory(int id)
         {
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
                 var cat = db.Categories.FirstOrDefault(x => x.Id == id);
                 return cat;
@@ -188,7 +188,7 @@ namespace DAL
         /// <returns>Return the list of categories with id, name and description.</returns>
         public List<Category> GetCategories()
         {
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
                 var cat = db.Categories.ToList();
                 return cat;
@@ -206,7 +206,7 @@ namespace DAL
         /// </returns>
         public Category CreateCategory(string name, string desc)
         {
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
                 var cat = new Category
                 {
@@ -220,6 +220,8 @@ namespace DAL
             }
         }
 
+        
+
         /// <summary>
         /// Take as arguments an id, name and description and update name and description. 
         /// </summary>
@@ -231,7 +233,7 @@ namespace DAL
         /// </returns>
         public bool UpdateCategory(int id, string name, string desc)
         {
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
 
                 var category = db.Categories.FirstOrDefault(x => x.Id == id);
@@ -260,7 +262,7 @@ namespace DAL
         /// </returns>
         public bool DeleteCategory(int id)
         {
-            using (var db = new NorthwindContext())
+            using (var db = new SovaContext())
             {
                 var category = GetCategory(id);
                 if (category != null)
@@ -275,6 +277,19 @@ namespace DAL
                 }
             }
         }
+    }
+
+    public class Post
+    {
+        public int post_id { get; set; }
+        public int owner_id { get; set; }
+        public int post_type_id { get; set; }
+        public int parent_id { get; set; }
+        public string title { get; set; }
+        public string body { get; set; }
+        public int score { get; set; }
+        public DateTime closed_date { get; set; }
+        public DateTime create_date { get; set; }
     }
 
     public class Category

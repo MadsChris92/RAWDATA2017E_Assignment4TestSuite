@@ -2,7 +2,7 @@
 
 namespace DAL
 {
-    class NorthwindContext : DbContext
+    class SovaContext : DbContext
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
