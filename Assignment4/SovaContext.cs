@@ -1,14 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
     class SovaContext : DbContext
     {
+        /*
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
+        */
 
+        public DbSet<Post> Posts { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -23,6 +27,9 @@ namespace DAL
         {
             base.OnModelCreating(modelBuilder);
 
+            
+
+            /*
             //Categories
             modelBuilder.Entity<Category>().Property(x => x.Name).HasColumnName("CategoryName");
             modelBuilder.Entity<Category>().Property(x => x.Id).HasColumnName("CategoryId");
@@ -44,6 +51,7 @@ namespace DAL
             modelBuilder.Entity<OrderDetails>()
                 .HasOne(orderDetail => orderDetail.Order)
                 .WithMany(order => order.OrderDetails);
+            */
 
 
         }

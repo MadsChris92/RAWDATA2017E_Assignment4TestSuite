@@ -5,6 +5,9 @@ namespace DAL
 {
     public interface IDataService
     {
+
+
+        /*
         Product GetProduct(int id);
 
         List<Product> GetProducts();
@@ -22,5 +25,6 @@ namespace DAL
         Boolean UpdateCategory(int id, string name, string description);
 
         Boolean DeleteCategory(int id);
+        */
     }
 }
