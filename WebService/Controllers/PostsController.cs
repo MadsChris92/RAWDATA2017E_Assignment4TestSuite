@@ -17,7 +17,7 @@ namespace WebService.Controllers
         {
             _dataService = dataService;
         }
-
+        /*
         [HttpGet("{id}")]
         public IActionResult GetCategoryByID(int id)
         {
@@ -74,5 +74,6 @@ namespace WebService.Controllers
             }
             return NotFound();
         }
+        */
     }
 }

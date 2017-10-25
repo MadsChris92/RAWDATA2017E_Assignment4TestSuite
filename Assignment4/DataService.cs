@@ -9,8 +9,7 @@ using Newtonsoft.Json.Serialization;
 namespace DAL
 {
     public class DataService : IDataService
-    {   
-
+    {
 
         /*
         // Order
@@ -281,6 +280,14 @@ namespace DAL
             }
         }
         */
+        public Post GePost(int id)
+        {
+            using (var db = new SovaContext())
+            {
+
+                return db.Posts.FirstOrDefault(x => x.post_id == id);
+            }
+        }
     }
 
     public class Post
