@@ -288,14 +288,14 @@ namespace DAL
             using (var db = new SovaContext())
             {
 
-                return db.Posts.FirstOrDefault(x => x.post_id == id);
+                return db.Posts.FirstOrDefault(x => x.Id == id);
             }
         }
     }
 
     public class Post
     {
-        public int post_id { get; set; }
+        public int Id { get; set; }
         public int owner_id { get; set; }
         public int post_type_id { get; set; }
         public int parent_id { get; set; }

@@ -13,6 +13,7 @@ namespace DAL
         */
 
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -27,31 +28,28 @@ namespace DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            
+            //Comments
+            modelBuilder.Entity<Comment>().Property(x => x.Id)
+                .HasColumnName("comment_id");
 
-            /*
-            //Categories
-            modelBuilder.Entity<Category>().Property(x => x.Name).HasColumnName("CategoryName");
-            modelBuilder.Entity<Category>().Property(x => x.Id).HasColumnName("CategoryId");
+            modelBuilder.Entity<Comment>().Property(x => x.owner_id)
+                .HasColumnName("comment_owner_id");
 
-            //Products
-            modelBuilder.Entity<Product>().Property(x => x.Name).HasColumnName("ProductName");
-            modelBuilder.Entity<Product>().Property(x => x.Id).HasColumnName("ProductId");
-            modelBuilder.Entity<Product>().Property(x => x.QuantityPerUnit).HasColumnName("QuantityUnit");
+            modelBuilder.Entity<Comment>().Property(x => x.parent_id)
+                .HasColumnName("post_parent_id");
 
-            //Order
-            modelBuilder.Entity<Order>().Property(x => x.Id).HasColumnName("OrderId");
-            modelBuilder.Entity<Order>().Property(x => x.Date).HasColumnName("OrderDate");
-            modelBuilder.Entity<Order>().Property(x => x.Required).HasColumnName("RequiredDate");
-            //modelBuilder.Entity<Order>().Property(x => x.OrderDetails).IsRequired();
+            modelBuilder.Entity<Comment>().Property(x => x.score)
+                .HasColumnName("comment_score");
 
+            modelBuilder.Entity<Comment>().Property(x => x.create_date)
+                .HasColumnName("comment_create_date");
 
-            //OrderDetails
-            modelBuilder.Entity<OrderDetails>().HasKey(x => new { x.OrderId, x.ProductId });
-            modelBuilder.Entity<OrderDetails>()
-                .HasOne(orderDetail => orderDetail.Order)
-                .WithMany(order => order.OrderDetails);
-            */
+            modelBuilder.Entity<Comment>().Property(x => x.text)
+                .HasColumnName("comment_text");
+
+            //Post
+            modelBuilder.Entity<Post>().Property(x => x.Id)
+                .HasColumnName("post_id");
 
 
         }
