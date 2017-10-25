@@ -289,7 +289,7 @@ namespace DAL
             using (var db = new SovaContext())
             {
 
-                return db.Posts.FirstOrDefault(x => x.Id == id);
+                return db.posts.FirstOrDefault(x => x.Id == id);
             }
         }
     }
@@ -299,11 +299,11 @@ namespace DAL
         public int Id { get; set; }
         public int owner_id { get; set; }
         public int post_type_id { get; set; }
-        public int parent_id { get; set; }
+        public int? parent_id { get; set; }
         public string title { get; set; }
         public string body { get; set; }
         public int score { get; set; }
-        public DateTime closed_date { get; set; }
+        public DateTime? closed_date { get; set; }
         public DateTime create_date { get; set; }
     }
 
