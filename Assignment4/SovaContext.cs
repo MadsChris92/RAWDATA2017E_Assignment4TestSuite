@@ -14,7 +14,7 @@ namespace DAL
         public DbSet<OrderDetails> OrderDetails { get; set; }
         */
 
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<Post> posts { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -22,7 +22,7 @@ namespace DAL
             base.OnConfiguring(optionsBuilder);
             //optionsBuilder.UseMySql("server=192.168.1.4;database=northwind;uid=marinus;pwd=agergaard"); //martinus
             //optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=frans"); //mads
-            optionsBuilder.UseMySql("server=wt-220.ruc.dk;database=raw10;uid=raw10;pwd=raw10"); //alex
+            optionsBuilder.UseMySql("server=wt-220.ruc.dk;database=stackoverflow_sample_universal;uid=raw10;pwd=raw10"); //alex
             
         }
 
@@ -31,7 +31,7 @@ namespace DAL
             base.OnModelCreating(modelBuilder);
 
 
-            modelBuilder.Entity<Post>().Property(x => x.Id).HasColumnName("post_id");
+            modelBuilder.Entity<Post>().Property(x => x.post_id).HasColumnName("post_id");
             
 
             /*
@@ -63,7 +63,7 @@ namespace DAL
 
         public List<Post> FindPostsByName(string name)
         {
-            var posts = this.Posts.FromSql("CALL wordSearch({0})", name).Take<Post>(10).ToList<Post>();
+            var posts = this.posts.FromSql("CALL wordSearch({0})", name).Take<Post>(10).ToList<Post>();
             Console.WriteLine(posts);
 
             return posts;
