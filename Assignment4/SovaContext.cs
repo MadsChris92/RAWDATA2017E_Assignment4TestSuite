@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace DAL
 {
@@ -21,22 +23,16 @@ namespace DAL
             base.OnConfiguring(optionsBuilder);
             //optionsBuilder.UseMySql("server=192.168.1.4;database=northwind;uid=marinus;pwd=agergaard"); //martinus
             //optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=frans"); //mads
-            optionsBuilder.UseMySql("server=wt-220.ruc.dk:3306;database=raw10;uid=raw10;pwd=raw10"); //alex
+            optionsBuilder.UseMySql("server=wt-220.ruc.dk;database=raw10;uid=raw10;pwd=raw10"); //alex
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            //Comments
-            modelBuilder.Entity<Comment>().Property(x => x.Id)
-                .HasColumnName("comment_id");
+            
 
-            modelBuilder.Entity<Comment>().Property(x => x.owner_id)
-                .HasColumnName("comment_owner_id");
-
-            modelBuilder.Entity<Comment>().Property(x => x.parent_id)
-                .HasColumnName("post_parent_id");
 
             modelBuilder.Entity<Comment>().Property(x => x.score)
                 .HasColumnName("comment_score");
@@ -54,11 +50,12 @@ namespace DAL
 
         }
 
-        protected void FindPostsByName(string name)
+        public List<Post> FindPostsByName(string name)
         {
-            var Posts
-           // this.Database.ExecuteSqlCommand("wordSearch @name", name);
+            var posts = this.Posts.FromSql("CALL wordSearch({0})", name).Take<Post>(10).ToList<Post>();
+            Console.WriteLine(posts);
 
+            return posts;
         }
     }
    

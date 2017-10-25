@@ -62,17 +62,18 @@ namespace DAL
         /// <returns>
         /// Return a list of orders with the same information as in 2.
         /// </returns>
-        public List<Order> GetOrders()
+        */
+        public List<Post> GetPostsByName(string name)
         {
 
             using (var db = new SovaContext())
             {
-                var orders = db.Orders.ToList();
+                var posts = db.FindPostsByName(name);
 
-                return orders;
+                return posts;
             }
         }
-
+        /*
         //Order Details
         /// <summary>
         /// Get the details for a specific order ID
