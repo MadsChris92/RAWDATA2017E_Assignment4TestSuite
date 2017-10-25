@@ -14,9 +14,9 @@ namespace DAL
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            //optionsBuilder.UseMySql("server=192.168.1.4;database=northwind;uid=marinus;pwd=agergaard");
-            optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=frans"); //mads
-            //optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=root"); //alex
+            //optionsBuilder.UseMySql("server=192.168.1.4;database=northwind;uid=marinus;pwd=agergaard"); //martinus
+            //optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=frans"); //mads
+            optionsBuilder.UseMySql("server=wt-220.ruc.dk:3306;database=raw10;uid=raw10;pwd=raw10"); //alex
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
