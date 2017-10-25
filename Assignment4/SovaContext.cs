@@ -7,14 +7,8 @@ namespace DAL
 {
     class SovaContext : DbContext
     {
-        /*
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetails> OrderDetails { get; set; }
-        */
-
         public DbSet<Post> posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -22,7 +16,7 @@ namespace DAL
             base.OnConfiguring(optionsBuilder);
             //optionsBuilder.UseMySql("server=192.168.1.4;database=northwind;uid=marinus;pwd=agergaard"); //martinus
             //optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=frans"); //mads
-            optionsBuilder.UseMySql("server=wt-220.ruc.dk;database=stackoverflow_sample_universal;uid=raw10;pwd=raw10"); //alex
+            optionsBuilder.UseMySql("server=wt-220.ruc.dk;database=raw10;uid=raw10;pwd=raw10"); //alex
             
         }
 
@@ -31,36 +25,24 @@ namespace DAL
             base.OnModelCreating(modelBuilder);
 
 
-            modelBuilder.Entity<Post>().Property(x => x.post_id).HasColumnName("post_id");
-            
+            modelBuilder.Entity<Comment>().Property(x => x.score)
+                .HasColumnName("comment_score");
 
-            /*
-            //Categories
-            modelBuilder.Entity<Category>().Property(x => x.Name).HasColumnName("CategoryName");
-            modelBuilder.Entity<Category>().Property(x => x.Id).HasColumnName("CategoryId");
+            modelBuilder.Entity<Comment>().Property(x => x.create_date)
+                .HasColumnName("comment_create_date");
 
-            //Products
-            modelBuilder.Entity<Product>().Property(x => x.Name).HasColumnName("ProductName");
-            modelBuilder.Entity<Product>().Property(x => x.Id).HasColumnName("ProductId");
-            modelBuilder.Entity<Product>().Property(x => x.QuantityPerUnit).HasColumnName("QuantityUnit");
+            modelBuilder.Entity<Comment>().Property(x => x.text)
+                .HasColumnName("comment_text");
+           
 
-            //Order
-            modelBuilder.Entity<Order>().Property(x => x.Id).HasColumnName("OrderId");
-            modelBuilder.Entity<Order>().Property(x => x.Date).HasColumnName("OrderDate");
-            modelBuilder.Entity<Order>().Property(x => x.Required).HasColumnName("RequiredDate");
-            //modelBuilder.Entity<Order>().Property(x => x.OrderDetails).IsRequired();
+            //Post
+            modelBuilder.Entity<Post>().Property(x => x.Id)
+                .HasColumnName("post_id");
 
-
-            //OrderDetails
-            modelBuilder.Entity<OrderDetails>().HasKey(x => new { x.OrderId, x.ProductId });
-            modelBuilder.Entity<OrderDetails>()
-                .HasOne(orderDetail => orderDetail.Order)
-                .WithMany(order => order.OrderDetails);
-            */
-
+            modelBuilder.Entity<Post>().HasKey(x => x.Id);
 
         }
-
+        
         public List<Post> FindPostsByName(string name)
         {
             var posts = this.posts.FromSql("CALL wordSearch({0})", name).Take<Post>(10).ToList<Post>();
@@ -68,6 +50,7 @@ namespace DAL
 
             return posts;
         }
+        
     }
    
 }
