@@ -31,8 +31,6 @@ namespace DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            
-
 
             modelBuilder.Entity<Comment>().Property(x => x.score)
                 .HasColumnName("comment_score");
