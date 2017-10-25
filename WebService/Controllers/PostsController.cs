@@ -22,11 +22,11 @@ namespace WebService.Controllers
         public IActionResult GetPostsByName(string name)
         {
 
-            _dataService.GetPostsByName(name);
+            var posts = _dataService.GetPostsByName(name);
 
 
 
-            return Ok();
+            return Ok(posts);
         }
 
     }

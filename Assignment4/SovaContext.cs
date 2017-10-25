@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace DAL
 {
@@ -22,12 +23,15 @@ namespace DAL
             //optionsBuilder.UseMySql("server=192.168.1.4;database=northwind;uid=marinus;pwd=agergaard"); //martinus
             //optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=frans"); //mads
             optionsBuilder.UseMySql("server=wt-220.ruc.dk;database=raw10;uid=raw10;pwd=raw10"); //alex
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+
+            modelBuilder.Entity<Post>().Property(x => x.Id).HasColumnName("post_id");
             
 
             /*
@@ -57,11 +61,12 @@ namespace DAL
 
         }
 
-        public void FindPostsByName(string name)
+        public List<Post> FindPostsByName(string name)
         {
-            var posts = this.Posts.FromSql("EXECUTE wordSearch @name", name).Take<Post>(10).ToList<Post>();
+            var posts = this.Posts.FromSql("CALL wordSearch({0})", name).Take<Post>(10).ToList<Post>();
             Console.WriteLine(posts);
 
+            return posts;
         }
     }
    

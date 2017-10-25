@@ -7,24 +7,25 @@ namespace DAL
     {
 
         List<Post> GetPostsByName(string name);
+        Post GePost(int id);
         /*
-        Product GetProduct(int id);
+Product GetProduct(int id);
 
-        List<Product> GetProducts();
+List<Product> GetProducts();
 
-        List<Product> GetProductByCategory(int id);
+List<Product> GetProductByCategory(int id);
 
-        List<Product> GetProductByName(string name);
+List<Product> GetProductByName(string name);
 
-        Category GetCategory(int id);
+Category GetCategory(int id);
 
-        List<Category> GetCategories();
+List<Category> GetCategories();
 
-        Category CreateCategory(string name, string description);
+Category CreateCategory(string name, string description);
 
-        Boolean UpdateCategory(int id, string name, string description);
+Boolean UpdateCategory(int id, string name, string description);
 
-        Boolean DeleteCategory(int id);
-        */
+Boolean DeleteCategory(int id);
+*/
     }
 }
