@@ -25,7 +25,7 @@ namespace DAL
             using (var db = new SovaContext())
             {
 
-                return db.Posts.FirstOrDefault(x => x.Id == id);
+                return db.posts.FirstOrDefault(x => x.Id == id);
             }
         }
     }

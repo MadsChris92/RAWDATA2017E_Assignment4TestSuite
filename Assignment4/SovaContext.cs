@@ -7,7 +7,7 @@ namespace DAL
 {
     class SovaContext : DbContext
     {
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<Post> posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
 
@@ -44,7 +44,7 @@ namespace DAL
         
         public List<Post> FindPostsByName(string name)
         {
-            var posts = this.Posts.FromSql("CALL wordSearch({0})", name).Take<Post>(10).ToList<Post>();
+            var posts = this.posts.FromSql("CALL wordSearch({0})", name).Take<Post>(10).ToList<Post>();
             Console.WriteLine(posts);
 
             return posts;
