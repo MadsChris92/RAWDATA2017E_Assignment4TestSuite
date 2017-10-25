@@ -36,6 +36,8 @@ namespace WebService
                 app.UseDeveloperExceptionPage();
             }
 
+            //midget finner
+
             app.UseMvc();
         }
     }
