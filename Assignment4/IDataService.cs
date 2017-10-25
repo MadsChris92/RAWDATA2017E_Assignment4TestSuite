@@ -6,7 +6,7 @@ namespace DAL
     public interface IDataService
     {
 
-
+        List<Post> GetPostsByName(string name);
         /*
         Product GetProduct(int id);
 

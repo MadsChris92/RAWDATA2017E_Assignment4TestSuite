@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace DAL
 {
@@ -20,7 +21,7 @@ namespace DAL
             base.OnConfiguring(optionsBuilder);
             //optionsBuilder.UseMySql("server=192.168.1.4;database=northwind;uid=marinus;pwd=agergaard"); //martinus
             //optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=frans"); //mads
-            optionsBuilder.UseMySql("server=wt-220.ruc.dk:3306;database=raw10;uid=raw10;pwd=raw10"); //alex
+            optionsBuilder.UseMySql("server=wt-220.ruc.dk;database=raw10;uid=raw10;pwd=raw10"); //alex
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -56,10 +57,10 @@ namespace DAL
 
         }
 
-        protected void FindPostsByName(string name)
+        public void FindPostsByName(string name)
         {
-            var Posts
-           // this.Database.ExecuteSqlCommand("wordSearch @name", name);
+            var posts = this.Posts.FromSql("EXECUTE wordSearch @name", name).Take<Post>(10).ToList<Post>();
+            Console.WriteLine(posts);
 
         }
     }
