@@ -7,13 +7,6 @@ namespace DAL
 {
     class SovaContext : DbContext
     {
-        /*
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetails> OrderDetails { get; set; }
-        */
-
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
@@ -40,6 +33,7 @@ namespace DAL
 
             modelBuilder.Entity<Comment>().Property(x => x.text)
                 .HasColumnName("comment_text");
+           
 
             //Post
             modelBuilder.Entity<Post>().Property(x => x.Id)
@@ -47,7 +41,7 @@ namespace DAL
 
 
         }
-
+        
         public List<Post> FindPostsByName(string name)
         {
             var posts = this.Posts.FromSql("CALL wordSearch({0})", name).Take<Post>(10).ToList<Post>();
@@ -55,6 +49,7 @@ namespace DAL
 
             return posts;
         }
+        
     }
    
 }
