@@ -55,5 +55,13 @@ namespace DAL
 
 
         }
+
+        protected void FindPostsByName(string name)
+        {
+            var Posts
+           // this.Database.ExecuteSqlCommand("wordSearch @name", name);
+
+        }
     }
+   
 }

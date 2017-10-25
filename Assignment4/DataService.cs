@@ -89,6 +89,7 @@ namespace DAL
                     .Include(od => od.Product)
                     .Include(od => od.Order)
                     .Where(x => x.OrderId == id).ToList();
+                
                 return details;
             }
         }
@@ -104,6 +105,8 @@ namespace DAL
         {
             using (var db = new SovaContext())
             {
+
+                
                 var details = db.OrderDetails
                     .Include(od => od.Product)
                     .Include(od => od.Order)
