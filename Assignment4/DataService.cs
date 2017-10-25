@@ -306,63 +306,14 @@ namespace DAL
         public DateTime closed_date { get; set; }
         public DateTime create_date { get; set; }
     }
-    /*
-    public class Category
+
+    public class Comment
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public int owner_id { get; set; }
+        public int score { get; set; }
+        public string text { get; set; }
+        public DateTime create_date { get; set; }
+        public int parent_id { get; set; }
     }
-
-    public class OrderDetails
-    {
-        public int OrderId { get; set; }
-        public virtual Order Order { get; set; }
-        public int ProductId { get; set; }
-        public virtual Product Product { get; set; }
-        public double UnitPrice { get; set; }
-        public int Quantity { get; set; }
-        public double Discount { get; set; }
-    }
-
-    public class Order
-    {
-        [Column("OrderId")]public int Id { get; set; }
-        public string CustomerId { get; set; }
-        public int EmployeeId { get; set; }
-        [Column("OrderDate")]public DateTime Date { get; set; }
-        [Column("RequiredDate")]public DateTime Required { get; set; }
-        [Column("ShippedDate")]public DateTime? Shipped { get; set; }
-        public double Freight { get; set; }
-        public string ShipName { get; set; }
-        public string ShipAddress { get; set; }
-        public string ShipCity { get; set; }
-        public string ShipPostalCode { get; set; }
-        public string ShipCountry { get; set; }
-        
-        public virtual List<OrderDetails> OrderDetails { get; set; }
-    }
-    
-    public class Product
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public double UnitPrice { get; set; }
-        public string QuantityPerUnit { get; set; }
-        public int UnitsInStock { get; set; }
-        public virtual Category Category { get; set; }
-        public int CategoryId { get; set; }
-    
-        
-
-
-    public static class Util
-    {
-        public static string ToJson(this object data)
-        {
-            return JsonConvert.SerializeObject(data,
-                new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-        }
-    }
-    */
 }
