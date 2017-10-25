@@ -10,7 +10,7 @@ namespace WebService.Controllers
     [Route("api/[controller]")]
     public class ProductsController : Controller
     {
-        private IDataService _dataService;
+        private readonly IDataService _dataService;
 
         public ProductsController(IDataService dataService)
         {

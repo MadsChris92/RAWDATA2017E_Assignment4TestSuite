@@ -9,7 +9,10 @@ using Newtonsoft.Json.Serialization;
 namespace DAL
 {
     public class DataService : IDataService
-    {
+    {   
+
+
+        /*
         // Order
         /// <summary>
         /// Get a single order by ID
@@ -277,6 +280,7 @@ namespace DAL
                 }
             }
         }
+        */
     }
 
     public class Post
@@ -291,7 +295,7 @@ namespace DAL
         public DateTime closed_date { get; set; }
         public DateTime create_date { get; set; }
     }
-
+    /*
     public class Category
     {
         public int Id { get; set; }
@@ -327,7 +331,7 @@ namespace DAL
         
         public virtual List<OrderDetails> OrderDetails { get; set; }
     }
-
+    
     public class Product
     {
         public int Id { get; set; }
@@ -337,7 +341,8 @@ namespace DAL
         public int UnitsInStock { get; set; }
         public virtual Category Category { get; set; }
         public int CategoryId { get; set; }
-    }
+    
+        
 
 
     public static class Util
@@ -347,5 +352,6 @@ namespace DAL
             return JsonConvert.SerializeObject(data,
                 new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
-}
+    }
+    */
 }
