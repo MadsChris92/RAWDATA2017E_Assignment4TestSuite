@@ -12,14 +12,14 @@ namespace DAL
 {
     public class DataService : IDataService
     {
-        public List<Post> GetPostsByName(string name, int page, int pageSize, out int totalResults)
+        public List<Question> GetPostsByName(string name, int page, int pageSize, out int totalResults)
         {
 
             using (var db = new SovaContext())
             {
                 //var Posts = db.Posts.FromSql("CALL wordSearch({0})", name).Skip(page * pageSize).Take<Post>(pageSize).ToList<Post>();
 
-                var result = db.Posts
+                var result = db.Questions
                     .Where(post => post
                         .title.ToLower()
                         .Contains(name.ToLower()));
@@ -34,11 +34,12 @@ namespace DAL
                 return posts;
             }
         }
-        public Post GetPost(int id)
+        public Question GetPost(int id)
         {
             using (var db = new SovaContext())
             {
-                var post = db.Posts.Include(p => p.Comments).FirstOrDefault(x => x.Id == id);
+                var post = db.Questions.Include(p => p.Comments).FirstOrDefault(x => x.Id == id);
+                
                 return post;
             }
         }
@@ -48,19 +49,21 @@ namespace DAL
             using (var db = new SovaContext())
             {
 
-                var fukboi = db.Posts.Include(p => p.Comments).Include(p => ((Question) p).Answers);
-                var post = (Question) fukboi.FirstOrDefault(x => x.Id == id);
+               
+                var post =  db.Questions.FirstOrDefault(x => x.Id == id);
+                post.FillAnswers(post.Id);
                 return post;
             }
 
         }
     }
 
-    public class Post
+    public abstract class Post
     {
         public int Id { get; set; }
         public int owner_id { get; set; }
-        public int post_type_id { get; set; }
+        
+        public int post_type_id { get; protected set; }
         public int? parent_id { get; set; }
         public string title { get; set; }
         public string body { get; set; }
@@ -76,11 +79,12 @@ namespace DAL
     {
         public virtual IList<Answer> Answers { get; set; }
 
-        public void GetAnswers(int id)
+        public void FillAnswers(int id)
         {
             using (var db = new SovaContext())
             {
-                Answers = db.Posts.FromSql("CALL getAnswers({0})", id).ToList<Answer>();
+                var answers = db.Answers.Where(x => x.parent_id == id).ToList();
+                Answers = answers;
             }
         }
         
@@ -88,6 +92,8 @@ namespace DAL
 
     public class Answer : Post
     {
+
+        public int QuestionId { get; set; }
         public virtual Question Question { get; set; }
     }
 
