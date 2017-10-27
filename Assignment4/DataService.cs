@@ -63,6 +63,22 @@ namespace DAL
 
         }
 
+        public User GetUser(int id)
+        {
+            using (var db = new SovaContext())
+            {
+                return db.Users.FirstOrDefault(user => user.Id == id);
+            }
+        }
+
+        public User GetUser()
+        {
+            using (var db = new SovaContext())
+            {
+                return db.Users.FirstOrDefault();
+            }
+        }
+
         public List<Question> GetPostsByTagId(int tagId)
         {
             throw new NotImplementedException();
@@ -160,9 +176,10 @@ namespace DAL
 
     public class Note
     {
-        public int note_id { get; set; }
-        public string note_text { get; set; }
-        public int note_post_id { get; set; }
+        public int Id { get; set; }
+        public string Text { get; set; }
+        public int PostId { get; set; }
+        public Post Post { get; set; }
     }
 
     public class User

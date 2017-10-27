@@ -39,5 +39,8 @@ Boolean UpdateCategory(int id, string name, string description);
 
 Boolean DeleteCategory(int id);
 */
+        User GetUser(int id);
+
+        User GetUser();
     }
 }

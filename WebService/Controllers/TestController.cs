@@ -24,6 +24,13 @@ namespace WebService.Controllers
             return Ok(data);
         }
 
+        [HttpGet("user/")]
+        public IActionResult GetUser()
+        {
+            var data = _dataService.GetUser();
+            return Ok(data);
+        }
+
         // GET api/values/5
         [HttpGet("{id}")]
         public IActionResult GetProductByID(int id)

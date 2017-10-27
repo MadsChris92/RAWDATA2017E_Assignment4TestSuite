@@ -31,32 +31,35 @@ namespace DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Post>().ToTable("posts");
             modelBuilder.Entity<User>().ToTable("user");
             modelBuilder.Entity<Comment>().ToTable("comment");
             modelBuilder.Entity<Tag>().ToTable("tag");
             modelBuilder.Entity<Note>().ToTable("note");
 
+            //Post
+            modelBuilder.Entity<Post>().ToTable("posts");
+            modelBuilder.Entity<Post>().Property(x => x.Id)
+                .HasColumnName("post_id");
+            modelBuilder.Entity<Post>().HasKey(x => x.Id);
             modelBuilder.Entity<Post>().HasMany(post => post.Comments).WithOne(comment => comment.Parent);
             modelBuilder.Entity<Post>().HasOne(post => post.Owner);
             modelBuilder.Entity<Post>().Property(post => post.OwnerId).HasColumnName("owner_id");
             modelBuilder.Entity<Post>().Property(post => post.Created).HasColumnName("create_date");
-            //modelBuilder.Entity<Post>().Property(post => post.PostTypeId).HasColumnName("post_type_id");
-
-            modelBuilder.Entity<Question>().HasMany(post => post.Answers).WithOne(ans => ans.Question);
-            modelBuilder.Entity<Question>().Property(x => x.Closed).HasColumnName("closed_date");
-
-
-            modelBuilder.Entity<Comment>().Property(x => x.score)
-                .HasColumnName("comment_score");
-
             modelBuilder.Entity<Post>().HasDiscriminator<int>("post_type_id")
                 .HasValue<Question>(1)
                 .HasValue<Answer>(2);
 
+            modelBuilder.Entity<Question>().HasMany(post => post.Answers).WithOne(ans => ans.Question);
+            modelBuilder.Entity<Question>().Property(x => x.Closed).HasColumnName("closed_date");
+            modelBuilder.Entity<Answer>().Property(x => x.QuestionId)
+                .HasColumnName("parent_id");
+
+            // Comments
+            modelBuilder.Entity<Comment>().HasKey(c => c.Id);
+            modelBuilder.Entity<Comment>().Property(x => x.score)
+                .HasColumnName("comment_score");
             modelBuilder.Entity<Comment>().Property(x => x.create_date)
                 .HasColumnName("comment_create_date");
-
             modelBuilder.Entity<Comment>().Property(x => x.Id)
                .HasColumnName("comment_id");
             modelBuilder.Entity<Comment>().Property(x => x.text)
@@ -66,22 +69,17 @@ namespace DAL
             modelBuilder.Entity<Comment>().Property(x => x.ParentId)
                  .HasColumnName("post_parent_id");
 
+            // Note
+            modelBuilder.Entity<Note>().Property(x => x.Id).HasColumnName("note_id");
+            modelBuilder.Entity<Note>().Property(x => x.Text).HasColumnName("note_text");
+            modelBuilder.Entity<Note>().Property(x => x.PostId).HasColumnName("note_post_id");
 
-            modelBuilder.Entity<Comment>().HasKey(c => c.Id);
-
-            //Post
-            modelBuilder.Entity<Post>().Property(x => x.Id)
-                .HasColumnName("post_id");
-
-            //modelBuilder.Entity<Answer>().Property(x => x.parent_id)
-            //    .HasColumnName("parent_id");
-            modelBuilder.Entity<Answer>().Property(x => x.QuestionId)
-                .HasColumnName("parent_id");
-            //modelBuilder.Entity<Question>().Property(x => x.parent_id)
-            //    .HasColumnName("parent_id");
-
-            modelBuilder.Entity<Post>().HasKey(x => x.Id);
-
+            // User
+            modelBuilder.Entity<User>().Property(x => x.Id).HasColumnName("user_id");
+            modelBuilder.Entity<User>().Property(x => x.Age).HasColumnName("user_age");
+            modelBuilder.Entity<User>().Property(x => x.Created).HasColumnName("user_create_date");
+            modelBuilder.Entity<User>().Property(x => x.Location).HasColumnName("user_location");
+            modelBuilder.Entity<User>().Property(x => x.Name).HasColumnName("user_name");
         }
     }
    
