@@ -18,9 +18,10 @@ namespace WebService.Controllers
         }
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            var data = _dataService.GetPost(321468);
+            return Ok(data);
         }
 
         // GET api/values/5
