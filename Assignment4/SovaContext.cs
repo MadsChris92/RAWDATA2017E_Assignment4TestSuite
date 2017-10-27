@@ -36,19 +36,21 @@ namespace DAL
             modelBuilder.Entity<Tag>().ToTable("tag");
 
             modelBuilder.Entity<Post>().HasMany(post => post.Comments).WithOne(comment => comment.Parent);
+            modelBuilder.Entity<Post>().HasOne(post => post.Owner);
+            modelBuilder.Entity<Post>().Property(post => post.OwnerId).HasColumnName("owner_id");
+            modelBuilder.Entity<Post>().Property(post => post.Created).HasColumnName("create_date");
+            //modelBuilder.Entity<Post>().Property(post => post.PostTypeId).HasColumnName("post_type_id");
+
             modelBuilder.Entity<Question>().HasMany(post => post.Answers).WithOne(ans => ans.Question);
+            modelBuilder.Entity<Question>().Property(x => x.Closed).HasColumnName("closed_date");
 
             modelBuilder.Entity<Comment>().HasKey(c => c.Id);
-            modelBuilder.Entity<Comment>().Property(c => c.Parent).HasField("parent_id");
             modelBuilder.Entity<Comment>().Property(x => x.score)
                 .HasColumnName("comment_score");
 
             modelBuilder.Entity<Post>().HasDiscriminator<int>("post_type_id")
                 .HasValue<Question>(1)
                 .HasValue<Answer>(2);
-
-            //.Map<Question>(m => m.Requires("post_type_id").HasValue(0))
-            //.Map<Answer>(m => m.Requires("post_type_id").HasValue(1));
 
             modelBuilder.Entity<Comment>().Property(x => x.create_date)
                 .HasColumnName("comment_create_date");
@@ -61,12 +63,12 @@ namespace DAL
             modelBuilder.Entity<Post>().Property(x => x.Id)
                 .HasColumnName("post_id");
 
-            modelBuilder.Entity<Answer>().Property(x => x.parent_id)
-                .HasColumnName("parent_id");
+            //modelBuilder.Entity<Answer>().Property(x => x.parent_id)
+            //    .HasColumnName("parent_id");
             modelBuilder.Entity<Answer>().Property(x => x.QuestionId)
                 .HasColumnName("parent_id");
-            modelBuilder.Entity<Question>().Property(x => x.parent_id)
-                .HasColumnName("parent_id");
+            //modelBuilder.Entity<Question>().Property(x => x.parent_id)
+            //    .HasColumnName("parent_id");
 
             modelBuilder.Entity<Post>().HasKey(x => x.Id);
 

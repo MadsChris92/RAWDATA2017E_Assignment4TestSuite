@@ -43,8 +43,8 @@ namespace WebService.Controllers
                                 : null,
                 posts = posts.Select(post => new
                 {
-                    Title = post.title,
-                    Score = post.score,
+                    Title = post.Title,
+                    Score = post.Score,
                     Url   = Url.Link(nameof(GetPost), new {post.Id})
                 })
             };

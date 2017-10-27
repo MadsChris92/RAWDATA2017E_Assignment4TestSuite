@@ -21,7 +21,7 @@ namespace DAL
 
                 var result = db.Questions
                     .Where(post => post
-                        .title.ToLower()
+                        .Title.ToLower()
                         .Contains(name.ToLower()));
 
                 Debug.WriteLine(result);
@@ -38,7 +38,7 @@ namespace DAL
         {
             using (var db = new SovaContext())
             {
-                var post = db.Questions.Include(p => p.Comments).FirstOrDefault(x => x.Id == id);
+                var post = GetQuestion(id);//db.Questions.Include(p => p.Comments).FirstOrDefault(x => x.Id == id);
                 
                 return post;
             }
@@ -61,15 +61,14 @@ namespace DAL
     public abstract class Post
     {
         public int Id { get; set; }
-        public int owner_id { get; set; }
+        public int OwnerId { get; set; }
+        public User Owner { get; set; }
         
-        public int post_type_id { get; protected set; }
-        public int? parent_id { get; set; }
-        public string title { get; set; }
-        public string body { get; set; }
-        public int score { get; set; }
-        public DateTime? closed_date { get; set; }
-        public DateTime create_date { get; set; }
+        //public int PostTypeId { get; protected set; }
+        //public int? parent_id { get; set; }
+        public string Body { get; set; }
+        public int Score { get; set; }
+        public DateTime Created { get; set; }
 
         public virtual IList<Comment> Comments { set; get; }
         
@@ -77,13 +76,15 @@ namespace DAL
 
     public class Question : Post
     {
+        public string Title { get; set; }
+        public DateTime? Closed { get; set; }
         public virtual IList<Answer> Answers { get; set; }
 
         public void FillAnswers(int id)
         {
             using (var db = new SovaContext())
             {
-                var answers = db.Answers.Where(x => x.parent_id == id).ToList();
+                var answers = db.Answers.Where(x => x.QuestionId == id).ToList();
                 Answers = answers;
             }
         }
