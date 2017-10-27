@@ -80,7 +80,7 @@ namespace DAL
         {
             using (var db = new SovaContext())
             {
-                Answers = db.Posts.FromSql("CALL getAnswers({0})", id).Skip(page * pageSize).Take<Post>(pageSize).ToList<Post>();
+                Answers = db.Posts.FromSql("CALL getAnswers({0})", id).ToList<Answer>();
             }
         }
         
