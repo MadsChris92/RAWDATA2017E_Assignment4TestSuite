@@ -16,6 +16,7 @@ namespace DAL
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Note> Notes { get; set; }
+        public DbSet<QuestionTag> QuestionTags { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -49,22 +50,25 @@ namespace DAL
                 .HasValue<Question>(1)
                 .HasValue<Answer>(2);
 
+            // Question
             modelBuilder.Entity<Question>().HasMany(post => post.Answers).WithOne(ans => ans.Question);
             modelBuilder.Entity<Question>().Property(x => x.Closed).HasColumnName("closed_date");
+
+            // Answer
             modelBuilder.Entity<Answer>().Property(x => x.QuestionId)
                 .HasColumnName("parent_id");
 
             // Comments
             modelBuilder.Entity<Comment>().HasKey(c => c.Id);
-            modelBuilder.Entity<Comment>().Property(x => x.score)
+            modelBuilder.Entity<Comment>().Property(x => x.Score)
                 .HasColumnName("comment_score");
-            modelBuilder.Entity<Comment>().Property(x => x.create_date)
+            modelBuilder.Entity<Comment>().Property(x => x.Created)
                 .HasColumnName("comment_create_date");
             modelBuilder.Entity<Comment>().Property(x => x.Id)
                .HasColumnName("comment_id");
-            modelBuilder.Entity<Comment>().Property(x => x.text)
+            modelBuilder.Entity<Comment>().Property(x => x.Text)
                 .HasColumnName("comment_text");
-            modelBuilder.Entity<Comment>().Property(x => x.owner_id)
+            modelBuilder.Entity<Comment>().Property(x => x.OwnerId)
                 .HasColumnName("comment_owner_id");
             modelBuilder.Entity<Comment>().Property(x => x.ParentId)
                  .HasColumnName("post_parent_id");
@@ -80,7 +84,32 @@ namespace DAL
             modelBuilder.Entity<User>().Property(x => x.Created).HasColumnName("user_create_date");
             modelBuilder.Entity<User>().Property(x => x.Location).HasColumnName("user_location");
             modelBuilder.Entity<User>().Property(x => x.Name).HasColumnName("user_name");
+
+            // Tag
+            modelBuilder.Entity<Tag>().Property(tag => tag.Id).HasColumnName("tag_id");
+            modelBuilder.Entity<Tag>().Property(tag => tag.Title).HasColumnName("tag_title");
+
+            // QuestionTag
+            modelBuilder.Entity<QuestionTag>().ToTable("post_tag");
+            modelBuilder.Entity<QuestionTag>().HasKey(qt => new {qt.TagId, qt.QuestionId});
+            modelBuilder.Entity<QuestionTag>().Property(qt => qt.TagId).HasColumnName("parent_tag_id");
+            modelBuilder.Entity<QuestionTag>().Property(qt => qt.QuestionId).HasColumnName("post_parent_tag_id");
+            modelBuilder.Entity<QuestionTag>().HasOne(qt => qt.Tag).WithMany(t => t.Questions).HasForeignKey(qt => qt.TagId);
+            modelBuilder.Entity<QuestionTag>().HasOne(qt => qt.Question).WithMany(q => q.QuestionTags).HasForeignKey(qt => qt.QuestionId);
         }
+
+
     }
-   
+    /// <summary>
+    /// 
+    /// http://www.learnentityframeworkcore.com/configuration/many-to-many-relationship-configuration
+    /// </summary>
+    public class QuestionTag
+    {
+        public virtual int QuestionId { get; set; }
+        public virtual Question Question { get; set; }
+        public virtual int TagId { get; set; }
+        public virtual Tag Tag { get; set; }
+    }
+
 }

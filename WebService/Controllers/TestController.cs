@@ -16,24 +16,37 @@ namespace WebService.Controllers
         {
             _dataService = dataService;
         }
-        // GET api/values
+
+
         [HttpGet]
         public IActionResult Get()
         {
-            var data = _dataService.GetPost(321468);
+            var data = new
+            {
+                aPost = _dataService.GetPost(321468),
+                anUser = _dataService.GetUser(1),
+                aNote = _dataService.GetNote(321468)
+            };
             return Ok(data);
         }
 
-        [HttpGet("user/")]
-        public IActionResult GetUser()
+        [HttpGet("user/{id}")]
+        public IActionResult GetUser(int id=1)
         {
-            var data = _dataService.GetUser();
+            var data = _dataService.GetUser(id);
             return Ok(data);
+        }
+
+        [HttpGet("question/{id}")]
+        public IActionResult GetQuestion(int id)
+        {
+            var prod = _dataService.GetQuestionAllData(id);
+            return prod != null ? (IActionResult)Ok(prod) : NotFound();
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public IActionResult GetProductByID(int id)
+        [HttpGet("post/{id}")]
+        public IActionResult GetPost(int id)
         {
             var prod = _dataService.GetPost(id);
             return prod!=null?(IActionResult) Ok(prod):NotFound();

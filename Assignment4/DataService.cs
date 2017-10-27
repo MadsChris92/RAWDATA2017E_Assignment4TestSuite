@@ -48,17 +48,16 @@ namespace DAL
         {
             using (var db = new SovaContext())
             {
+                var question =  db.Questions.FirstOrDefault(x => x.Id == id);
+                question.FillAnswers();
+                question.FillComments();
+                question.FillTags();
 
-               
-                var post =  db.Questions.FirstOrDefault(x => x.Id == id);
-                post.FillAnswers(post.Id);
-                post.FillComments(post.Id);
-
-                foreach(Answer ans in post.Answers)
+                foreach(Answer answer in question.Answers)
                 {
-                    ans.FillComments(ans.Id);
+                    answer.FillComments();
                 }
-                return post;
+                return question;
             }
 
         }
@@ -68,14 +67,6 @@ namespace DAL
             using (var db = new SovaContext())
             {
                 return db.Users.FirstOrDefault(user => user.Id == id);
-            }
-        }
-
-        public User GetUser()
-        {
-            using (var db = new SovaContext())
-            {
-                return db.Users.FirstOrDefault();
             }
         }
 
@@ -101,7 +92,10 @@ namespace DAL
 
         public Note GetNote(int postId)
         {
-            throw new NotImplementedException();
+            using (var db = new SovaContext())
+            {
+                return db.Notes.FirstOrDefault(note => note.PostId == postId);
+            }
         }
 
         public Note CreateNote(int postId, string text)
@@ -134,11 +128,11 @@ namespace DAL
 
         public virtual IList<Comment> Comments { set; get; }
         
-        public void FillComments(int id)
+        public void FillComments()
         {
             using (var db = new SovaContext())
             {
-                var comments = db.Comments.Where(x => x.ParentId == id).ToList();
+                var comments = db.Comments.Include(c => c.Owner).Where(x => x.ParentId == Id).ToList();
                 Comments = comments;
             }
         }
@@ -149,16 +143,25 @@ namespace DAL
         public string Title { get; set; }
         public DateTime? Closed { get; set; }
         public virtual IList<Answer> Answers { get; set; }
+        public virtual ICollection<QuestionTag> QuestionTags { get; set; }
+        [NotMapped]public virtual ICollection<Tag> Tags { get; set; }
 
-        public void FillAnswers(int id)
+        public void FillAnswers()
         {
             using (var db = new SovaContext())
             {
-                var answers = db.Answers.Where(x => x.QuestionId == id).ToList();
+                var answers = db.Answers.Where(x => x.QuestionId == Id).ToList();
                 Answers = answers;
             }
         }
-        
+
+        public void FillTags()
+        {
+            using (var db = new SovaContext())
+            {
+                Tags = db.QuestionTags.Include(qt => qt.Tag).Where(x => x.QuestionId == Id).Select(qt => qt.Tag).ToList();
+            }
+        }
     }
 
     public class Answer : Post
@@ -172,6 +175,7 @@ namespace DAL
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public virtual ICollection<QuestionTag> Questions { get; set; }
     }
 
     public class Note
@@ -194,10 +198,12 @@ namespace DAL
     public class Comment
     {
         public int Id { get; set; }
-        public int owner_id { get; set; }
-        public int score { get; set; }
-        public string text { get; set; }
-        public DateTime create_date { get; set; }
+        public int OwnerId { get; set; }
+        public User Owner { get; set; }
+
+        public int Score { get; set; }
+        public string Text { get; set; }
+        public DateTime Created { get; set; }
 
         public int ParentId { get; set; }
         public virtual Post Parent { get; set; }
