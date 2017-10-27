@@ -38,7 +38,7 @@ namespace DAL
         {
             using (var db = new SovaContext())
             {
-                var post = GetQuestion(id);//db.Questions.Include(p => p.Comments).FirstOrDefault(x => x.Id == id);
+                var post = GetQuestionAllData(id);//db.Questions.Include(p => p.Comments).FirstOrDefault(x => x.Id == id);
                 
                 return post;
             }
