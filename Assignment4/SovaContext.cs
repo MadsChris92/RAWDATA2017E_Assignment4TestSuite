@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DAL
 {
@@ -36,6 +37,7 @@ namespace DAL
             modelBuilder.Entity<Question>().HasMany(post => post.Answers).WithOne(comment => comment.Question);
 
             modelBuilder.Entity<Comment>().HasKey(c => c.Id);
+            modelBuilder.Entity<Comment>().Property(c => c.Parent).HasField("parent_id");
             modelBuilder.Entity<Comment>().Property(x => x.score)
                 .HasColumnName("comment_score");
 
