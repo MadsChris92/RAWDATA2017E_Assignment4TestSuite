@@ -75,6 +75,14 @@ namespace DAL
     public class Question : Post
     {
         public virtual IList<Answer> Answers { get; set; }
+
+        public void GetAnswers(int id)
+        {
+            using (var db = new SovaContext())
+            {
+                Answers = db.Posts.FromSql("CALL getAnswers({0})", id).ToList<Answer>();
+            }
+        }
         
     }
 
