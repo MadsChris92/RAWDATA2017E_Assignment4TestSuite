@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -10,17 +11,29 @@ namespace DAL
 {
     public class DataService : IDataService
     {
-        public List<Post> GetPostsByName(string name)
+        public List<Post> GetPostsByName(string name, int page, int pageSize, out int totalResults)
         {
 
             using (var db = new SovaContext())
             {
-                var posts = db.FindPostsByName(name);
+                //var posts = db.posts.FromSql("CALL wordSearch({0})", name).Skip(page * pageSize).Take<Post>(pageSize).ToList<Post>();
 
+                var result = db.posts
+                    .Where(post => post
+                        .title.ToLower()
+                        .Contains(name.ToLower()));
+
+                Debug.WriteLine(result);
+                totalResults = result.Count();
+
+                var posts = result
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
+                    .ToList();
                 return posts;
             }
         }
-        public Post GePost(int id)
+        public Post GetPost(int id)
         {
             using (var db = new SovaContext())
             {

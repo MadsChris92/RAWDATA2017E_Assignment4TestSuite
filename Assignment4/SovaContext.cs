@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace DAL
 {
@@ -42,15 +43,6 @@ namespace DAL
             modelBuilder.Entity<Post>().HasKey(x => x.Id);
 
         }
-        
-        public List<Post> FindPostsByName(string name)
-        {
-            var posts = this.posts.FromSql("CALL wordSearch({0})", name).Take<Post>(10).ToList<Post>();
-            Console.WriteLine(posts);
-
-            return posts;
-        }
-        
     }
    
 }

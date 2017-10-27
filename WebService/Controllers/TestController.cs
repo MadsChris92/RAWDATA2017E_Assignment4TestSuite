@@ -27,10 +27,8 @@ namespace WebService.Controllers
         [HttpGet("{id}")]
         public IActionResult GetProductByID(int id)
         {
-            var prod = _dataService.GePost(id);
-
- 
-               return Ok(prod);
+            var prod = _dataService.GetPost(id);
+            return prod!=null?(IActionResult) Ok(prod):NotFound();
         }
     }
 }
