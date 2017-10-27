@@ -8,6 +8,8 @@ namespace DAL
 
         List<Post> GetPostsByName(string name, int page, int pageSize, out int totalResults);
         Post GetPost(int id);
+
+        Question GetQuestion(int id);
         /*
 Product GetProduct(int id);
 

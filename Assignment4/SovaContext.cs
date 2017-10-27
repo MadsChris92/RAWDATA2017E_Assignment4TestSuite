@@ -8,8 +8,10 @@ namespace DAL
 {
     class SovaContext : DbContext
     {
-        public DbSet<Post> posts { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -25,7 +27,15 @@ namespace DAL
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Post>().ToTable("posts");
+            modelBuilder.Entity<User>().ToTable("user");
+            modelBuilder.Entity<Comment>().ToTable("comment");
+            modelBuilder.Entity<Tag>().ToTable("tag");
 
+            modelBuilder.Entity<Post>().HasMany(post => post.Comments).WithOne(comment => comment.Parent);
+            modelBuilder.Entity<Question>().HasMany(post => post.Answers).WithOne(comment => comment.Question);
+
+            modelBuilder.Entity<Comment>().HasKey(c => c.Id);
             modelBuilder.Entity<Comment>().Property(x => x.score)
                 .HasColumnName("comment_score");
 
