@@ -44,7 +44,7 @@ namespace DAL
             modelBuilder.Entity<Question>().HasMany(post => post.Answers).WithOne(ans => ans.Question);
             modelBuilder.Entity<Question>().Property(x => x.Closed).HasColumnName("closed_date");
 
-            modelBuilder.Entity<Comment>().HasKey(c => c.Id);
+
             modelBuilder.Entity<Comment>().Property(x => x.score)
                 .HasColumnName("comment_score");
 
@@ -55,9 +55,17 @@ namespace DAL
             modelBuilder.Entity<Comment>().Property(x => x.create_date)
                 .HasColumnName("comment_create_date");
 
+            modelBuilder.Entity<Comment>().Property(x => x.Id)
+               .HasColumnName("comment_id");
             modelBuilder.Entity<Comment>().Property(x => x.text)
                 .HasColumnName("comment_text");
-           
+            modelBuilder.Entity<Comment>().Property(x => x.owner_id)
+                .HasColumnName("comment_owner_id");
+            modelBuilder.Entity<Comment>().Property(x => x.ParentId)
+                 .HasColumnName("post_parent_id");
+
+
+            modelBuilder.Entity<Comment>().HasKey(c => c.Id);
 
             //Post
             modelBuilder.Entity<Post>().Property(x => x.Id)

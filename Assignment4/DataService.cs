@@ -52,6 +52,12 @@ namespace DAL
                
                 var post =  db.Questions.FirstOrDefault(x => x.Id == id);
                 post.FillAnswers(post.Id);
+                post.FillComments(post.Id);
+
+                foreach(Answer ans in post.Answers)
+                {
+                    ans.FillComments(ans.Id);
+                }
                 return post;
             }
 
@@ -72,6 +78,14 @@ namespace DAL
 
         public virtual IList<Comment> Comments { set; get; }
         
+        public void FillComments(int id)
+        {
+            using (var db = new SovaContext())
+            {
+                var comments = db.Comments.Where(x => x.ParentId == id).ToList();
+                Comments = comments;
+            }
+        }
     }
 
     public class Question : Post
@@ -121,7 +135,7 @@ namespace DAL
         public string text { get; set; }
         public DateTime create_date { get; set; }
 
-        public int parent_id { get; set; }
+        public int ParentId { get; set; }
         public virtual Post Parent { get; set; }
     }
 }
