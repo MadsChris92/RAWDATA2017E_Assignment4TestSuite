@@ -6,8 +6,8 @@ namespace DAL
     public interface IDataService
     {
 
-        List<Post> GetPostsByName(string name, int page, int pageSize, out int totalResults);
-        Post GetPost(int id);
+        List<Question> GetPostsByName(string name, int page, int pageSize, out int totalResults);
+        Question GetPost(int id);
 
         Question GetQuestion(int id);
         /*

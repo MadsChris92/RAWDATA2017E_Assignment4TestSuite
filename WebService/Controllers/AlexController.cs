@@ -21,7 +21,9 @@ namespace WebService.Controllers
             [HttpGet("{id}", Name = nameof(GetPost1))]
             public IActionResult GetPost1(int id)
             {
-                var post = _dataService.GetPost(id);
+                
+                var post = _dataService.GetQuestion(id);
+            
                 return post != null ?
                     (IActionResult)Ok(post) : NotFound();
             }
