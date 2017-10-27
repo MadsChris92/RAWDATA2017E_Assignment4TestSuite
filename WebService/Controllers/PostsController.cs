@@ -34,6 +34,7 @@ namespace WebService.Controllers
             var result = new
             {
                 totalResults,
+                showingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
                 previousPage = page > 0
                                 ? Url.Link(nameof(GetPostsByName), new { page=page-1, pageSize })
                                 : null,
