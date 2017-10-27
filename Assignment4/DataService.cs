@@ -44,7 +44,7 @@ namespace DAL
             }
         }
 
-        public Question GetQuestion(int id)
+        public Question GetQuestionAllData(int id)
         {
             using (var db = new SovaContext())
             {
@@ -61,6 +61,46 @@ namespace DAL
                 return post;
             }
 
+        }
+
+        public List<Question> GetPostsByTagId(int tagId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool MarkPost(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UnmarkPost(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddHistory(string searchWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Note GetNote(int postId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Note CreateNote(int postId, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteNote(int noteId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ClearHistory()
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -115,6 +155,13 @@ namespace DAL
     {
         public int Id { get; set; }
         public string Title { get; set; }
+    }
+
+    public class Note
+    {
+        public int note_id { get; set; }
+        public string note_text { get; set; }
+        public int note_post_id { get; set; }
     }
 
     public class User

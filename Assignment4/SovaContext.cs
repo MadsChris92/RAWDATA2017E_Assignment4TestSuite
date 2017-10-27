@@ -14,6 +14,7 @@ namespace DAL
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -33,6 +34,7 @@ namespace DAL
             modelBuilder.Entity<User>().ToTable("user");
             modelBuilder.Entity<Comment>().ToTable("comment");
             modelBuilder.Entity<Tag>().ToTable("tag");
+            modelBuilder.Entity<Note>().ToTable("note");
 
             modelBuilder.Entity<Post>().HasMany(post => post.Comments).WithOne(comment => comment.Parent);
             modelBuilder.Entity<Question>().HasMany(post => post.Answers).WithOne(ans => ans.Question);

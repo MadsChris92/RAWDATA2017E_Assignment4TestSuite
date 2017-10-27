@@ -22,7 +22,7 @@ namespace WebService.Controllers
             public IActionResult GetPost1(int id)
             {
                 
-                var post = _dataService.GetQuestion(id);
+                var post = _dataService.GetQuestionAllData(id);
             
                 return post != null ?
                     (IActionResult)Ok(post) : NotFound();
