@@ -87,7 +87,7 @@ namespace WebService.Controllers
         }
 
         [HttpPost("note/{id}", Name = nameof(CreateNote))]
-        public IActionResult CreateNote(int id, [FromBody] FaggotGetter note)
+        public IActionResult CreateNote(int id, [FromBody] TextGetter note)
         {
 
             var result = _dataService.CreateNote(id,note.Text);
@@ -98,9 +98,31 @@ namespace WebService.Controllers
         }
 
 
-        public class FaggotGetter
+        public class TextGetter
         {
             public string Text { get; set; }
+        }
+
+        [HttpDelete("note/{id}", Name = nameof(DeleteNote))]
+        public IActionResult DeleteNote(int id)
+        {
+
+            var result = _dataService.DeleteNote(id);
+
+
+            return result != false ?
+                (IActionResult)Ok(result) : NotFound();
+        }
+
+        [HttpPut("note/{id}", Name = nameof(UpdateNote))]
+        public IActionResult UpdateNote(int id, [FromBody] TextGetter note)
+        {
+
+            var result = _dataService.UpdateNote(id, note.Text);
+
+
+            return result != false ?
+                (IActionResult)Ok(result) : NotFound();
         }
     }
 
