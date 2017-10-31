@@ -7,6 +7,7 @@ namespace DAL
     {
 
         List<Question> GetPostsByName(string name, int page, int pageSize, out int totalResults);
+
         Question GetPost(int id);
 
         Question GetQuestion(int id);
