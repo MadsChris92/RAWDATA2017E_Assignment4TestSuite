@@ -12,26 +12,18 @@ namespace DAL
 {
     public class DataService : IDataService
     {
-        public List<Question> GetPostsByName(string name, int page, int pageSize, out int totalResults)
+        public List<SearchQuestion> GetPostsByName(string name, int page, int pageSize, out int totalResults)
         {
 
             using (var db = new SovaContext())
             {
-                //var Posts = db.Posts.FromSql("CALL wordSearch({0})", name).Skip(page * pageSize).Take<Post>(pageSize).ToList<Post>();
 
-                var result = db.Questions
-                    .Where(post => post
-                        .Title.ToLower()
-                        .Contains(name.ToLower()));
+                var posts = db.SearchQuestions.FromSql("CALL wordSearch({0})", name);
+                totalResults = posts.Count();
+                
+                var returnPosts = posts.Skip(page * pageSize).Take<SearchQuestion>(pageSize).ToList<SearchQuestion>();
 
-                Debug.WriteLine(result);
-                totalResults = result.Count();
-
-                var posts = result
-                    .Skip(page * pageSize)
-                    .Take(pageSize)
-                    .ToList();
-                return posts;
+                return returnPosts;
             }
         }
         public Question GetPost(int id)

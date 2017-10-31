@@ -38,17 +38,12 @@ namespace WebService.Controllers
                 totalResults,
                 showingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
                 previousPage = page > 0
-                                ? Url.Link(nameof(GetPostsByName), new { page=page-1, pageSize })
+                                ? Url.Link(nameof(GetPostsByName), new { page = page - 1, pageSize })
                                 : null,
-                nextPage = (page+1)*pageSize < totalResults
-                                ? Url.Link(nameof(GetPostsByName), new { page=page+1, pageSize })
+                nextPage = (page + 1) * pageSize < totalResults
+                                ? Url.Link(nameof(GetPostsByName), new { page = page + 1, pageSize })
                                 : null,
-                posts = posts.Select(post => new
-                {
-                    Title = post.Title,
-                    Score = post.Score,
-                    Url   = Url.Link(nameof(GetPost), new {post.Id})
-                })
+                posts
             };
 
             return Ok(result);

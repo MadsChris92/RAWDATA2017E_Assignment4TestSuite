@@ -17,6 +17,7 @@ namespace DAL
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Note> Notes { get; set; }
         public DbSet<QuestionTag> QuestionTags { get; set; }
+        public DbSet<SearchQuestion> SearchQuestions { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -53,6 +54,13 @@ namespace DAL
             // Question
             modelBuilder.Entity<Question>().HasMany(post => post.Answers).WithOne(ans => ans.Question);
             modelBuilder.Entity<Question>().Property(x => x.Closed).HasColumnName("closed_date");
+
+            // SearchQuestion
+  
+            modelBuilder.Entity<SearchQuestion>().Property(x => x.Id).HasColumnName("post_id");
+            modelBuilder.Entity<SearchQuestion>().Property(x => x.OwnerName).HasColumnName("user_name");
+            modelBuilder.Entity<SearchQuestion>().Property(x => x.AnswerCount).HasColumnName("counts");
+
 
             // Answer
             modelBuilder.Entity<Answer>().Property(x => x.QuestionId)
@@ -111,6 +119,17 @@ namespace DAL
         public virtual int TagId { get; set; }
         public virtual Tag Tag { get; set; }
     }
+
+    public class SearchQuestion
+    {
+        public int Id { get; set; }
+        public int Score { get; set; }
+        public string Title { get; set; }
+        public int AnswerCount { get; set; }
+        public string OwnerName { get; set; }
+        
+    }
+
 
 
     public class Answer : Post
