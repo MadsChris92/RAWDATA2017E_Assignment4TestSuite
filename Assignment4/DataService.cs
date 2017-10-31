@@ -65,9 +65,21 @@ namespace DAL
             }
         }
 
-        public List<Question> GetPostsByTagId(int tagId)
+        public List<SearchQuestion> GetPostsByTagTitle(string name, int page, int pageSize, out int totalResults)
         {
-            throw new NotImplementedException();
+            using (var db = new SovaContext())
+            {
+
+                var posts = db.SearchQuestions.FromSql("CALL tagSearch({0})", name);
+                totalResults = posts.Count();
+
+                var returnPosts = posts.Skip(page * pageSize).Take<SearchQuestion>(pageSize).ToList<SearchQuestion>();
+                foreach (var post in posts)
+                {
+                    post.FillTags();
+                }
+                return returnPosts;
+            }
         }
 
         public Boolean MarkPost(int id)

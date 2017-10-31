@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DAL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace WebService.Controllers
 {
@@ -43,6 +44,27 @@ namespace WebService.Controllers
                 nextPage = (page + 1) * pageSize < totalResults
                                 ? Url.Link(nameof(GetPostsByName), new { page = page + 1, pageSize })
                                 : null,
+                posts
+            };
+
+            return Ok(result);
+        }
+
+        [HttpGet("tag/{name}", Name = nameof(GetPostsByTag))]
+        public IActionResult GetPostsByTag(string name, int page = 0, int pageSize = 5)
+        {
+            var posts = _dataService.GetPostsByTagTitle(name, page, pageSize, out var totalResults);
+
+            var result = new
+            {
+                totalResults,
+                showingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
+                previousPage = page > 0
+                    ? Url.Link(nameof(GetPostsByName), new {page = page - 1, pageSize})
+                    : null,
+                nextPage = (page + 1) * pageSize < totalResults
+                    ? Url.Link(nameof(GetPostsByName), new {page = page + 1, pageSize})
+                    : null,
                 posts
             };
 

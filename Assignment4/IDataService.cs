@@ -7,9 +7,7 @@ namespace DAL
     {
 
         List<SearchQuestion> GetPostsByName(string name, int page, int pageSize, out int totalResults);
-    
-        List<Question> GetPostsByTagId(int tagId);
-
+        List<SearchQuestion> GetPostsByTagTitle(string name, int page, int pageSize, out int totalResults);
         Boolean MarkPost(int id);
         Boolean UnmarkPost(int id);
         Boolean AddHistory(string searchWord);
@@ -18,7 +16,6 @@ namespace DAL
         Boolean DeleteNote(int noteId);
         Boolean ClearHistory();
         Question GetPost(int id);
-
         Question GetQuestionAllData(int id);
         User GetUser(int id);
     }
