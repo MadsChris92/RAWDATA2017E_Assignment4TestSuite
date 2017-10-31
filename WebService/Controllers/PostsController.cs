@@ -11,7 +11,7 @@ namespace WebService.Controllers
     [Route("api/[controller]")]
     public class PostsController : Controller
     {
-        private IDataService _dataService;
+        private readonly IDataService _dataService;
 
         public PostsController(IDataService dataService)
         {
@@ -22,8 +22,10 @@ namespace WebService.Controllers
         public IActionResult GetPost(int id)
         {
             var post = _dataService.GetPost(id);
-            return post != null?
-                (IActionResult) Ok(post):NotFound();
+            if (post != null)
+                return Ok(post);
+            else
+                return NotFound();
         }
 
         [HttpGet("title/{name}", Name = nameof(GetPostsByName))]
@@ -43,8 +45,8 @@ namespace WebService.Controllers
                                 : null,
                 posts = posts.Select(post => new
                 {
-                    Title = post.title,
-                    Score = post.score,
+                    Title = post.Title,
+                    Score = post.Score,
                     Url   = Url.Link(nameof(GetPost), new {post.Id})
                 })
             };

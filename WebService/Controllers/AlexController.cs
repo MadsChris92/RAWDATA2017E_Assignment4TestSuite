@@ -22,7 +22,7 @@ namespace WebService.Controllers
             public IActionResult GetPost1(int id)
             {
                 
-                var post = _dataService.GetQuestion(id);
+                var post = _dataService.GetQuestionAllData(id);
             
                 return post != null ?
                     (IActionResult)Ok(post) : NotFound();
@@ -45,8 +45,8 @@ namespace WebService.Controllers
                                     : null,
                     posts = posts.Select(post => new
                     {
-                        Title = post.title,
-                        Score = post.score,
+                        Title = post.Title,
+                        Score = post.Score,
                         Url = Url.Link(nameof(GetPost1), new { post.Id })
                     })
                 };
