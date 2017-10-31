@@ -164,48 +164,4 @@ namespace DAL
         }
     }
 
-    public class Answer : Post
-    {
-
-        public int QuestionId { get; set; }
-        public virtual Question Question { get; set; }
-    }
-
-    public class Tag
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public virtual ICollection<QuestionTag> Questions { get; set; }
-    }
-
-    public class Note
-    {
-        public int Id { get; set; }
-        public string Text { get; set; }
-        public int PostId { get; set; }
-        public Post Post { get; set; }
-    }
-
-    public class User
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime Created { get; set; }
-        public string Location { get; set; }
-        public int? Age { get; set; }
-    }
-
-    public class Comment
-    {
-        public int Id { get; set; }
-        public int OwnerId { get; set; }
-        public User Owner { get; set; }
-
-        public int Score { get; set; }
-        public string Text { get; set; }
-        public DateTime Created { get; set; }
-
-        public int ParentId { get; set; }
-        public virtual Post Parent { get; set; }
-    }
 }
