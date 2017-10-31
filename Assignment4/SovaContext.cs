@@ -128,7 +128,16 @@ namespace DAL
         public string Title { get; set; }
         public int AnswerCount { get; set; }
         public string OwnerName { get; set; }
-        
+        [NotMapped]
+        public List<Tag> Tags { get; set; }
+
+        public void FillTags()
+        {
+            using (var db = new SovaContext())
+            {
+                Tags = db.QuestionTags.Include(qt => qt.Tag).Where(x => x.QuestionId == Id).Select(qt => qt.Tag).ToList();
+            }
+        }
     }
 
 

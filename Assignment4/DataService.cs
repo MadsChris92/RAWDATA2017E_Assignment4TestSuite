@@ -22,7 +22,10 @@ namespace DAL
                 totalResults = posts.Count();
                 
                 var returnPosts = posts.Skip(page * pageSize).Take<SearchQuestion>(pageSize).ToList<SearchQuestion>();
-
+                foreach (var post in posts)
+                {
+                    post.FillTags();
+                }
                 return returnPosts;
             }
         }
@@ -67,14 +70,37 @@ namespace DAL
             throw new NotImplementedException();
         }
 
-        public bool MarkPost(int id)
+        public Boolean MarkPost(int id)
         {
-            throw new NotImplementedException();
+            using (var db = new SovaContext())
+            {
+
+                try
+                {
+                    var result = db.Database.ExecuteSqlCommand("CALL setMarkedPost({0})", id);
+
+                    return true;
+                }
+                catch (Exception)
+                {
+
+                }
+                
+                return false;
+            }
         }
 
         public bool UnmarkPost(int id)
         {
-            throw new NotImplementedException();
+            using (var db = new SovaContext())
+            {
+
+               
+                var result = db.Database.ExecuteSqlCommand("CALL removeMarkedPost({0})", id);
+                Debug.WriteLine(result);
+                return result > 0;
+                
+            }
         }
 
         public bool AddHistory(string searchWord)
@@ -92,7 +118,24 @@ namespace DAL
 
         public Note CreateNote(int postId, string text)
         {
-            throw new NotImplementedException();
+            using (var db = new SovaContext())
+            {
+                Note note = new Note();
+                try
+                {
+                    var result = db.Database.ExecuteSqlCommand("CALL createNote({0}, {1})", postId, text);
+                    note.Text = text;
+                    note.PostId = postId;
+                    return note;
+
+                }
+                catch (Exception)
+                {
+
+                }
+               
+                return null;
+            }
         }
 
         public bool DeleteNote(int noteId)
@@ -102,7 +145,15 @@ namespace DAL
 
         public bool ClearHistory()
         {
-            throw new NotImplementedException();
+            using (var db = new SovaContext())
+            {
+
+
+                db.Database.ExecuteSqlCommand("CALL clearHistory()");
+                
+                return true;
+
+            }
         }
     }
 
