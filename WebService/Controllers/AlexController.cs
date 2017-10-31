@@ -87,16 +87,21 @@ namespace WebService.Controllers
         }
 
         [HttpPost("note/{id}", Name = nameof(CreateNote))]
-        public IActionResult CreateNote(int postId, [FromBody] string text)
+        public IActionResult CreateNote(int id, [FromBody] FaggotGetter note)
         {
 
-            var result = _dataService.CreateNote(postId,text);
+            var result = _dataService.CreateNote(id,note.Text);
 
 
             return result != null ?
                 (IActionResult)Ok(result) : NotFound();
         }
 
+
+        public class FaggotGetter
+        {
+            public string Text { get; set; }
+        }
     }
 
    
