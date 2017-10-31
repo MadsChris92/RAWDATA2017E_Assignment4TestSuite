@@ -15,6 +15,7 @@ namespace DAL
         Boolean AddHistory(string searchWord);
         Note GetNote(int postId);
         Note CreateNote(int postId, string text);
+        Boolean UpdateNote(int noteId, string text);
         Boolean DeleteNote(int noteId);
         Boolean ClearHistory();
         Question GetPost(int id);

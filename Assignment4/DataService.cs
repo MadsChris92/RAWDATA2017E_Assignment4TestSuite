@@ -138,9 +138,30 @@ namespace DAL
             }
         }
 
-        public bool DeleteNote(int noteId)
+        public Boolean DeleteNote(int noteId)
         {
-            throw new NotImplementedException();
+            using (var db = new SovaContext())
+            {
+
+
+                var result = db.Database.ExecuteSqlCommand("CALL removeNote({0})", noteId);
+                Debug.WriteLine(result);
+                return result > 0;
+
+            }
+        }
+
+        public Boolean UpdateNote(int noteId, string text)
+        {
+            using (var db = new SovaContext())
+            {
+
+
+                var result = db.Database.ExecuteSqlCommand("CALL updateNote({0}, {1})", noteId, text);
+                Debug.WriteLine(result);
+                return result > 0;
+
+            }
         }
 
         public bool ClearHistory()
