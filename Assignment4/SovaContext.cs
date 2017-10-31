@@ -71,7 +71,7 @@ namespace DAL
             modelBuilder.Entity<Comment>().Property(x => x.OwnerId)
                 .HasColumnName("comment_owner_id");
             modelBuilder.Entity<Comment>().Property(x => x.ParentId)
-                 .HasColumnName("post_parent_id");
+                .HasColumnName("post_parent_id");
 
             // Note
             modelBuilder.Entity<Note>().Property(x => x.Id).HasColumnName("note_id");
