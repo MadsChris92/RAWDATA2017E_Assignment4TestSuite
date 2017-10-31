@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -177,4 +178,53 @@ namespace DAL
         public virtual Post Parent { get; set; }
     }
 
+    public abstract class Post
+    {
+        public int Id { get; set; }
+        public int OwnerId { get; set; }
+        public User Owner { get; set; }
+
+        //public int PostTypeId { get; protected set; }
+        //public int? parent_id { get; set; }
+        public string Body { get; set; }
+        public int Score { get; set; }
+        public DateTime Created { get; set; }
+
+        public virtual IList<Comment> Comments { set; get; }
+
+        public void FillComments()
+        {
+            using (var db = new SovaContext())
+            {
+                var comments = db.Comments.Include(c => c.Owner).Where(x => x.ParentId == Id).ToList();
+                Comments = comments;
+            }
+        }
+    }
+
+    public class Question : Post
+    {
+        public string Title { get; set; }
+        public DateTime? Closed { get; set; }
+        public virtual IList<Answer> Answers { get; set; }
+        public virtual ICollection<QuestionTag> QuestionTags { get; set; }
+        [NotMapped] public virtual ICollection<Tag> Tags { get; set; }
+
+        public void FillAnswers()
+        {
+            using (var db = new SovaContext())
+            {
+                var answers = db.Answers.Where(x => x.QuestionId == Id).ToList();
+                Answers = answers;
+            }
+        }
+
+        public void FillTags()
+        {
+            using (var db = new SovaContext())
+            {
+                Tags = db.QuestionTags.Include(qt => qt.Tag).Where(x => x.QuestionId == Id).Select(qt => qt.Tag).ToList();
+            }
+        }
+    }
 }
