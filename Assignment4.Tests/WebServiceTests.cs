@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
@@ -20,13 +22,53 @@ namespace Assignment4.Tests
         /* /api/categories */
 
         [Fact]
-        public void ApiPosts_GetPost_Ok()
+        public void ApiPosts_GetPostWithValidId_OkAndPostWithCommentsAndAnswers()
         {
             var (data, statusCode) = GetObject($"{PostsApi}/5821");
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
+            Assert.Equal(2, data["answers"].ToImmutableList().Count);
+            Assert.Equal(0, data["answers"][0]["comments"].ToImmutableList().Count);
+            Assert.Equal(2, data["answers"][1]["comments"].ToImmutableList().Count);
+            Assert.Equal(0, data["comments"].ToImmutableList().Count);
             Assert.Equal("SQL Server 2000/5 Escape an Underscore", data["title"]);
         }
+
+        [Fact]
+        public void ApiPosts_GetPostWithInvalidId_NotFound()
+        {
+            var (data, statusCode) = GetObject($"{PostsApi}/-1");
+
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
+
+        }
+
+        [Fact]
+        public void ApiPosts_SearchForPostWithTitle_statusOkAndListOfQuestions()
+        {
+            var (data, statusCode) = GetObject($"{PostsApi}/title/sql?pageSize=100");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+            Assert.Equal(75, data["totalResults"].ToObject<int>());
+            Assert.Equal("SQL Server 2000/5 Escape an Underscore", data["posts"][0]["title"]);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         [Fact]
         public void ApiCategories_GetWithNoArguments_OkAndAllCategories()
