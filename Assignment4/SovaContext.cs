@@ -19,6 +19,7 @@ namespace DAL
         public DbSet<Note> Notes { get; set; }
         public DbSet<QuestionTag> QuestionTags { get; set; }
         public DbSet<SearchQuestion> SearchQuestions { get; set; }
+        public DbSet<MarkedPost> Marked { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -105,10 +106,21 @@ namespace DAL
             modelBuilder.Entity<QuestionTag>().Property(qt => qt.QuestionId).HasColumnName("post_parent_tag_id");
             modelBuilder.Entity<QuestionTag>().HasOne(qt => qt.Tag).WithMany(t => t.Questions).HasForeignKey(qt => qt.TagId);
             modelBuilder.Entity<QuestionTag>().HasOne(qt => qt.Question).WithMany(q => q.QuestionTags).HasForeignKey(qt => qt.QuestionId);
+
+            // MarkedPost
+            modelBuilder.Entity<MarkedPost>().HasKey(p => p.PostId);
+            modelBuilder.Entity<MarkedPost>().Property(p => p.PostId).HasColumnName("favorited_post_id");
         }
 
 
     }
+
+    internal class MarkedPost
+    {
+        public int PostId { get; set; }
+        public virtual Post Post { get; set; }
+    }
+
     /// <summary>
     /// 
     /// http://www.learnentityframeworkcore.com/configuration/many-to-many-relationship-configuration
