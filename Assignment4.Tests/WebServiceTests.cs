@@ -15,8 +15,18 @@ namespace Assignment4.Tests
     {
         private const string CategoriesApi = "http://localhost:5001/api/categories";
         private const string ProductsApi = "http://localhost:5001/api/products";
+        private const string PostsApi = "http://localhost:5001/api/posts";
 
         /* /api/categories */
+
+        [Fact]
+        public void ApiPosts_GetPost_Ok()
+        {
+            var (data, statusCode) = GetObject($"{PostsApi}/5821");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+            Assert.Equal("SQL Server 2000/5 Escape an Underscore", data["title"]);
+        }
 
         [Fact]
         public void ApiCategories_GetWithNoArguments_OkAndAllCategories()
