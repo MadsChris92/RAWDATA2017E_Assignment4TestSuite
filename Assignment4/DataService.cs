@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -93,9 +94,13 @@ namespace DAL
 
                     return true;
                 }
-                catch (Exception)
+                catch (ConstraintException e)
                 {
-
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
                 }
                 
                 return false;

@@ -53,6 +53,24 @@ namespace Assignment4.Tests
             Assert.Equal("SQL Server 2000/5 Escape an Underscore", data["posts"][0]["title"]);
         }
 
+        [Fact]
+        public void ApiPosts_MarkPostValidId_Ok()
+        {
+            var (data, statusCode) = GetObject($"{PostsApi}/mark/5821");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+
+            //DeleteData($"{PostsApi}/mark/5821");
+        }
+
+        [Fact]
+        public void ApiPosts_MarkPostInvalidId_NotFound()
+        {
+            var (data, statusCode) = GetObject($"{PostsApi}/mark/-1");
+
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
+        }
+
 
 
 
@@ -98,20 +116,7 @@ namespace Assignment4.Tests
             Assert.Equal(HttpStatusCode.NotFound, statusCode);
         }
 
-        [Fact]
-        public void ApiCategories_PostWithCategory_Created()
-        {
-            var newCategory = new
-            {
-                Name = "Created",
-                Description = ""
-            };
-            var (category, statusCode) = PostData(CategoriesApi, newCategory);
 
-            Assert.Equal(HttpStatusCode.Created, statusCode);
-
-            DeleteData($"{CategoriesApi}/{category["id"]}");
-        }
 
         [Fact]
         public void ApiCategories_PutWithValidCategory_Ok()

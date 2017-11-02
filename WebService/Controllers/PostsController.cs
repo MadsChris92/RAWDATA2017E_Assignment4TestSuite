@@ -75,10 +75,14 @@ namespace WebService.Controllers
         public IActionResult MarkPost(int id)
         {
 
-            var result = _dataService.MarkPost(id);
+            var result= new
+            {
+                status = _dataService.MarkPost(id),
+
+            };
 
 
-            return result != false ?
+            return result.status != false ?
                 (IActionResult)Ok(result) : NotFound();
         }
 
