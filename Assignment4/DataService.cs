@@ -214,6 +214,18 @@ namespace DAL
 
             }
         }
+
+        public List<History> GetHistory()
+        {
+            using (var db = new SovaContext())
+            {
+
+                var history = db.History.ToList();
+
+                return history;
+
+            }
+        }
     }
 
    
