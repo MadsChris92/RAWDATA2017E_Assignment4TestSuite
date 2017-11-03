@@ -109,7 +109,7 @@ namespace Assignment4.Tests
                 text = "Test"
             };
 
-            var (data, statusCode) = PostData($"{PostsApi}/note/5821", note);
+            var (data, statusCode) = PostData($"{PostsApi}/5821/note", note);
 
             Assert.Equal(data["text"], note.text);
 
@@ -125,7 +125,7 @@ namespace Assignment4.Tests
                 text = "Test"
             };
 
-            var (data, statusCode) = PostData($"{PostsApi}/note/-1", note);
+            var (data, statusCode) = PostData($"{PostsApi}/-1/note", note);
 
             Assert.Equal(HttpStatusCode.NotFound, statusCode);
 
@@ -140,7 +140,7 @@ namespace Assignment4.Tests
                 text = "Test"
             };
 
-            var statusCode = PutData($"{PostsApi}/note/5", note);
+            var statusCode = PutData($"{PostsApi}/5821/note/5", note);
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
         }
