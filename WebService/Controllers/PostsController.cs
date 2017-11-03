@@ -30,8 +30,11 @@ namespace WebService.Controllers
         }
 
         [HttpGet("title/{name}", Name = nameof(GetPostsByName))]
-        public IActionResult GetPostsByName(string name, int page=0, int pageSize=5)
+        public IActionResult GetPostsByName(string name, int page=0, int pageSize=5, bool firstPage=false)
         {
+
+            if (firstPage) _dataService.AddHistory(name);
+
             var posts = _dataService.GetPostsByName(name, page, pageSize, out var totalResults);
 
             var result = new
@@ -51,8 +54,11 @@ namespace WebService.Controllers
         }
 
         [HttpGet("tag/{name}", Name = nameof(GetPostsByTag))]
-        public IActionResult GetPostsByTag(string name, int page = 0, int pageSize = 5)
+        public IActionResult GetPostsByTag(string name, int page = 0, int pageSize = 5, bool firstPage=false)
         {
+
+            if (firstPage) _dataService.AddHistory(name);
+
             var posts = _dataService.GetPostsByTagTitle(name, page, pageSize, out var totalResults);
 
             var result = new
@@ -108,7 +114,18 @@ namespace WebService.Controllers
                 (IActionResult)Ok(result) : NotFound();
         }
 
-        [HttpPost("note/{id}", Name = nameof(CreateNote))]
+        [HttpGet("history", Name = nameof(GetHistory))]
+        public IActionResult GetHistory()
+        {
+
+            var result = _dataService.GetHistory();
+
+
+            return result != null ?
+                (IActionResult)Ok(result) : NotFound();
+        }
+        
+        [HttpPost("{id}/note", Name = nameof(CreateNote))]
         public IActionResult CreateNote(int id, [FromBody] TextGetter note)
         {
 
@@ -125,8 +142,8 @@ namespace WebService.Controllers
             public string Text { get; set; }
         }
 
-        [HttpDelete("note/{id}", Name = nameof(DeleteNote))]
-        public IActionResult DeleteNote(int id)
+        [HttpDelete("{pid}/note/{id}", Name = nameof(DeleteNote))]
+        public IActionResult DeleteNote(int pid, int id)
         {
 
             var result = _dataService.DeleteNote(id);
@@ -136,14 +153,25 @@ namespace WebService.Controllers
                 (IActionResult)Ok(result) : NotFound();
         }
 
-        [HttpPut("note/{id}", Name = nameof(UpdateNote))]
-        public IActionResult UpdateNote(int id, [FromBody] TextGetter note)
+        [HttpPut("{pid}/note/{id}", Name = nameof(UpdateNote))]
+        public IActionResult UpdateNote(int pid, int id, [FromBody] TextGetter note)
         {
 
             var result = _dataService.UpdateNote(id, note.Text);
 
 
             return result != false ?
+                (IActionResult)Ok(result) : NotFound();
+        }
+
+        [HttpGet("{pid}/note", Name = nameof(GetNotes))]
+        public IActionResult GetNotes(int pid)
+        {
+
+            var result = _dataService.GetNotes(pid);
+
+
+            return result != null ?
                 (IActionResult)Ok(result) : NotFound();
         }
 

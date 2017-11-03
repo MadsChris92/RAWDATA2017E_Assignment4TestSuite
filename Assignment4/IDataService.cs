@@ -11,13 +11,16 @@ namespace DAL
         Boolean MarkPost(int id);
         Boolean UnmarkPost(int id);
         Boolean AddHistory(string searchWord);
-        Note GetNote(int postId);
+        List<Note> GetNotes(int postId);
         Note CreateNote(int postId, string text);
         Boolean UpdateNote(int noteId, string text);
         Boolean DeleteNote(int noteId);
         Boolean ClearHistory();
+        List<History> GetHistory();
         Question GetPost(int id);
         Question GetQuestionAllData(int id);
         User GetUser(int id);
     }
+
+    
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
 using Newtonsoft.Json.Linq;
+using DAL;
 using Xunit;
 
 namespace Assignment4.Tests
@@ -106,184 +107,100 @@ namespace Assignment4.Tests
             Assert.Equal(HttpStatusCode.NotFound, statusCode);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         [Fact]
-        public void ApiCategories_GetWithNoArguments_OkAndAllCategories()
+        public void ApiPosts_ClearHistory_Ok()
         {
-            var (data, statusCode) = GetArray(CategoriesApi);
+            var frans = GetObject(PostsApi+"/title/sql?firstPage=true");
+
+            var statusCode = DeleteData($"{PostsApi}/history");
+
+            using (SovaContext db = new SovaContext())
+            {
+                Assert.Equal(0, db.History.Count());
+            }
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
-            Assert.Equal(8, data.Count);
-            Assert.Equal("Beverages", data.First()["name"]);
-            Assert.Equal("Seafood", data.Last()["name"]);
         }
 
         [Fact]
-        public void ApiCategories_GetWithValidCategoryId_OkAndCategory()
+        public void ApiPosts_GetHistory_OkAndListOfSearches()
         {
-            var (category, statusCode) = GetObject($"{CategoriesApi}/1");
+            DeleteData($"{PostsApi}/history");
+            GetObject(PostsApi + "/title/sql?firstPage=true");
+            GetObject(PostsApi + "/title/java?firstPage=true");
 
-            Assert.Equal(HttpStatusCode.OK, statusCode);
-            Assert.Equal("Beverages", category["name"]);
+            var (data, statusCode) = GetArray($"{PostsApi}/history");
+
+            Assert.Equal("sql", data[0]["text"]);
+            Assert.Equal("java", data[1]["text"]);
+
         }
 
         [Fact]
-        public void ApiCategories_GetWithInvalidCategoryId_NotFound()
+        public void ApiPosts_CreateNoteValidId_OkAndNote()
         {
-            var (category, statusCode) = GetObject($"{CategoriesApi}/0");
-
-            Assert.Equal(HttpStatusCode.NotFound, statusCode);
-        }
-
-
-
-        [Fact]
-        public void ApiCategories_PutWithValidCategory_Ok()
-        {
-
-            var data = new
+            var note = new
             {
-                Name = "Created",
-                Description = "Created"
-            };
-            var (category, _) = PostData($"{CategoriesApi}", data);
-
-            var update = new
-            {
-                Id = category["id"],
-                Name = category["name"] + "Updated",
-                Description = category["description"] + "Updated"
+                text = "Test"
             };
 
-            var statusCode = PutData($"{CategoriesApi}/{category["id"]}", update);
+            var (data, statusCode) = PostData($"{PostsApi}/5821/note", note);
+
+            Assert.Equal(data["text"], note.text);
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
 
-            var (cat, status) = GetObject($"{CategoriesApi}/{category["id"]}");
-            Assert.Equal(category["name"] + "Updated", cat["name"]);
-            Assert.Equal(category["description"] + "Updated", cat["description"]);
-
-            DeleteData($"{CategoriesApi}/{category["id"]}");
         }
 
         [Fact]
-        public void ApiCategories_PutWithInvalidCategory_NotFound()
+        public void ApiPosts_CreateNoteInvalidId_NotFound()
         {
-            var update = new
+            var note = new
             {
-                Id = -1,
-                Name = "Updated",
-                Description = "Updated"
+                text = "Test"
             };
 
-            var statusCode = PutData($"{CategoriesApi}/-1", update);
+            var (data, statusCode) = PostData($"{PostsApi}/-1/note", note);
 
             Assert.Equal(HttpStatusCode.NotFound, statusCode);
+
         }
 
+
         [Fact]
-        public void ApiCategories_DeleteWithValidId_Ok()
+        public void ApiPosts_UpdateNoteValidId_OkAndNote()
         {
 
-            var data = new
+            var newNote = new
             {
-                Name = "Created",
-                Description = "Created"
+                text = "Test"
             };
-            var (category, _) = PostData($"{CategoriesApi}", data);
 
-            var statusCode = DeleteData($"{CategoriesApi}/{category["id"]}");
+            var (notes, status) = GetArray($"{PostsApi}/5821/note");
+            var oldNote = notes[0];
+            var statusCode = PutData($"{PostsApi}/5821/note/"+oldNote["id"], newNote);
+            (notes, status) = GetArray($"{PostsApi}/5821/note");
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+            Assert.Equal(notes[0]["text"], newNote.text);
+            newNote = new
+            {
+                text = oldNote["text"].ToString()
+            }; 
+            PutData($"{PostsApi}/5821/note/" + oldNote["id"], newNote);
+        }
+
+        [Fact]
+        public void ApiPosts_GetNotesValidPostId_OkAndNotes()
+        {
+            var note = new
+            {
+                text = "Test"
+            };
+
+            var statusCode = PutData($"{PostsApi}/5821/note/5", note);
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
         }
-
-        [Fact]
-        public void ApiCategories_DeleteWithInvalidId_NotFound()
-        {
-
-            var statusCode = DeleteData($"{CategoriesApi}/-1");
-
-            Assert.Equal(HttpStatusCode.NotFound, statusCode);
-        }
-
-        /* /api/products */
-
-        [Fact]
-        public void ApiProducts_ValidId_CompleteProduct()
-        {
-            var (product, statusCode) = GetObject($"{ProductsApi}/1");
-
-            Assert.Equal(HttpStatusCode.OK, statusCode);
-            Assert.Equal("Chai", product["name"]);
-            Assert.Equal("Beverages", product["category"]["name"]);
-        }
-
-        [Fact]
-        public void ApiProducts_InvalidId_CompleteProduct()
-        {
-            var (product, statusCode) = GetObject($"{ProductsApi}/-1");
-
-            Assert.Equal(HttpStatusCode.NotFound, statusCode);
-        }
-
-        [Fact]
-        public void ApiProducts_CategoryValidId_ListOfProduct()
-        {
-            var (products, statusCode) = GetArray($"{ProductsApi}/category/1");
-
-            Assert.Equal(HttpStatusCode.OK, statusCode);
-            Assert.Equal(12, products.Count);
-            Assert.Equal("Chai", products.First()["name"]);
-            Assert.Equal("Beverages", products.First()["categoryName"]);
-            Assert.Equal("Lakkalikööri", products.Last()["name"]);
-        }
-
-        [Fact]
-        public void ApiProducts_CategoryInvalidId_EmptyListOfProductAndNotFound()
-        {
-            var (products, statusCode) = GetArray($"{ProductsApi}/category/1000001");
-
-            Assert.Equal(HttpStatusCode.NotFound, statusCode);
-            Assert.Equal(0, products.Count);
-        }
-
-        [Fact]
-        public void ApiProducts_NameContained_ListOfProduct()
-        {
-            var (products, statusCode) = GetArray($"{ProductsApi}/name/ant");
-
-            Assert.Equal(HttpStatusCode.OK, statusCode);
-            Assert.Equal(3, products.Count);
-            Assert.Equal("Chef Anton's Cajun Seasoning", products.First()["productName"]);
-            Assert.Equal("Guaraná Fantástica", products.Last()["productName"]);
-        }
-
-        [Fact]
-        public void ApiProducts_NameNotContained_EmptyListOfProductAndNotFound()
-        {
-            var (products, statusCode) = GetArray($"{ProductsApi}/name/RAWDATA");
-
-            Assert.Equal(HttpStatusCode.NotFound, statusCode);
-            Assert.Equal(0, products.Count);
-        }
-
-
 
         // Helpers
 

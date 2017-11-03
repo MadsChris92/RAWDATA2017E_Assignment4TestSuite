@@ -45,6 +45,7 @@ namespace DAL
             using (var db = new SovaContext())
             {
                 var question =  db.Questions.FirstOrDefault(x => x.Id == id);
+                if (question == null) return null;
                 question.FillAnswers();
                 question.FillComments();
                 question.FillTags();
@@ -128,14 +129,30 @@ namespace DAL
 
         public bool AddHistory(string searchWord)
         {
-            throw new NotImplementedException();
+            using (var db = new SovaContext())
+            {
+
+                try
+                {
+                    var result = db.Database.ExecuteSqlCommand("CALL addHistory({0})", searchWord);
+
+                    return true;
+                }
+                catch (Exception)
+                {
+
+                }
+
+                return false;
+            }
         }
 
-        public Note GetNote(int postId)
+        public List<Note> GetNotes(int postId)
         {
             using (var db = new SovaContext())
             {
-                return db.Notes.FirstOrDefault(note => note.PostId == postId);
+
+                return db.Notes.Where(note => note.PostId == postId).ToList();
             }
         }
 
@@ -196,6 +213,18 @@ namespace DAL
                 db.Database.ExecuteSqlCommand("CALL clearHistory()");
                 
                 return true;
+
+            }
+        }
+
+        public List<History> GetHistory()
+        {
+            using (var db = new SovaContext())
+            {
+
+                var history = db.History.ToList();
+
+                return history;
 
             }
         }
