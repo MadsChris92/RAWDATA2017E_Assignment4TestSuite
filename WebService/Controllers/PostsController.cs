@@ -143,7 +143,7 @@ namespace WebService.Controllers
         }
 
         [HttpDelete("{pid}/note/{id}", Name = nameof(DeleteNote))]
-        public IActionResult DeleteNote(int id)
+        public IActionResult DeleteNote(int pid, int id)
         {
 
             var result = _dataService.DeleteNote(id);
@@ -154,7 +154,7 @@ namespace WebService.Controllers
         }
 
         [HttpPut("{pid}/note/{id}", Name = nameof(UpdateNote))]
-        public IActionResult UpdateNote(int id, [FromBody] TextGetter note)
+        public IActionResult UpdateNote(int pid, int id, [FromBody] TextGetter note)
         {
 
             var result = _dataService.UpdateNote(id, note.Text);
@@ -164,7 +164,7 @@ namespace WebService.Controllers
                 (IActionResult)Ok(result) : NotFound();
         }
 
-        [HttpGet("{pid}/note", Name = nameof(CreateNote))]
+        [HttpGet("{pid}/note", Name = nameof(GetNotes))]
         public IActionResult GetNotes(int pid)
         {
 

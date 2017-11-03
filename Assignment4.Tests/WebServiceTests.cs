@@ -135,6 +135,28 @@ namespace Assignment4.Tests
         [Fact]
         public void ApiPosts_UpdateNoteValidId_OkAndNote()
         {
+
+            var newNote = new
+            {
+                text = "Test"
+            };
+
+            var (notes, status) = GetArray($"{PostsApi}/5821/note");
+            var oldNote = notes[0];
+            var statusCode = PutData($"{PostsApi}/5821/note/"+oldNote["id"], newNote);
+            (notes, status) = GetArray($"{PostsApi}/5821/note");
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+            Assert.Equal(notes[0]["text"], newNote.text);
+            newNote = new
+            {
+                text = oldNote["text"].ToString()
+            }; 
+            PutData($"{PostsApi}/5821/note/" + oldNote["id"], newNote);
+        }
+
+        [Fact]
+        public void ApiPosts_GetNotesValidPostId_OkAndNotes()
+        {
             var note = new
             {
                 text = "Test"

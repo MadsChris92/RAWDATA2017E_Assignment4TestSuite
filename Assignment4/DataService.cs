@@ -45,6 +45,7 @@ namespace DAL
             using (var db = new SovaContext())
             {
                 var question =  db.Questions.FirstOrDefault(x => x.Id == id);
+                if (question == null) return null;
                 question.FillAnswers();
                 question.FillComments();
                 question.FillTags();
