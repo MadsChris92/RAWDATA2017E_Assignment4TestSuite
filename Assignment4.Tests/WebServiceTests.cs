@@ -61,7 +61,7 @@ namespace Assignment4.Tests
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
 
-            //DeleteData($"{PostsApi}/mark/5821");
+            DeleteData($"{PostsApi}/mark/5821");
         }
 
         [Fact]

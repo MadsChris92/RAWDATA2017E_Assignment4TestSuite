@@ -110,8 +110,10 @@ namespace DAL
             modelBuilder.Entity<QuestionTag>().HasOne(qt => qt.Question).WithMany(q => q.QuestionTags).HasForeignKey(qt => qt.QuestionId);
 
             // MarkedPost
+            modelBuilder.Entity<MarkedPost>().ToTable("marked");
             modelBuilder.Entity<MarkedPost>().HasKey(p => p.PostId);
             modelBuilder.Entity<MarkedPost>().Property(p => p.PostId).HasColumnName("favorited_post_id");
+            modelBuilder.Entity<MarkedPost>().HasOne(mp => mp.Post).WithOne().HasForeignKey<MarkedPost>(mp => mp.PostId);
 
             //History
             modelBuilder.Entity<History>().Property(p => p.Id).HasColumnName("history_id");
