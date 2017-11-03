@@ -100,6 +100,7 @@ namespace Assignment4.Tests
 
 
 
+
         [Fact]
         public void ApiCategories_GetWithNoArguments_OkAndAllCategories()
         {
