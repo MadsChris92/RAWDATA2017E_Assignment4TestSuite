@@ -71,6 +71,18 @@ namespace Assignment4.Tests
             Assert.Equal(HttpStatusCode.NotFound, statusCode);
         }
 
+        [Fact]
+        public void ApiPosts_ClearHistory_Ok()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void ApiPosts_CreateNote_Ok()
+        {
+            throw new NotImplementedException();
+        }
+
 
 
 
