@@ -89,7 +89,7 @@ namespace DAL
             using (var db = new SovaContext())
             {
 
-                if (GetMarkedPosts().Any(mp => mp.Id == id)) return true;
+                if (GetMarkedPosts().Any(mp => mp.PostId == id)) return true;
 
 
                 try

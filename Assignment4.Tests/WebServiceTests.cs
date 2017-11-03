@@ -16,11 +16,9 @@ namespace Assignment4.Tests
 {
     public class WebServiceTests
     {
-        private const string CategoriesApi = "http://localhost:5001/api/categories";
-        private const string ProductsApi = "http://localhost:5001/api/products";
         private const string PostsApi = "http://localhost:5001/api/posts";
 
-        /* /api/categories */
+        /* /api/posts */
 
         [Fact]
         public void ApiPosts_GetPostWithValidId_OkAndPostWithCommentsAndAnswers()
@@ -182,11 +180,8 @@ namespace Assignment4.Tests
             (notes, status) = GetArray($"{PostsApi}/5821/note");
             Assert.Equal(HttpStatusCode.OK, statusCode);
             Assert.Equal(notes[0]["text"], newNote.text);
-            newNote = new
-            {
-                text = oldNote["text"].ToString()
-            }; 
-            PutData($"{PostsApi}/5821/note/" + oldNote["id"], newNote);
+            // clean up
+            PutData($"{PostsApi}/5821/note/" + oldNote["id"], new{text = oldNote["text"].ToString()});
         }
 
         [Fact]
