@@ -108,8 +108,10 @@ namespace DAL
             modelBuilder.Entity<QuestionTag>().HasOne(qt => qt.Question).WithMany(q => q.QuestionTags).HasForeignKey(qt => qt.QuestionId);
 
             // MarkedPost
-            modelBuilder.Entity<MarkedPost>().HasKey(p => p.PostId);
-            modelBuilder.Entity<MarkedPost>().Property(p => p.PostId).HasColumnName("favorited_post_id");
+            modelBuilder.Entity<MarkedPost>().ToTable("marked");
+            modelBuilder.Entity<MarkedPost>().Property(p => p.Id).HasColumnName("favorited_post_id");
+            modelBuilder.Entity<MarkedPost>().HasKey(p => p.Id);
+            modelBuilder.Entity<MarkedPost>().HasOne(mp => mp.Post).WithOne().HasForeignKey<MarkedPost>(p => p.Id);
         }
 
 
@@ -117,7 +119,7 @@ namespace DAL
 
     internal class MarkedPost
     {
-        public int PostId { get; set; }
+        public int Id { get; set; }
         public virtual Post Post { get; set; }
     }
 

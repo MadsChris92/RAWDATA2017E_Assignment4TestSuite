@@ -60,7 +60,18 @@ namespace Assignment4.Tests
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
 
-            //DeleteData($"{PostsApi}/mark/5821");
+            DeleteData($"{PostsApi}/mark/5821");
+        }
+
+        [Fact]
+        public void ApiPosts_MarkPostValidIdAlready_Ok()
+        {
+            GetObject($"{PostsApi}/mark/5821");
+            var (data, statusCode) = GetObject($"{PostsApi}/mark/5821");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+
+            DeleteData($"{PostsApi}/mark/5821");
         }
 
         [Fact]
@@ -68,6 +79,30 @@ namespace Assignment4.Tests
         {
             var (data, statusCode) = GetObject($"{PostsApi}/mark/-1");
 
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
+        }
+
+        [Fact]
+        public void ApiPosts_UnmarkPostValidId_Ok()
+        {
+
+            GetObject($"{PostsApi}/mark/5821");
+
+            var statusCode = DeleteData($"{PostsApi}/mark/5821");
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+        }
+
+        [Fact]
+        public void ApiPosts_UnmarkPostValidIdNotMarked_NotFound()
+        {
+            var statusCode = DeleteData($"{PostsApi}/mark/5821");
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
+        }
+
+        [Fact]
+        public void ApiPosts_UnmarkPostInvalidId_NotFound()
+        {
+            var statusCode = DeleteData($"{PostsApi}/mark/-1");
             Assert.Equal(HttpStatusCode.NotFound, statusCode);
         }
 
