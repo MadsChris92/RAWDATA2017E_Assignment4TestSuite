@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DAL
 {
-    class SovaContext : DbContext
+    public class SovaContext : DbContext
     {
         //public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -115,7 +115,7 @@ namespace DAL
 
     }
 
-    internal class MarkedPost
+    public class MarkedPost
     {
         public int PostId { get; set; }
         public virtual Post Post { get; set; }
