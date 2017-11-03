@@ -117,7 +117,22 @@ namespace DAL
 
         public bool AddHistory(string searchWord)
         {
-            throw new NotImplementedException();
+            using (var db = new SovaContext())
+            {
+
+                try
+                {
+                    var result = db.Database.ExecuteSqlCommand("CALL addHistory({0})", searchWord);
+
+                    return true;
+                }
+                catch (Exception)
+                {
+
+                }
+
+                return false;
+            }
         }
 
         public Note GetNote(int postId)

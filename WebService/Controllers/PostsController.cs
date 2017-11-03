@@ -30,8 +30,11 @@ namespace WebService.Controllers
         }
 
         [HttpGet("title/{name}", Name = nameof(GetPostsByName))]
-        public IActionResult GetPostsByName(string name, int page=0, int pageSize=5)
+        public IActionResult GetPostsByName(string name, int page=0, int pageSize=5, bool firstPage=false)
         {
+
+            if (firstPage) _dataService.AddHistory(name);
+
             var posts = _dataService.GetPostsByName(name, page, pageSize, out var totalResults);
 
             var result = new
@@ -51,8 +54,11 @@ namespace WebService.Controllers
         }
 
         [HttpGet("tag/{name}", Name = nameof(GetPostsByTag))]
-        public IActionResult GetPostsByTag(string name, int page = 0, int pageSize = 5)
+        public IActionResult GetPostsByTag(string name, int page = 0, int pageSize = 5, bool firstPage=false)
         {
+
+            if (firstPage) _dataService.AddHistory(name);
+
             var posts = _dataService.GetPostsByTagTitle(name, page, pageSize, out var totalResults);
 
             var result = new
