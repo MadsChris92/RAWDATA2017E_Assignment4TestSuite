@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -87,18 +88,28 @@ namespace DAL
             using (var db = new SovaContext())
             {
 
+                if (GetMarkedPosts().Any(mp => mp.PostId == id)) return true;
+
+
                 try
                 {
-                    var result = db.Database.ExecuteSqlCommand("CALL setMarkedPost({0})", id);
+                    db.Database.ExecuteSqlCommand("CALL setMarkedPost({0})", id);
 
                     return true;
                 }
                 catch (Exception)
                 {
-
+                    return false;
                 }
                 
-                return false;
+            }
+        }
+
+        private List<MarkedPost> GetMarkedPosts()
+        {
+            using (var db = new SovaContext())
+            {
+                return db.Marked.Include(mp => mp.Post).ToList();
             }
         }
 

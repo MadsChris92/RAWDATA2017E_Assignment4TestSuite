@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
@@ -15,8 +17,88 @@ namespace Assignment4.Tests
     {
         private const string CategoriesApi = "http://localhost:5001/api/categories";
         private const string ProductsApi = "http://localhost:5001/api/products";
+        private const string PostsApi = "http://localhost:5001/api/posts";
 
         /* /api/categories */
+
+        [Fact]
+        public void ApiPosts_GetPostWithValidId_OkAndPostWithCommentsAndAnswers()
+        {
+            var (data, statusCode) = GetObject($"{PostsApi}/5821");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+            Assert.Equal(2, data["answers"].ToImmutableList().Count);
+            Assert.Equal(0, data["answers"][0]["comments"].ToImmutableList().Count);
+            Assert.Equal(2, data["answers"][1]["comments"].ToImmutableList().Count);
+            Assert.Equal(0, data["comments"].ToImmutableList().Count);
+            Assert.Equal("SQL Server 2000/5 Escape an Underscore", data["title"]);
+        }
+
+        [Fact]
+        public void ApiPosts_GetPostWithInvalidId_NotFound()
+        {
+            var (data, statusCode) = GetObject($"{PostsApi}/-1");
+
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
+
+        }
+
+        [Fact]
+        public void ApiPosts_SearchForPostWithTitle_statusOkAndListOfQuestions()
+        {
+            var (data, statusCode) = GetObject($"{PostsApi}/title/sql?pageSize=100");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+            Assert.Equal(75, data["totalResults"].ToObject<int>());
+            Assert.Equal("SQL Server 2000/5 Escape an Underscore", data["posts"][0]["title"]);
+        }
+
+        [Fact]
+        public void ApiPosts_MarkPostValidId_Ok()
+        {
+            var (data, statusCode) = GetObject($"{PostsApi}/mark/5821");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+
+            //DeleteData($"{PostsApi}/mark/5821");
+        }
+
+        [Fact]
+        public void ApiPosts_MarkPostInvalidId_NotFound()
+        {
+            var (data, statusCode) = GetObject($"{PostsApi}/mark/-1");
+
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
+        }
+
+        [Fact]
+        public void ApiPosts_ClearHistory_Ok()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void ApiPosts_CreateNote_Ok()
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         [Fact]
         public void ApiCategories_GetWithNoArguments_OkAndAllCategories()
@@ -46,20 +128,7 @@ namespace Assignment4.Tests
             Assert.Equal(HttpStatusCode.NotFound, statusCode);
         }
 
-        [Fact]
-        public void ApiCategories_PostWithCategory_Created()
-        {
-            var newCategory = new
-            {
-                Name = "Created",
-                Description = ""
-            };
-            var (category, statusCode) = PostData(CategoriesApi, newCategory);
 
-            Assert.Equal(HttpStatusCode.Created, statusCode);
-
-            DeleteData($"{CategoriesApi}/{category["id"]}");
-        }
 
         [Fact]
         public void ApiCategories_PutWithValidCategory_Ok()

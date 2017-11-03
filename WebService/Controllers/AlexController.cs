@@ -53,77 +53,7 @@ namespace WebService.Controllers
 
             return Ok(result);
         }
-        [HttpGet("mark/{id}", Name = nameof(MarkPost))]
-        public IActionResult MarkPost(int id)
-        {
-
-            var result = _dataService.MarkPost(id);
-
-
-            return result != false ?
-                (IActionResult)Ok(result) : NotFound();
-        }
-
-        [HttpDelete("mark/{id}", Name = nameof(UnmarkPost))]
-        public IActionResult UnmarkPost(int id)
-        {
-
-            var result = _dataService.UnmarkPost(id);
-
-
-            return result != false ?
-                (IActionResult)Ok(result) : NotFound();
-        }
-
-        [HttpDelete("history", Name = nameof(ClearHistory))]
-        public IActionResult ClearHistory()
-        {
-
-            var result = _dataService.ClearHistory();
-
-
-            return result != false ?
-                (IActionResult)Ok(result) : NotFound();
-        }
-
-        [HttpPost("note/{id}", Name = nameof(CreateNote))]
-        public IActionResult CreateNote(int id, [FromBody] TextGetter note)
-        {
-
-            var result = _dataService.CreateNote(id,note.Text);
-
-
-            return result != null ?
-                (IActionResult)Ok(result) : NotFound();
-        }
-
-
-        public class TextGetter
-        {
-            public string Text { get; set; }
-        }
-
-        [HttpDelete("note/{id}", Name = nameof(DeleteNote))]
-        public IActionResult DeleteNote(int id)
-        {
-
-            var result = _dataService.DeleteNote(id);
-
-
-            return result != false ?
-                (IActionResult)Ok(result) : NotFound();
-        }
-
-        [HttpPut("note/{id}", Name = nameof(UpdateNote))]
-        public IActionResult UpdateNote(int id, [FromBody] TextGetter note)
-        {
-
-            var result = _dataService.UpdateNote(id, note.Text);
-
-
-            return result != false ?
-                (IActionResult)Ok(result) : NotFound();
-        }
+        
     }
 
    
