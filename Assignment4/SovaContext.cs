@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DAL
 {
-    class SovaContext : DbContext
+    public class SovaContext : DbContext
     {
         //public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -20,6 +20,7 @@ namespace DAL
         public DbSet<QuestionTag> QuestionTags { get; set; }
         public DbSet<SearchQuestion> SearchQuestions { get; set; }
         public DbSet<MarkedPost> Marked { get; set; }
+        public DbSet<History> History { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -39,6 +40,7 @@ namespace DAL
             modelBuilder.Entity<Comment>().ToTable("comment");
             modelBuilder.Entity<Tag>().ToTable("tag");
             modelBuilder.Entity<Note>().ToTable("note");
+            modelBuilder.Entity<History>().ToTable("history");
 
             //Post
             modelBuilder.Entity<Post>().ToTable("posts");
@@ -110,12 +112,17 @@ namespace DAL
             // MarkedPost
             modelBuilder.Entity<MarkedPost>().HasKey(p => p.PostId);
             modelBuilder.Entity<MarkedPost>().Property(p => p.PostId).HasColumnName("favorited_post_id");
+
+            //History
+            modelBuilder.Entity<History>().Property(p => p.Id).HasColumnName("history_id");
+            modelBuilder.Entity<History>().Property(p => p.Text).HasColumnName("history_text");
+            modelBuilder.Entity<History>().Property(p => p.Created).HasColumnName("searched_date");
         }
 
 
     }
 
-    internal class MarkedPost
+    public class MarkedPost
     {
         public int PostId { get; set; }
         public virtual Post Post { get; set; }
@@ -197,6 +204,13 @@ namespace DAL
 
         public int ParentId { get; set; }
         public virtual Post Parent { get; set; }
+    }
+
+    public class History
+    {
+        public int Id { get; set; }
+        public string Text { get; set; }
+        public DateTime Created { get; set; }
     }
 
     public abstract class Post

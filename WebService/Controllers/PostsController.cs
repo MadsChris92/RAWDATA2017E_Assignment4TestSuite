@@ -114,6 +114,17 @@ namespace WebService.Controllers
                 (IActionResult)Ok(result) : NotFound();
         }
 
+        [HttpGet("history", Name = nameof(GetHistory))]
+        public IActionResult GetHistory()
+        {
+
+            var result = _dataService.GetHistory();
+
+
+            return result != null ?
+                (IActionResult)Ok(result) : NotFound();
+        }
+        
         [HttpPost("{id}/note", Name = nameof(CreateNote))]
         public IActionResult CreateNote(int id, [FromBody] TextGetter note)
         {

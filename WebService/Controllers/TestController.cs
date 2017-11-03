@@ -25,7 +25,7 @@ namespace WebService.Controllers
             {
                 aPost = _dataService.GetPost(321468),
                 anUser = _dataService.GetUser(1),
-                aNote = _dataService.GetNote(321468)
+                aNote = _dataService.GetNotes(321468)
             };
             return Ok(data);
         }

@@ -146,11 +146,12 @@ namespace DAL
             }
         }
 
-        public Note GetNote(int postId)
+        public List<Note> GetNotes(int postId)
         {
             using (var db = new SovaContext())
             {
-                return db.Notes.FirstOrDefault(note => note.PostId == postId);
+
+                return db.Notes.Where(note => note.PostId == postId).ToList();
             }
         }
 
@@ -211,6 +212,18 @@ namespace DAL
                 db.Database.ExecuteSqlCommand("CALL clearHistory()");
                 
                 return true;
+
+            }
+        }
+
+        public List<History> GetHistory()
+        {
+            using (var db = new SovaContext())
+            {
+
+                var history = db.History.ToList();
+
+                return history;
 
             }
         }

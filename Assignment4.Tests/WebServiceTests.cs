@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
 using Newtonsoft.Json.Linq;
+using DAL;
 using Xunit;
 
 namespace Assignment4.Tests
@@ -74,7 +75,14 @@ namespace Assignment4.Tests
         [Fact]
         public void ApiPosts_ClearHistory_Ok()
         {
-            throw new NotImplementedException();
+            var statusCode = DeleteData($"{PostsApi}/history");
+
+            using (SovaContext db =  new SovaContext())
+            {
+                Assert.Equal(0, db.History.Count()); 
+            }
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
         }
 
         [Fact]
@@ -82,6 +90,7 @@ namespace Assignment4.Tests
         {
             throw new NotImplementedException();
         }
+
 
 
 
