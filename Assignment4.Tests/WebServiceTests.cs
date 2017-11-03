@@ -75,20 +75,74 @@ namespace Assignment4.Tests
         [Fact]
         public void ApiPosts_ClearHistory_Ok()
         {
+            var frans = GetObject(PostsApi+"/title/sql?firstPage=true");
+
             var statusCode = DeleteData($"{PostsApi}/history");
 
-            using (SovaContext db =  new SovaContext())
+            using (SovaContext db = new SovaContext())
             {
-                Assert.Equal(0, db.History.Count()); 
+                Assert.Equal(0, db.History.Count());
             }
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
         }
 
         [Fact]
-        public void ApiPosts_CreateNote_Ok()
+        public void ApiPosts_GetHistory_OkAndListOfSearches()
         {
-            throw new NotImplementedException();
+            DeleteData($"{PostsApi}/history");
+            GetObject(PostsApi + "/title/sql?firstPage=true");
+            GetObject(PostsApi + "/title/java?firstPage=true");
+
+            var (data, statusCode) = GetArray($"{PostsApi}/history");
+
+            Assert.Equal("sql", data[0]["text"]);
+            Assert.Equal("java", data[1]["text"]);
+
+        }
+
+        [Fact]
+        public void ApiPosts_CreateNoteValidId_OkAndNote()
+        {
+            var note = new
+            {
+                text = "Test"
+            };
+
+            var (data, statusCode) = PostData($"{PostsApi}/note/5821", note);
+
+            Assert.Equal(data["text"], note.text);
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+
+        }
+
+        [Fact]
+        public void ApiPosts_CreateNoteInvalidId_NotFound()
+        {
+            var note = new
+            {
+                text = "Test"
+            };
+
+            var (data, statusCode) = PostData($"{PostsApi}/note/-1", note);
+
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
+
+        }
+
+
+        [Fact]
+        public void ApiPosts_UpdateNoteValidId_OkAndNote()
+        {
+            var note = new
+            {
+                text = "Test"
+            };
+
+            var statusCode = PutData($"{PostsApi}/note/5", note);
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
         }
 
 
