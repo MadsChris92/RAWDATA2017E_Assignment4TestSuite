@@ -102,37 +102,19 @@ namespace WebService.Controllers
             return result != false ?
                 (IActionResult)Ok(result) : NotFound();
         }
-
-        [HttpDelete("history", Name = nameof(ClearHistory))]
-        public IActionResult ClearHistory()
-        {
-
-            var result = _dataService.ClearHistory();
-
-
-            return result != false ?
-                (IActionResult)Ok(result) : NotFound();
-        }
-
-        [HttpGet("history", Name = nameof(GetHistory))]
-        public IActionResult GetHistory()
-        {
-
-            var result = _dataService.GetHistory();
-
-
-            return result != null ?
-                (IActionResult)Ok(result) : NotFound();
-        }
         
         [HttpPost("{id}/note", Name = nameof(CreateNote))]
         public IActionResult CreateNote(int id, [FromBody] TextGetter note)
         {
 
-            var result = _dataService.CreateNote(id, note.Text);
+            var result = new
+            {
+                Note = _dataService.CreateNote(id, note.Text),
+                PostUrl = Url.Link(nameof(GetPost), id)
+            };
 
 
-            return result != null ?
+            return result.Note != null ?
                 (IActionResult)Ok(result) : NotFound();
         }
 
@@ -165,14 +147,24 @@ namespace WebService.Controllers
         }
 
         [HttpGet("{pid}/note", Name = nameof(GetNotes))]
-        public IActionResult GetNotes(int pid)
+        public IActionResult GetNotes(int pid, int page=0, int pageSize=10)
         {
+            var notes = _dataService.GetNotes(pid, page, pageSize, out var totalResults);
+            var result = new
+            {
+                totalResults,
+                showingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
+                previousPage = page > 0
+                    ? Url.Link(nameof(GetNotes), new { page = page - 1, pageSize })
+                    : null,
+                nextPage = (page + 1) * pageSize < totalResults
+                    ? Url.Link(nameof(GetNotes), new { page = page + 1, pageSize })
+                    : null,
+                notes
+            };
 
-            var result = _dataService.GetNotes(pid);
 
-
-            return result != null ?
-                (IActionResult)Ok(result) : NotFound();
+            return Ok(result);
         }
 
     }

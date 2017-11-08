@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Newtonsoft.Json;
@@ -18,24 +19,22 @@ namespace DAL
 
             using (var db = new SovaContext())
             {
-
-                var posts = db.SearchQuestions.FromSql("CALL wordSearch({0})", name);
-                totalResults = posts.Count();
-                
-                var returnPosts = posts.Skip(page * pageSize).Take<SearchQuestion>(pageSize).ToList<SearchQuestion>();
-                foreach (var post in posts)
+                var returnPosts = db.SearchQuestions.FromSql("CALL wordSearch({0})", name).Paginated(page, pageSize, out totalResults).ToList();
+                foreach (var post in returnPosts)
                 {
                     post.FillTags();
                 }
                 return returnPosts;
             }
         }
+
         public Question GetPost(int id)
         {
             using (var db = new SovaContext())
             {
-                var post = GetQuestionAllData(id);//db.Questions.Include(p => p.Comments).FirstOrDefault(x => x.Id == id);
-                
+                var post = GetQuestionAllData(
+                    id); //db.Questions.Include(p => p.Comments).FirstOrDefault(x => x.Id == id);
+
                 return post;
             }
         }
@@ -44,13 +43,13 @@ namespace DAL
         {
             using (var db = new SovaContext())
             {
-                var question =  db.Questions.FirstOrDefault(x => x.Id == id);
+                var question = db.Questions.FirstOrDefault(x => x.Id == id);
                 if (question == null) return null;
                 question.FillAnswers();
                 question.FillComments();
                 question.FillTags();
 
-                foreach(Answer answer in question.Answers)
+                foreach (Answer answer in question.Answers)
                 {
                     answer.FillComments();
                 }
@@ -71,12 +70,8 @@ namespace DAL
         {
             using (var db = new SovaContext())
             {
-
-                var posts = db.SearchQuestions.FromSql("CALL tagSearch({0})", name);
-                totalResults = posts.Count();
-
-                var returnPosts = posts.Skip(page * pageSize).Take<SearchQuestion>(pageSize).ToList<SearchQuestion>();
-                foreach (var post in posts)
+                var returnPosts = db.SearchQuestions.FromSql("CALL tagSearch({0})", name).Paginated(page, pageSize, out totalResults).ToList();
+                foreach (var post in returnPosts)
                 {
                     post.FillTags();
                 }
@@ -89,7 +84,7 @@ namespace DAL
             using (var db = new SovaContext())
             {
 
-                if (GetMarkedPosts().Any(mp => mp.PostId == id)) return true;
+                if (db.Marked.Any(mp => mp.PostId == id)) return true;
 
 
                 try
@@ -102,15 +97,15 @@ namespace DAL
                 {
                     return false;
                 }
-                
+
             }
         }
 
-        private List<MarkedPost> GetMarkedPosts()
+        private List<MarkedPost> GetMarkedPosts(int page, int pageSize, out int totalResults)
         {
             using (var db = new SovaContext())
             {
-                return db.Marked.Include(mp => mp.Post).ToList();
+                return db.Marked.Include(mp => mp.Post).Paginated(page, pageSize, out totalResults).ToList();
             }
         }
 
@@ -119,11 +114,11 @@ namespace DAL
             using (var db = new SovaContext())
             {
 
-               
+
                 var result = db.Database.ExecuteSqlCommand("CALL removeMarkedPost({0})", id);
                 Debug.WriteLine(result);
                 return result > 0;
-                
+
             }
         }
 
@@ -147,12 +142,12 @@ namespace DAL
             }
         }
 
-        public List<Note> GetNotes(int postId)
+        public List<Note> GetNotes(int postId, int page, int pageSize, out int totalResults)
         {
             using (var db = new SovaContext())
             {
 
-                return db.Notes.Where(note => note.PostId == postId).ToList();
+                return db.Notes.Where(note => note.PostId == postId).Paginated(page, pageSize, out totalResults).ToList();
             }
         }
 
@@ -173,7 +168,7 @@ namespace DAL
                 {
 
                 }
-               
+
                 return null;
             }
         }
@@ -211,18 +206,18 @@ namespace DAL
 
 
                 db.Database.ExecuteSqlCommand("CALL clearHistory()");
-                
+
                 return true;
 
             }
         }
 
-        public List<History> GetHistory()
+        public List<History> GetHistory(int page, int pageSize, out int totalResults)
         {
             using (var db = new SovaContext())
             {
 
-                var history = db.History.ToList();
+                var history = db.History.Paginated(page, pageSize, out totalResults).ToList();
 
                 return history;
 
@@ -230,6 +225,11 @@ namespace DAL
         }
     }
 
-   
-
+    static class Util{
+        internal static IQueryable<T> Paginated<T>(this IQueryable<T> queryable, int page, int pageSize, out int totalResults)
+        {
+            totalResults = queryable.Count();
+            return queryable.Skip(page * pageSize).Take(pageSize);
+        }
+    }
 }

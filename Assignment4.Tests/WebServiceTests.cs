@@ -17,6 +17,7 @@ namespace Assignment4.Tests
     public class WebServiceTests
     {
         private const string PostsApi = "http://localhost:5001/api/posts";
+        private const string HistoryApi = "http://localhost:5001/api/history";
 
         /* /api/posts */
 
@@ -110,7 +111,7 @@ namespace Assignment4.Tests
         {
             var frans = GetObject(PostsApi+"/title/sql?firstPage=true");
 
-            var statusCode = DeleteData($"{PostsApi}/history");
+            var statusCode = DeleteData($"{HistoryApi}");
 
             using (SovaContext db = new SovaContext())
             {
@@ -123,14 +124,14 @@ namespace Assignment4.Tests
         [Fact]
         public void ApiPosts_GetHistory_OkAndListOfSearches()
         {
-            DeleteData($"{PostsApi}/history");
+            DeleteData($"{HistoryApi}");
             GetObject(PostsApi + "/title/sql?firstPage=true");
             GetObject(PostsApi + "/title/java?firstPage=true");
 
-            var (data, statusCode) = GetArray($"{PostsApi}/history");
+            var (data, statusCode) = GetObject($"{HistoryApi}");
 
-            Assert.Equal("sql", data[0]["text"]);
-            Assert.Equal("java", data[1]["text"]);
+            Assert.Equal("sql", data["history"][0]["text"]);
+            Assert.Equal("java", data["history"][1]["text"]);
 
         }
 
@@ -144,7 +145,7 @@ namespace Assignment4.Tests
 
             var (data, statusCode) = PostData($"{PostsApi}/5821/note", note);
 
-            Assert.Equal(data["text"], note.text);
+            Assert.Equal(data["note"]["text"], note.text);
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
 
@@ -174,12 +175,12 @@ namespace Assignment4.Tests
                 text = "Test"
             };
 
-            var (notes, status) = GetArray($"{PostsApi}/5821/note");
-            var oldNote = notes[0];
+            var (data, status) = GetObject($"{PostsApi}/5821/note");
+            var oldNote = data["notes"][0];
             var statusCode = PutData($"{PostsApi}/5821/note/"+oldNote["id"], newNote);
-            (notes, status) = GetArray($"{PostsApi}/5821/note");
+            (data, status) = GetObject($"{PostsApi}/5821/note");
             Assert.Equal(HttpStatusCode.OK, statusCode);
-            Assert.Equal(notes[0]["text"], newNote.text);
+            Assert.Equal(data["notes"][0]["text"], newNote.text);
             // clean up
             PutData($"{PostsApi}/5821/note/" + oldNote["id"], new{text = oldNote["text"].ToString()});
         }
