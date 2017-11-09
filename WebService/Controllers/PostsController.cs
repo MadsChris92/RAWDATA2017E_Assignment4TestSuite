@@ -4,11 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL;
+using DAL.DomainObjects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using WebService.JSONObjects;
 
 namespace WebService.Controllers
 {
+
     [Route("api/[controller]")]
     public class PostsController : Controller
     {
@@ -22,7 +25,7 @@ namespace WebService.Controllers
         [HttpGet("{id}", Name = nameof(GetPost))]
         public IActionResult GetPost(int id)
         {
-            var post = _dataService.GetPost(id);
+            var post = _dataService.GetQuestionAllData(id);
             if (post != null)
                 return Ok(post);
             else
@@ -35,19 +38,19 @@ namespace WebService.Controllers
 
             if (firstPage) _dataService.AddHistory(name);
 
-            var posts = _dataService.GetPostsByName(name, page, pageSize, out var totalResults);
+            var posts = _dataService.GetQuestionByTitle(name, page, pageSize, out var totalResults);
+            posts.ForEach(post => post.Url = Url.Link(nameof(GetPost), new {id=post.Id}));
 
-            var result = new
+            var result = new PaginatedResult<SearchQuestion>
             {
-                totalResults,
-                showingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
-                previousPage = page > 0
-                                ? Url.Link(nameof(GetPostsByName), new { page = page - 1, pageSize })
-                                : null,
-                nextPage = (page + 1) * pageSize < totalResults
-                                ? Url.Link(nameof(GetPostsByName), new { page = page + 1, pageSize })
-                                : null,
-                posts
+                TotalResults = totalResults, ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
+                PreviousPage = page > 0
+                    ? Url.Link(nameof(GetPostsByName), new { page = page - 1, pageSize })
+                    : null,
+                NextPage = (page + 1) * pageSize < totalResults
+                    ? Url.Link(nameof(GetPostsByName), new { page = page + 1, pageSize })
+                    : null,
+                Results = posts
             };
 
             return Ok(result);
@@ -59,19 +62,19 @@ namespace WebService.Controllers
 
             if (firstPage) _dataService.AddHistory(name);
 
-            var posts = _dataService.GetPostsByTagTitle(name, page, pageSize, out var totalResults);
+            var posts = _dataService.GetQuestionByTag(name, page, pageSize, out var totalResults);
+            posts.ForEach(post => post.Url = Url.Link(nameof(GetPost), new { id = post.Id }));
 
-            var result = new
+            var result = new PaginatedResult<SearchQuestion>
             {
-                totalResults,
-                showingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
-                previousPage = page > 0
+                TotalResults = totalResults, ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
+                PreviousPage = page > 0
                     ? Url.Link(nameof(GetPostsByName), new {page = page - 1, pageSize})
                     : null,
-                nextPage = (page + 1) * pageSize < totalResults
+                NextPage = (page + 1) * pageSize < totalResults
                     ? Url.Link(nameof(GetPostsByName), new {page = page + 1, pageSize})
                     : null,
-                posts
+                Results = posts
             };
 
             return Ok(result);
@@ -150,17 +153,17 @@ namespace WebService.Controllers
         public IActionResult GetNotes(int pid, int page=0, int pageSize=10)
         {
             var notes = _dataService.GetNotes(pid, page, pageSize, out var totalResults);
-            var result = new
+            var result = new PaginatedResult<Note>
             {
-                totalResults,
-                showingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
-                previousPage = page > 0
+                TotalResults = totalResults,
+                ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
+                PreviousPage = page > 0
                     ? Url.Link(nameof(GetNotes), new { page = page - 1, pageSize })
                     : null,
-                nextPage = (page + 1) * pageSize < totalResults
+                NextPage = (page + 1) * pageSize < totalResults
                     ? Url.Link(nameof(GetNotes), new { page = page + 1, pageSize })
                     : null,
-                notes
+                Results = notes
             };
 
 

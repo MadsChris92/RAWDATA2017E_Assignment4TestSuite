@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL;
+using DAL.DomainObjects;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebService.Controllers
@@ -23,9 +24,10 @@ namespace WebService.Controllers
         {
             var data = new
             {
-                aPost = _dataService.GetPost(321468),
+                aQuestion = _dataService.GetPost(5821),
+                anAnswer = _dataService.GetPost(5822),
                 anUser = _dataService.GetUser(1),
-                //aNote = _dataService.GetNotes(321468)
+                notes = _dataService.GetNotes(5821, 0, 10, out var _)
             };
             return Ok(data);
         }

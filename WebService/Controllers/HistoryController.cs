@@ -1,9 +1,10 @@
-﻿using DAL;
+﻿using DAL.DomainObjects;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAL;
 
 namespace WebService.Controllers
 {
