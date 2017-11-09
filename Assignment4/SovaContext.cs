@@ -1,10 +1,5 @@
-﻿using System;
+﻿using DAL.DomainObjects;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DAL
 {
@@ -26,9 +21,7 @@ namespace DAL
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            //optionsBuilder.UseMySql("server=192.168.1.4;database=northwind;uid=marinus;pwd=agergaard"); //martinus
-            //optionsBuilder.UseMySql("server=localhost;database=northwind;uid=root;pwd=frans"); //mads
-            optionsBuilder.UseMySql("server=wt-220.ruc.dk;database=raw10;uid=raw10;pwd=raw10"); //alex
+            optionsBuilder.UseMySql("server=wt-220.ruc.dk;database=raw10;uid=raw10;pwd=raw10");
             
         }
 
@@ -122,146 +115,5 @@ namespace DAL
         }
 
 
-    }
-
-    public class MarkedPost
-    {
-        public int PostId { get; set; }
-        public virtual Post Post { get; set; }
-    }
-
-    /// <summary>
-    /// 
-    /// http://www.learnentityframeworkcore.com/configuration/many-to-many-relationship-configuration
-    /// </summary>
-    public class QuestionTag
-    {
-        public virtual int QuestionId { get; set; }
-        public virtual Question Question { get; set; }
-        public virtual int TagId { get; set; }
-        public virtual Tag Tag { get; set; }
-    }
-
-    public class SearchQuestion
-    {
-        public int Id { get; set; }
-        public int Score { get; set; }
-        public string Title { get; set; }
-        public int AnswerCount { get; set; }
-        public string OwnerName { get; set; }
-        [NotMapped]
-        public List<Tag> Tags { get; set; }
-
-        public void FillTags()
-        {
-            using (var db = new SovaContext())
-            {
-                Tags = db.QuestionTags.Include(qt => qt.Tag).Where(x => x.QuestionId == Id).Select(qt => qt.Tag).ToList();
-            }
-        }
-    }
-
-
-
-    public class Answer : Post
-    {
-
-        public int QuestionId { get; set; }
-        public virtual Question Question { get; set; }
-    }
-
-    public class Tag
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public virtual ICollection<QuestionTag> Questions { get; set; }
-    }
-
-    public class Note
-    {
-        public int Id { get; set; }
-        public string Text { get; set; }
-        public int PostId { get; set; }
-        public Post Post { get; set; }
-    }
-
-    public class User
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime Created { get; set; }
-        public string Location { get; set; }
-        public int? Age { get; set; }
-    }
-
-    public class Comment
-    {
-        public int Id { get; set; }
-        public int OwnerId { get; set; }
-        public User Owner { get; set; }
-
-        public int Score { get; set; }
-        public string Text { get; set; }
-        public DateTime Created { get; set; }
-
-        public int ParentId { get; set; }
-        public virtual Post Parent { get; set; }
-    }
-
-    public class History
-    {
-        public int Id { get; set; }
-        public string Text { get; set; }
-        public DateTime Created { get; set; }
-    }
-
-    public abstract class Post
-    {
-        public int Id { get; set; }
-        public int OwnerId { get; set; }
-        public User Owner { get; set; }
-
-        //public int PostTypeId { get; protected set; }
-        //public int? parent_id { get; set; }
-        public string Body { get; set; }
-        public int Score { get; set; }
-        public DateTime Created { get; set; }
-
-        public virtual IList<Comment> Comments { set; get; }
-
-        public void FillComments()
-        {
-            using (var db = new SovaContext())
-            {
-                var comments = db.Comments.Include(c => c.Owner).Where(x => x.ParentId == Id).ToList();
-                Comments = comments;
-            }
-        }
-    }
-
-    public class Question : Post
-    {
-        public string Title { get; set; }
-        public DateTime? Closed { get; set; }
-        public virtual IList<Answer> Answers { get; set; }
-        public virtual ICollection<QuestionTag> QuestionTags { get; set; }
-        [NotMapped] public virtual ICollection<Tag> Tags { get; set; }
-
-        public void FillAnswers()
-        {
-            using (var db = new SovaContext())
-            {
-                var answers = db.Answers.Where(x => x.QuestionId == Id).ToList();
-                Answers = answers;
-            }
-        }
-
-        public void FillTags()
-        {
-            using (var db = new SovaContext())
-            {
-                Tags = db.QuestionTags.Include(qt => qt.Tag).Where(x => x.QuestionId == Id).Select(qt => qt.Tag).ToList();
-            }
-        }
     }
 }
