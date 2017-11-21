@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assignment4.Tests", "Assignment4.Tests\Assignment4.Tests.csproj", "{414FCD3F-4644-47CC-89AC-0BEF35BCD769}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Assignment4.Tests\Tests.csproj", "{414FCD3F-4644-47CC-89AC-0BEF35BCD769}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "Assignment4\DAL.csproj", "{36A7A7BF-E827-41E7-BC3D-28E28E84A604}"
 EndProject
