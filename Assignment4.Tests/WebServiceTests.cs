@@ -6,10 +6,11 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using DAL;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
 using Newtonsoft.Json.Linq;
-using DAL;
+using DAL.DomainObjects;
 using Xunit;
 
 namespace Assignment4.Tests
@@ -50,7 +51,7 @@ namespace Assignment4.Tests
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
             Assert.Equal(75, data["totalResults"].ToObject<int>());
-            Assert.Equal("SQL Server 2000/5 Escape an Underscore", data["posts"][0]["title"]);
+            Assert.Equal("SQL Server 2000/5 Escape an Underscore", data["results"][0]["title"]);
         }
 
         [Fact]
@@ -176,11 +177,11 @@ namespace Assignment4.Tests
             };
 
             var (data, status) = GetObject($"{PostsApi}/5821/note");
-            var oldNote = data["notes"][0];
+            var oldNote = data["results"][0];
             var statusCode = PutData($"{PostsApi}/5821/note/"+oldNote["id"], newNote);
             (data, status) = GetObject($"{PostsApi}/5821/note");
             Assert.Equal(HttpStatusCode.OK, statusCode);
-            Assert.Equal(data["notes"][0]["text"], newNote.text);
+            Assert.Equal(data["results"][0]["text"], newNote.text);
             // clean up
             PutData($"{PostsApi}/5821/note/" + oldNote["id"], new{text = oldNote["text"].ToString()});
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DAL.DomainObjects;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DAL
@@ -7,8 +8,8 @@ namespace DAL
     public interface IDataService
     {
 
-        List<SearchQuestion> GetPostsByName(string name, int page, int pageSize, out int totalResults);
-        List<SearchQuestion> GetPostsByTagTitle(string name, int page, int pageSize, out int totalResults);
+        List<SearchQuestion> GetQuestionByTitle(string title, int page, int pageSize, out int totalResults);
+        List<SearchQuestion> GetQuestionByTag(string tag, int page, int pageSize, out int totalResults);
         Boolean MarkPost(int id);
         Boolean UnmarkPost(int id);
         Boolean AddHistory(string searchWord);
@@ -18,8 +19,8 @@ namespace DAL
         Boolean DeleteNote(int noteId);
         Boolean ClearHistory();
         List<History> GetHistory(int page, int pageSize, out int totalResults);
-        Question GetPost(int id);
         Question GetQuestionAllData(int id);
+        Post GetPost(int id);
         User GetUser(int id);
     }
 

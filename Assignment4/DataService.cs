@@ -1,41 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using DAL.DomainObjects;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using MySql.Data.MySqlClient;
 
 namespace DAL
 {
     public class DataService : IDataService
     {
-        public List<SearchQuestion> GetPostsByName(string name, int page, int pageSize, out int totalResults)
+        public List<SearchQuestion> GetQuestionByTitle(string title, int page, int pageSize, out int totalResults)
         {
 
             using (var db = new SovaContext())
             {
-                var returnPosts = db.SearchQuestions.FromSql("CALL wordSearch({0})", name).Paginated(page, pageSize, out totalResults).ToList();
+                var returnPosts = db.SearchQuestions.FromSql("CALL wordSearch({0})", title).Paginated(page, pageSize, out totalResults).ToList();
                 foreach (var post in returnPosts)
                 {
                     post.FillTags();
                 }
                 return returnPosts;
-            }
-        }
-
-        public Question GetPost(int id)
-        {
-            using (var db = new SovaContext())
-            {
-                var post = GetQuestionAllData(
-                    id); //db.Questions.Include(p => p.Comments).FirstOrDefault(x => x.Id == id);
-
-                return post;
             }
         }
 
@@ -58,6 +43,15 @@ namespace DAL
 
         }
 
+        public Post GetPost(int id)
+        {
+            using (var db = new SovaContext())
+            {
+                return db.Answers.Select(ans => (Post) ans).Concat(db.Questions.Select(que => (Post) que))
+                    .FirstOrDefault(post => post.Id == id);
+            }
+        }
+
         public User GetUser(int id)
         {
             using (var db = new SovaContext())
@@ -66,11 +60,11 @@ namespace DAL
             }
         }
 
-        public List<SearchQuestion> GetPostsByTagTitle(string name, int page, int pageSize, out int totalResults)
+        public List<SearchQuestion> GetQuestionByTag(string tag, int page, int pageSize, out int totalResults)
         {
             using (var db = new SovaContext())
             {
-                var returnPosts = db.SearchQuestions.FromSql("CALL tagSearch({0})", name).Paginated(page, pageSize, out totalResults).ToList();
+                var returnPosts = db.SearchQuestions.FromSql("CALL tagSearch({0})", tag).Paginated(page, pageSize, out totalResults).ToList();
                 foreach (var post in returnPosts)
                 {
                     post.FillTags();
@@ -124,21 +118,20 @@ namespace DAL
 
         public bool AddHistory(string searchWord)
         {
+            if (searchWord == null) return false;
             using (var db = new SovaContext())
             {
 
                 try
                 {
-                    var result = db.Database.ExecuteSqlCommand("CALL addHistory({0})", searchWord);
+                    db.Database.ExecuteSqlCommand("CALL addHistory({0})", searchWord);
 
                     return true;
                 }
-                catch (Exception)
+                catch (MySqlException)
                 {
-
+                    return false;
                 }
-
-                return false;
             }
         }
 
@@ -228,8 +221,45 @@ namespace DAL
     static class Util{
         internal static IQueryable<T> Paginated<T>(this IQueryable<T> queryable, int page, int pageSize, out int totalResults)
         {
+            page = Math.Max(page, 0);
+            pageSize = Math.Clamp(pageSize, 1, 100);
             totalResults = queryable.Count();
             return queryable.Skip(page * pageSize).Take(pageSize);
+        }
+
+        internal static void FillTags(this SearchQuestion searchQuestion)
+        {
+            using (var db = new SovaContext())
+            {
+                searchQuestion.Tags = db.QuestionTags.Include(qt => qt.Tag).Where(x => x.QuestionId == searchQuestion.Id).Select(qt => qt.Tag).ToList();
+            }
+        }
+
+
+        internal static void FillAnswers(this Question question)
+        {
+            using (var db = new SovaContext())
+            {
+                var answers = db.Answers.Where(x => x.QuestionId == question.Id).ToList();
+                question.Answers = answers;
+            }
+        }
+
+        internal static void FillComments(this Post post)
+        {
+            using (var db = new SovaContext())
+            {
+                var comments = db.Comments.Include(c => c.Owner).Where(x => x.ParentId == post.Id).ToList();
+                post.Comments = comments;
+            }
+        }
+
+        internal static void FillTags(this Question question)
+        {
+            using (var db = new SovaContext())
+            {
+                question.Tags = db.QuestionTags.Include(qt => qt.Tag).Where(x => x.QuestionId == question.Id).Select(qt => qt.Tag).ToList();
+            }
         }
     }
 }
