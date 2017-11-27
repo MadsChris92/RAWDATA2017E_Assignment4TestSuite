@@ -50,8 +50,20 @@ namespace Assignment4.Tests
             var (data, statusCode) = GetObject($"{PostsApi}/title/sql?pageSize=100");
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
-            Assert.Equal(75, data["totalResults"].ToObject<int>());
-            Assert.Equal("SQL Server 2000/5 Escape an Underscore", data["results"][0]["title"]);
+            Assert.Equal(84, data["totalResults"].ToObject<int>());
+            Assert.Equal("Having trouble adding a linked SQL server", data["results"][0]["title"]);
+            //Assert.True(data["results"][0]["ranking"].Cast<Double>().First() > data["results"][1]["ranking"].Cast<Double>().First());
+        }
+
+        [Fact]
+        public void ApiPosts_GetWeightedWordList_statusOkAndListOfRankedWords()
+        {
+            var (data, statusCode) = GetObject($"{PostsApi}/words/sql");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+            Assert.Equal(4802, data["totalResults"].ToObject<int>());
+            Assert.Equal("SQL", data["results"][0]["word"]);
+            //Assert.True(data["results"][0]["ranking"].Cast<int>().First() > data["results"][1]["ranking"].Cast<int>().First());
         }
 
         [Fact]
@@ -110,7 +122,7 @@ namespace Assignment4.Tests
         [Fact]
         public void ApiPosts_ClearHistory_Ok()
         {
-            var frans = GetObject(PostsApi+"/title/sql?firstPage=true");
+            //var frans = GetObject(PostsApi+"/title/sql?firstPage=true");
 
             var statusCode = DeleteData($"{HistoryApi}");
 
@@ -176,6 +188,7 @@ namespace Assignment4.Tests
                 text = "Test"
             };
 
+
             var (data, status) = GetObject($"{PostsApi}/5821/note");
             var oldNote = data["results"][0];
             var statusCode = PutData($"{PostsApi}/5821/note/"+oldNote["id"], newNote);
@@ -189,12 +202,8 @@ namespace Assignment4.Tests
         [Fact]
         public void ApiPosts_GetNotesValidPostId_OkAndNotes()
         {
-            var note = new
-            {
-                text = "Test"
-            };
 
-            var statusCode = PutData($"{PostsApi}/5821/note/5", note);
+            var (_, statusCode) = GetObject($"{PostsApi}/5821/note");
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
         }

@@ -24,6 +24,21 @@ namespace DAL
             }
         }
 
+        public List<RankedSearchQuestion> GetRankedQuestionByTitle(string title, int page, int pageSize, out int totalResults)
+        {
+
+            using (var db = new SovaContext())
+            {
+                var returnPosts = db.RankedSearchQuestion.FromSql("CALL bestmatch({0})", title).Paginated(page, pageSize, out totalResults).ToList();
+                foreach (var post in returnPosts)
+                {
+                    post.FillTags();
+                }
+                return returnPosts;
+            }
+        }
+
+
         public Question GetQuestionAllData(int id)
         {
             using (var db = new SovaContext())
@@ -32,7 +47,7 @@ namespace DAL
                 if (question == null) return null;
                 question.FillAnswers();
                 question.FillComments();
-                question.FillTags();
+                //question.FillTags();
 
                 foreach (Answer answer in question.Answers)
                 {
@@ -216,6 +231,18 @@ namespace DAL
 
             }
         }
+
+        public List<RankedWord> GetWeightedWordList(string name, int page, int pageSize, out int totalResults)
+        {
+            using (var db = new SovaContext())
+            {
+
+                var returnPosts = db.RankedWord.FromSql("CALL weightedWordList({0})", name).Paginated(page, pageSize, out totalResults).ToList();
+
+                return returnPosts;
+
+            }
+        }
     }
 
     static class Util{
@@ -235,6 +262,13 @@ namespace DAL
             }
         }
 
+        internal static void FillTags(this RankedSearchQuestion searchQuestion)
+        {
+            using (var db = new SovaContext())
+            {
+                searchQuestion.Tags = db.QuestionTags.Include(qt => qt.Tag).Where(x => x.QuestionId == searchQuestion.Id).Select(qt => qt.Tag).ToList();
+            }
+        }
 
         internal static void FillAnswers(this Question question)
         {
