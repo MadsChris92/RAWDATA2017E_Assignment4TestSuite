@@ -55,9 +55,9 @@ namespace DAL
             modelBuilder.Entity<Question>().Property(x => x.Closed).HasColumnName("closed_date");
 
             // SearchQuestion
-            modelBuilder.Entity<SearchQuestion>().Property(x => x.Id).HasColumnName("post_id");
-            modelBuilder.Entity<SearchQuestion>().Property(x => x.OwnerName).HasColumnName("user_name");
-            modelBuilder.Entity<SearchQuestion>().Property(x => x.AnswerCount).HasColumnName("counts");
+            modelBuilder.Entity<SearchQuestion>().Property(x => x.Id).HasColumnName("id");
+            modelBuilder.Entity<SearchQuestion>().Property(x => x.OwnerName).HasColumnName("ownername");
+            modelBuilder.Entity<SearchQuestion>().Property(x => x.AnswerCount).HasColumnName("answers");
 
             // RankedSearchQuestion
             modelBuilder.Entity<RankedSearchQuestion>().Property(x => x.Id).HasColumnName("id");

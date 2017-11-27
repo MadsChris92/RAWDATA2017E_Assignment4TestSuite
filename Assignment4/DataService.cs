@@ -15,7 +15,7 @@ namespace DAL
 
             using (var db = new SovaContext())
             {
-                var returnPosts = db.SearchQuestions.FromSql("CALL wordSearch({0})", title).Paginated(page, pageSize, out totalResults).ToList();
+                var returnPosts = db.SearchQuestions.FromSql("CALL bestmatch({0})", title).Paginated(page, pageSize, out totalResults).ToList();
                 foreach (var post in returnPosts)
                 {
                     post.FillTags();
