@@ -1,0 +1,9 @@
+﻿<div class="postListBox" data-bind="foreach: posts">
+    <div class="postListItem" data-bind="text: title, click:$parent.getPost">
+    </div>
+</div>
+<div class="pageDiv">
+    <button data-bind="click: gotoPrev, enable: hasPrev"><<</button>
+    <input data-bind="textInput: page">
+    <button data-bind="click: gotoNext, enable: hasNext">>></button>
+</div>

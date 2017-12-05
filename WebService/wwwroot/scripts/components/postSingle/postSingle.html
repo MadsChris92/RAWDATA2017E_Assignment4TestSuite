@@ -1,0 +1,18 @@
+﻿<button data-bind="click: back">Back to list</button>
+<div class="postBox" data-bind="with: post">
+    <div class="scoreBox">
+        Score: <span data-bind="text: score"></span>
+    </div>
+    <h1 data-bind="text: title"></h1>
+    <div class="postBody" data-bind="html: body"></div>
+    <div class="dateBox" data-bind="text: creationDate"></div>
+</div>
+<div data-bind="foreach: answers">
+    <div class="postBox">
+        <div class="scoreBox">
+            Score: <span data-bind="text: score"></span>
+        </div>
+        <div class="postBody" data-bind="html: body"></div>
+        <div class="dateBox" data-bind="text: creationDate"></div>
+    </div>
+</div>
