@@ -18,6 +18,8 @@ require(["knockout", "jquery"], function (ko, $) {
             postListArray: ko.observableArray([]),
             resultArray: ko.observableArray([]),
             searchWord: this.searchWord,
+            searchString: this.searchString,
+
             
             getPostList: function () {
                 $.ajax({
