@@ -23,8 +23,9 @@ require(["knockout"], function (ko) {
 require(["knockout"], function (ko) {
     var vm = (function () {
 
+        var test = ko.observable("Men ikke lige så meget som Mads");
         return {
-            test: ko.observable("Men ikke lige så meget som Mads")
+            test
 
         };
     })();
