@@ -1,4 +1,5 @@
-﻿define(["jquery"], function($) {
+﻿define(["jquery"], function ($) {
+
     const postApi = "/api/posts";
     const histApi = "/api/history";
     const searchApi = "/api/search"; // Does it make sense to implement a search api?(that is, move the search functionality over to its own controller)
@@ -8,14 +9,16 @@
         event: "event"  // should we have events?
     }
 
-    const getPosts = function(searchTerm, page) {
+    const getPosts = function (searchTerm, page) {
+        var searchResult = new SearchResult();
         $.ajax({
             url: `${postApi}/title/${searchTerm}?page=${page}&pageSize=${pageSize}`,
             success: function (result) {
                 console.log(result);
-                return result;
+                searchResult.doTheThing(result); // kan ikke returnere fordi den er asyncron... Bruge en event?
             }
         });
+        return searchResult;
     }
 
     const getPost = function (id) {
@@ -26,6 +29,48 @@
                 return result;
             }
         });
+    }
+
+    const getResults = function(link) {
+        
+    }
+
+
+    function doTheThing(result, search){}
+
+    //ideen er at have et objekt der bare kan få besked om at hente den næste/forrige side, uden at bekymre sig om url'er
+    function SearchResult(result) {
+        const page = ko.observable(0);
+        const next = ko.observable(result.next);
+        const prev = ko.observable(result.prev);
+        const hasNext = ko.computed(function () {
+            return next() || false;
+        }, this);
+        const hasPrev = ko.computed(function () {
+            return prev() || false;
+        }, this);
+        const posts = ko.observableArray([]);
+        const gotoNext = function () {
+            if (hasNext()) {
+                posts(getResults(self.next()));
+                page(page() + 1);
+            }
+        }
+        const gotoPrev = function () {
+            if (hasPrev()) {
+                posts(getResults(self.prev()));
+                page(page() - 1);
+            }
+        }
+        return {
+            hasNext,
+            hasPrev,
+            gotoNext,
+            gotoPrev,
+            pagePosts: posts,
+            pageNumber: page,
+            getPost
+        }
     }
 
     return {
