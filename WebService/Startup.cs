@@ -32,6 +32,7 @@ namespace WebService
 
             app.UseFileServer();
             app.UseMvc();
+            app.UseBrowserLink();
         }
     }
 }

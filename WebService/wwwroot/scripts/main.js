@@ -1,11 +1,12 @@
 ﻿requirejs.config({
-    baseUrl: "scripts",
+    baseUrl: "../scripts",
     paths: {
         knockout: "../lib/knockout/dist/knockout",
         bootstrap: "../lib/bootstrap/dist/js/bootstrap",
         jquery: "../lib/jquery/dist/jquery",
         text: "../lib/text/text",
-        jqcloud: "../lib/jqcloud2/dist/jqcloud"
+        jqcloud: "../lib/jqcloud2/dist/jqcloud",
+        dataservice: "services/dataservice"
     }
 });
 
@@ -23,16 +24,16 @@ require(["knockout"], function (ko) {
 require(["knockout", "jquery"], function (ko, $) {
     var vm = (function () {
 
-        var test = ko.observable("Men ikke lige så meget som Mads");
+        var test = ko.observable("Ællebrød");
         var postListArray = ko.observableArray([]);
         var resultArray = ko.observableArray([]);
         var getPostList = function () {
             $.ajax({
-                url: "http://localhost:5001/api/posts/title/sql",
+                url: "/api/posts/title/"+test(),
                 method: "GET",
                 dataType: "json",
                 success: function(data) {
-                    console.log(JSON.stringify(vm.postListArray));
+                    console.log(JSON.stringify(vm.postListArray()));
                     vm.postListArray(data);
                     vm.resultArray(data.results);
                 }
