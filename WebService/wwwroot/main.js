@@ -14,16 +14,17 @@ require(['knockout'], function (ko) {
             test: ko.observable("GSEDGKWSD"),
             postListArray: ko.observableArray([]),
             resultArray: ko.observableArray([]),
+            searchWord: ko.observable(""),
 
             getPostList: function () {
                 $.ajax({
-                    url: "http://localhost:5001/api/posts/title/sql",
+                    url: "http://localhost:5001/api/posts/title/" + vm.searchWord,
                     method: "GET",
                     dataType: "json",
                     success: function (data) {
                         vm.postListArray(data);
                         vm.resultArray(data.results);
-                        console.log(JSON.stringify(vm.postListArray));
+                        console.log(data);
                     }
                 })
             }
