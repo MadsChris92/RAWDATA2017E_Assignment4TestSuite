@@ -20,12 +20,31 @@ require(["knockout"], function (ko) {
     );
 });
 
-require(["knockout"], function (ko) {
+require(["knockout", "jquery"], function (ko, $) {
     var vm = (function () {
 
         var test = ko.observable("Men ikke lige så meget som Mads");
+        var postListArray = ko.observableArray([]);
+        var resultArray = ko.observableArray([]);
+        var getPostList = function () {
+            $.ajax({
+                url: "http://localhost:5001/api/posts/title/sql",
+                method: "GET",
+                dataType: "json",
+                success: function(data) {
+                    console.log(JSON.stringify(vm.postListArray));
+                    vm.postListArray(data);
+                    vm.resultArray(data.results);
+                }
+            });
+        };
+
+        getPostList();
         return {
-            test
+            test,
+            postListArray,
+            resultArray,
+            getPostList
 
         };
     })();
