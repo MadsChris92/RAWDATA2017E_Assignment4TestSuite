@@ -150,12 +150,27 @@ namespace DAL
             }
         }
 
+        public Note GetNote(int noteId)
+        {
+            using (var db = new SovaContext())
+            {
+                return db.Notes.FirstOrDefault(note => note.Id == noteId);
+            }
+        }
+
         public List<Note> GetNotes(int postId, int page, int pageSize, out int totalResults)
         {
             using (var db = new SovaContext())
             {
-
-                return db.Notes.Where(note => note.PostId == postId).Paginated(page, pageSize, out totalResults).ToList();
+                if (db.Posts.Any(post => post.Id == postId))
+                {
+                    return db.Notes.Where(note => note.PostId == postId).Paginated(page, pageSize, out totalResults).ToList();
+                }
+                else
+                {
+                    totalResults = 0;
+                    return null;
+                }
             }
         }
 
@@ -163,16 +178,12 @@ namespace DAL
         {
             using (var db = new SovaContext())
             {
-                Note note = new Note();
                 try
                 {
-                    var result = db.Database.ExecuteSqlCommand("CALL createNote({0}, {1})", postId, text);
-                    note.Text = text;
-                    note.PostId = postId;
-                    return note;
-
+                    var result = db.Notes.FromSql("CALL createNote({0}, {1})", postId, text).FirstOrDefault();
+                    return result;
                 }
-                catch (Exception)
+                catch (MySqlException)
                 {
 
                 }

@@ -5,26 +5,9 @@
     <title>Martin er gay</title>
 </head>
 <body>
-    <div id="postDiv" data-bind="template: {name: 'sPost-template', foreach: resultArray}"></div>
-    
     <p data-bind="text: test">Martin er alstå gay</p>
 
-    <button data-bind="click: getPostList">get posts</button>
 
-    <script type="text/html" id="sPost-template">
-        <div id="postDiv">
-            <span id="postTitle" data-bind="text: title"></span>
-            <br /> <br />
-        </div>
-    </script>
-
-    <p data-bind="text: resultArray">DASDASDAA</p>
-
-    <script src="lib/requirejs/require.js" data-main="main"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-            crossorigin="anonymous">
-    </script>
-
+    <script src="lib/requirejs/require.js" data-main="scripts/main"></script>
 </body>
 </html>
