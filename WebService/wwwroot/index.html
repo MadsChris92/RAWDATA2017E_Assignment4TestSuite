@@ -5,7 +5,7 @@
     <title>Martin er gay</title>
 </head>
 <body>
-    <input data-bind="value: searchWord" type="text" name="fname"><br>
+    <input data-bind="textInput: searchWord"><br>
 
     <p data-bind="text: test">Martin er alstå gay</p>
     <button data-bind="click: getPostList">Get post</button>
@@ -21,11 +21,6 @@
 
 
     <script src="lib/requirejs/require.js" data-main="main"></script>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-            crossorigin="anonymous">
-    </script>
 
 </body>
 </html>
