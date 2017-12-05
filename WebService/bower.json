@@ -1,0 +1,9 @@
+{
+  "name": "asp.net",
+  "private": true,
+  "dependencies": {
+    "requirejs": "2.3.5",
+    "knockout": "v3.4.2",
+    "bootstrap": "v3.3.7"
+  }
+}
