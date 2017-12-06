@@ -49,6 +49,15 @@ require(["knockout"], function (ko) {
     );
 });
 
+require(["knockout"], function (ko) {
+    ko.components.register("post",
+        {
+            viewModel: { require: "scripts/components/postList/singlePost" },
+            template: { require: "scripts/text!components/postList/post.html" }
+        }
+    );
+});
+
 require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
     var vm = (function() {
         var self = this;
@@ -69,7 +78,14 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
                     console.log(data);
                     console.log(vm.searchWord);
                 }
-            })
+            });
+        };
+
+        var showSinglePost = function (postLink) {
+            //dat.getSinglePost(postLink);
+            //dat.getPosts(vm.searchWord(), callback, );
+            dat.getSinglePost(postLink, callback, viewModel.getPost);
+            console.log(postLink);
         };
 
         var tagSearch = function(tagTitle) {
@@ -80,7 +96,7 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
                 console.log(JSON.stringify(self.resultArray()));
                 self.searchResult(sr);
             }
-            dat.getPostByTag(tagTitle, callback,vm);
+            dat.getPostByTag(tagTitle, callback, vm);
         };
 
         var datGetList = function() {
@@ -122,7 +138,8 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
             datGetList,
 			searchResult,
 			answerCountString,
-            tagSearch
+            tagSearch,
+            showSinglePost
         };
     })();
 
