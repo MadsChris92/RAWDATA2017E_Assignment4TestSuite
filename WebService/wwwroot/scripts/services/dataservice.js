@@ -71,7 +71,6 @@
                         next(result.nextPage);
                         prev(result.previousPage);
                         posts(result.results);
-                        //Javascript er fgt joe sproe
                     }
                 });
                 page(page() + 1);

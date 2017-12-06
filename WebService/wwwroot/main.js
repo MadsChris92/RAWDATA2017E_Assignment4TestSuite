@@ -57,12 +57,34 @@ require(["knockout"], function (ko) {
 
 require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
     var vm = (function() {
-        var self = this;
+		var self = this;
         var searchWord = ko.observable("");
         var test = ko.observable("GSEDGKWSD");
         var postListArray = ko.observableArray([]);
         var resultArray = ko.observableArray([]);
-        var searchResult = ko.observable(null);
+		var searchResult = ko.observable(null);
+		var noResultsFound = ko.computed(function () {
+			if (resultArray().length < 1) {
+				return true;
+			} else {
+				return false;
+			}
+		}, this);
+
+		var hasNext = ko.computed(function () {
+			if (searchResult() != null) {
+				return searchResult().hasNext();
+			}
+			return false;
+		}, this);
+
+		var hasPrev = ko.computed(function () {
+			if (searchResult() != null) {
+				return searchResult().hasPrev();
+			}
+			return false;
+		}, this);
+
         var getPostList = function () {
             $.ajax({
                 url: "http://localhost:5001/api/posts/title/" + vm.searchWord,
@@ -74,8 +96,10 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
                     vm.resultArray(data.results);
                     console.log(data);
                     console.log(vm.searchWord);
+
                 }
-            });
+			});
+
         };
 
         var showSinglePost = function (postLink) {
@@ -107,22 +131,26 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
         };
 
         var goToNext = function() {
-            
+			console.log("Next Activated");
             if (searchResult) {
                 console.log("next");
                 searchResult().gotoNext();
             }
-        };
+		};
 
-        var goToPrev = function() {
+		var goToPrev = function () {
+			console.log("Prev Activated");
             if (searchResult) {
-                searchResult().gotoPrev();
+				searchResult().gotoPrev();
+				
             }
 		};
 
 		var answerCountString = function (param) {
 			return answerCount + " answers"; 
 		}
+
+
 
         return {
             searchWord,
@@ -131,12 +159,15 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
             resultArray,
             getPostList,
             goToNext,
-            goToPrev,
+			goToPrev,
+			hasNext,
+			hasPrev,
             datGetList,
 			searchResult,
 			answerCountString,
             tagSearch,
-            showSinglePost
+			showSinglePost,
+			noResultsFound
         };
     })();
 
