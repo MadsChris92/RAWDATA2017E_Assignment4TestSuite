@@ -3,23 +3,39 @@
 <head>
     <meta charset="utf-8" />
     <title>Portfolio IV</title>
+    <link href="lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
 </head>
 <body>
-    <input data-bind="textInput: searchWord"><br>
 
-    <p data-bind="text: test">Martin er alstå gay</p>
-    <button data-bind="click: getPostList">Get post</button>
 
-    <div data-bind="template: {name: 'sPost-template', foreach: resultArray}"></div>
-    
-    <script type="text/html" id="sPost-template">
-        <div class="container">
-            <span data-bind="text: title"></span>
-            <br /> 
-            <span data-bind="text: answerCount"></span>
-            <br />
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-4">
+                <input data-bind="textInput: searchWord"><br>
+
+                <p data-bind="text: test">Martin er alstå gay</p>
+                <button data-bind="click: getPostList">Get post</button>
+            </div>
+
+            <div class="col-sm-4">
+                <div data-bind="template: {name: 'sPost-template', foreach: resultArray}"></div>
+
+                <script type="text/html" id="sPost-template">
+                    <div class="container">
+                        <span data-bind="text: title"></span>
+                        <br />
+                        <span data-bind="text: answerCount"></span>
+                        <br />
+                    </div>
+                </script>
+            </div>
+
+
         </div>
-    </script>
+    </div>
+
+
     <script src="lib/requirejs/require.js" data-main="main"></script>
 </body>
 </html>
