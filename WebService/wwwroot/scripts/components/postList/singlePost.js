@@ -2,16 +2,12 @@
     return function (params) {
         var self = this;
         
-        var postResult = params;
-        
-        console.log(postResult.title);
-        
+        //var postResult = params.name;
+        var postResult = ko.observable(params.name || '');
 
-        var getPost = function (postListItem) {
-            
-        }
+        
+        console.log(postResult);
         return {
-            getPost,
             postResult
         };
 
