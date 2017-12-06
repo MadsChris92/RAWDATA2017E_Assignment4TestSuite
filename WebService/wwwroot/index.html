@@ -33,6 +33,10 @@
 				</form>
 			</div>
 		</nav>
+		<div class="listbody">
+            <!-- ko if:searchResult() !== null-->
+			<div class="list-group" data-bind="template: {name: 'sPost-template', foreach: searchResult().posts}"></div>
+            <!-- /ko -->
 		<br />
 		<div class="container-fluid bg-light postList">
 			<div class="list-group" data-bind="template: {name: 'sPost-template', foreach: resultArray}"></div>
@@ -50,6 +54,8 @@
 			</script>
 			<script src="lib/requirejs/require.js" data-main="main"></script>
 			<div class="switchButtons">
+				<button class="btn-block" data-bind="click: goToNext">Next</button>
+				<button class="btn-block" data-bind="click: goToPrev">Previous</button>	
 				<button type="button" class="btn btn-primary">Next</button>
 				<button type="button" class="btn btn-primary" data-bind="">Previous</button>	
 			</div>

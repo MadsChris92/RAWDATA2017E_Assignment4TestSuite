@@ -17,6 +17,7 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
         var test = ko.observable("GSEDGKWSD");
         var postListArray = ko.observableArray([]);
         var resultArray = ko.observableArray([]);
+        var searchResult = ko.observable(null);
         var getPostList = function () {
             $.ajax({
                 url: "http://localhost:5001/api/posts/title/" + vm.searchWord,
@@ -37,8 +38,23 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
                 console.log(JSON.stringify(self.resultArray()));
                 self.resultArray(sr.posts());
                 console.log(JSON.stringify(self.resultArray()));
+                self.searchResult(sr);
             }
             dat.getPosts(vm.searchWord(), callback, vm);
+        };
+
+        var goToNext = function() {
+            
+            if (searchResult) {
+                console.log("next");
+                searchResult().gotoNext();
+            }
+        };
+
+        var goToPrev = function() {
+            if (searchResult) {
+                searchResult().gotoPrev();
+            }
         };
 
         return {
@@ -47,8 +63,10 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
             postListArray,
             resultArray,
             getPostList,
-            datGetList
-
+            goToNext,
+            goToPrev,
+            datGetList,
+            searchResult
         };
     })();
 
