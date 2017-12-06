@@ -15,7 +15,7 @@ namespace DAL
 
             using (var db = new SovaContext())
             {
-                var returnPosts = db.SearchQuestions.FromSql("CALL wordSearch({0})", title).Paginated(page, pageSize, out totalResults).ToList();
+                var returnPosts = db.SearchQuestions.FromSql("CALL bestmatch({0})", title).Paginated(page, pageSize, out totalResults).ToList();
                 foreach (var post in returnPosts)
                 {
                     post.FillTags();
@@ -23,6 +23,21 @@ namespace DAL
                 return returnPosts;
             }
         }
+
+        public List<RankedSearchQuestion> GetRankedQuestionByTitle(string title, int page, int pageSize, out int totalResults)
+        {
+
+            using (var db = new SovaContext())
+            {
+                var returnPosts = db.RankedSearchQuestion.FromSql("CALL bestmatch({0})", title).Paginated(page, pageSize, out totalResults).ToList();
+                foreach (var post in returnPosts)
+                {
+                    post.FillTags();
+                }
+                return returnPosts;
+            }
+        }
+
 
         public Question GetQuestionAllData(int id)
         {
@@ -32,7 +47,7 @@ namespace DAL
                 if (question == null) return null;
                 question.FillAnswers();
                 question.FillComments();
-                question.FillTags();
+                //question.FillTags();
 
                 foreach (Answer answer in question.Answers)
                 {
@@ -135,12 +150,27 @@ namespace DAL
             }
         }
 
+        public Note GetNote(int noteId)
+        {
+            using (var db = new SovaContext())
+            {
+                return db.Notes.FirstOrDefault(note => note.Id == noteId);
+            }
+        }
+
         public List<Note> GetNotes(int postId, int page, int pageSize, out int totalResults)
         {
             using (var db = new SovaContext())
             {
-
-                return db.Notes.Where(note => note.PostId == postId).Paginated(page, pageSize, out totalResults).ToList();
+                if (db.Posts.Any(post => post.Id == postId))
+                {
+                    return db.Notes.Where(note => note.PostId == postId).Paginated(page, pageSize, out totalResults).ToList();
+                }
+                else
+                {
+                    totalResults = 0;
+                    return null;
+                }
             }
         }
 
@@ -148,16 +178,12 @@ namespace DAL
         {
             using (var db = new SovaContext())
             {
-                Note note = new Note();
                 try
                 {
-                    var result = db.Database.ExecuteSqlCommand("CALL createNote({0}, {1})", postId, text);
-                    note.Text = text;
-                    note.PostId = postId;
-                    return note;
-
+                    var result = db.Notes.FromSql("CALL createNote({0}, {1})", postId, text).FirstOrDefault();
+                    return result;
                 }
-                catch (Exception)
+                catch (MySqlException)
                 {
 
                 }
@@ -216,6 +242,18 @@ namespace DAL
 
             }
         }
+
+        public List<RankedWord> GetWeightedWordList(string name, int page, int pageSize, out int totalResults)
+        {
+            using (var db = new SovaContext())
+            {
+
+                var returnPosts = db.RankedWord.FromSql("CALL weightedWordList({0})", name).Paginated(page, pageSize, out totalResults).ToList();
+
+                return returnPosts;
+
+            }
+        }
     }
 
     static class Util{
@@ -235,6 +273,13 @@ namespace DAL
             }
         }
 
+        internal static void FillTags(this RankedSearchQuestion searchQuestion)
+        {
+            using (var db = new SovaContext())
+            {
+                searchQuestion.Tags = db.QuestionTags.Include(qt => qt.Tag).Where(x => x.QuestionId == searchQuestion.Id).Select(qt => qt.Tag).ToList();
+            }
+        }
 
         internal static void FillAnswers(this Question question)
         {

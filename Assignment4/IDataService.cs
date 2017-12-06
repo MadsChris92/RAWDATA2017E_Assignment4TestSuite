@@ -22,6 +22,8 @@ namespace DAL
         Question GetQuestionAllData(int id);
         Post GetPost(int id);
         User GetUser(int id);
+        List<RankedSearchQuestion> GetRankedQuestionByTitle(string title, int page, int pageSize, out int totalResults);
+        List<RankedWord> GetWeightedWordList(string name, int page, int pageSize, out int totalResults);
     }
 
     

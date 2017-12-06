@@ -31,7 +31,7 @@ namespace WebService.Controllers
             else
                 return NotFound();
         }
-
+        /*
         [HttpGet("title/{name}", Name = nameof(GetPostsByName))]
         public IActionResult GetPostsByName(string name, int page=0, int pageSize=5, bool firstPage=false)
         {
@@ -54,6 +54,55 @@ namespace WebService.Controllers
             };
 
             return Ok(result);
+        }*/
+
+        [HttpGet("words/{name}", Name = nameof(GetPostsWords))]
+        public IActionResult GetPostsWords(string name, int page = 0, int pageSize = 5, bool firstPage = false)
+        {
+
+            if (firstPage) _dataService.AddHistory(name);
+
+            var posts = _dataService.GetWeightedWordList(name, page, pageSize, out var totalResults);
+
+            var result = new PaginatedResult<RankedWord>
+            {
+                TotalResults = totalResults,
+                ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
+                PreviousPage = page > 0
+                    ? Url.Link(nameof(GetPostsWords), new { page = page - 1, pageSize })
+                    : null,
+                NextPage = (page + 1) * pageSize < totalResults
+                    ? Url.Link(nameof(GetPostsWords), new { page = page + 1, pageSize })
+                    : null,
+                Results = posts
+            };
+
+            return Ok(result);
+        }
+
+        [HttpGet("title/{name}", Name = nameof(GetRankedPostsByName))]
+        public IActionResult GetRankedPostsByName(string name, int page = 0, int pageSize = 5, bool firstPage = false)
+        {
+
+            if (firstPage) _dataService.AddHistory(name);
+
+            var posts = _dataService.GetRankedQuestionByTitle(name, page, pageSize, out var totalResults);
+            posts.ForEach(post => post.Url = Url.Link(nameof(GetPost), new { id = post.Id }));
+
+            var result = new PaginatedResult<RankedSearchQuestion>
+            {
+                TotalResults = totalResults,
+                ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
+                PreviousPage = page > 0
+                    ? Url.Link(nameof(GetRankedPostsByName), new { page = page - 1, pageSize })
+                    : null,
+                NextPage = (page + 1) * pageSize < totalResults
+                    ? Url.Link(nameof(GetRankedPostsByName), new { page = page + 1, pageSize })
+                    : null,
+                Results = posts
+            };
+
+            return Ok(result);
         }
 
         [HttpGet("tag/{name}", Name = nameof(GetPostsByTag))]
@@ -69,10 +118,10 @@ namespace WebService.Controllers
             {
                 TotalResults = totalResults, ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
                 PreviousPage = page > 0
-                    ? Url.Link(nameof(GetPostsByName), new {page = page - 1, pageSize})
+                    ? Url.Link(nameof(GetPostsByTag), new {page = page - 1, pageSize})
                     : null,
                 NextPage = (page + 1) * pageSize < totalResults
-                    ? Url.Link(nameof(GetPostsByName), new {page = page + 1, pageSize})
+                    ? Url.Link(nameof(GetPostsByTag), new {page = page + 1, pageSize})
                     : null,
                 Results = posts
             };

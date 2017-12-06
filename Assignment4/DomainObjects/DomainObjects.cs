@@ -20,7 +20,7 @@ namespace DAL.DomainObjects
     {
         public virtual int QuestionId { get; set; }
         public virtual Question Question { get; set; }
-        public virtual int TagId { get; set; }
+        public virtual string TagId { get; set; }
         public virtual Tag Tag { get; set; }
     }
 
@@ -37,7 +37,25 @@ namespace DAL.DomainObjects
         [NotMapped] public String Url;
     }
 
+    public class RankedSearchQuestion
+    {
+        public int Id { get; set; }
+        public int Score { get; set; }
+        public string Title { get; set; }
+        public int AnswerCount { get; set; }
+        public double Ranking { get; set; }
+        public string OwnerName { get; set; }
+        [NotMapped]
+        public List<Tag> Tags { get; set; }
 
+        [NotMapped] public String Url;
+    }
+
+    public class RankedWord
+    {
+        public int Ranking { get; set; }
+        public string Word { get; set; }
+    }
 
     public class Answer : Post
     {
@@ -47,7 +65,7 @@ namespace DAL.DomainObjects
 
     public class Tag
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public string Title { get; set; }
         public virtual ICollection<QuestionTag> Questions { get; set; }
     }

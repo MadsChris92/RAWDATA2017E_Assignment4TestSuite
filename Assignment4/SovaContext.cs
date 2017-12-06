@@ -5,7 +5,7 @@ namespace DAL
 {
     public class SovaContext : DbContext
     {
-        //public DbSet<Post> Posts { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Tag> Tags { get; set; }
@@ -16,6 +16,8 @@ namespace DAL
         public DbSet<SearchQuestion> SearchQuestions { get; set; }
         public DbSet<MarkedPost> Marked { get; set; }
         public DbSet<History> History { get; set; }
+        public DbSet<RankedSearchQuestion> RankedSearchQuestion { get; set; }
+        public DbSet<RankedWord> RankedWord { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -29,22 +31,22 @@ namespace DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>().ToTable("user");
-            modelBuilder.Entity<Comment>().ToTable("comment");
-            modelBuilder.Entity<Tag>().ToTable("tag");
-            modelBuilder.Entity<Note>().ToTable("note");
+            modelBuilder.Entity<User>().ToTable("users");
+            modelBuilder.Entity<Comment>().ToTable("comments");
+            modelBuilder.Entity<Tag>().ToTable("tags");
+            modelBuilder.Entity<Note>().ToTable("notes");
             modelBuilder.Entity<History>().ToTable("history");
 
             //Post
             modelBuilder.Entity<Post>().ToTable("posts");
             modelBuilder.Entity<Post>().Property(x => x.Id)
-                .HasColumnName("post_id");
+                .HasColumnName("id");
             modelBuilder.Entity<Post>().HasKey(x => x.Id);
             modelBuilder.Entity<Post>().HasMany(post => post.Comments).WithOne(comment => comment.Parent);
             modelBuilder.Entity<Post>().HasOne(post => post.Owner);
-            modelBuilder.Entity<Post>().Property(post => post.OwnerId).HasColumnName("owner_id");
-            modelBuilder.Entity<Post>().Property(post => post.Created).HasColumnName("create_date");
-            modelBuilder.Entity<Post>().HasDiscriminator<int>("post_type_id")
+            modelBuilder.Entity<Post>().Property(post => post.OwnerId).HasColumnName("author_id");
+            modelBuilder.Entity<Post>().Property(post => post.Created).HasColumnName("creation_date");
+            modelBuilder.Entity<Post>().HasDiscriminator<int>("post_type")
                 .HasValue<Question>(1)
                 .HasValue<Answer>(2);
 
@@ -53,10 +55,18 @@ namespace DAL
             modelBuilder.Entity<Question>().Property(x => x.Closed).HasColumnName("closed_date");
 
             // SearchQuestion
-  
-            modelBuilder.Entity<SearchQuestion>().Property(x => x.Id).HasColumnName("post_id");
-            modelBuilder.Entity<SearchQuestion>().Property(x => x.OwnerName).HasColumnName("user_name");
-            modelBuilder.Entity<SearchQuestion>().Property(x => x.AnswerCount).HasColumnName("counts");
+            modelBuilder.Entity<SearchQuestion>().Property(x => x.Id).HasColumnName("id");
+            modelBuilder.Entity<SearchQuestion>().Property(x => x.OwnerName).HasColumnName("ownername");
+            modelBuilder.Entity<SearchQuestion>().Property(x => x.AnswerCount).HasColumnName("answers");
+
+            // RankedSearchQuestion
+            modelBuilder.Entity<RankedSearchQuestion>().Property(x => x.Id).HasColumnName("id");
+            modelBuilder.Entity<RankedSearchQuestion>().Property(x => x.OwnerName).HasColumnName("ownername");
+            modelBuilder.Entity<RankedSearchQuestion>().Property(x => x.AnswerCount).HasColumnName("answers");
+
+            // Ranked Word
+            modelBuilder.Entity<RankedWord>().HasKey(c => c.Word);
+
 
 
             // Answer
@@ -66,39 +76,40 @@ namespace DAL
             // Comments
             modelBuilder.Entity<Comment>().HasKey(c => c.Id);
             modelBuilder.Entity<Comment>().Property(x => x.Score)
-                .HasColumnName("comment_score");
+                .HasColumnName("score");
             modelBuilder.Entity<Comment>().Property(x => x.Created)
-                .HasColumnName("comment_create_date");
+                .HasColumnName("creation_date");
             modelBuilder.Entity<Comment>().Property(x => x.Id)
-               .HasColumnName("comment_id");
+               .HasColumnName("id");
             modelBuilder.Entity<Comment>().Property(x => x.Text)
-                .HasColumnName("comment_text");
+                .HasColumnName("text");
             modelBuilder.Entity<Comment>().Property(x => x.OwnerId)
-                .HasColumnName("comment_owner_id");
+                .HasColumnName("author_id");
             modelBuilder.Entity<Comment>().Property(x => x.ParentId)
-                .HasColumnName("post_parent_id");
+                .HasColumnName("post_id");
 
             // Note
-            modelBuilder.Entity<Note>().Property(x => x.Id).HasColumnName("note_id");
-            modelBuilder.Entity<Note>().Property(x => x.Text).HasColumnName("note_text");
-            modelBuilder.Entity<Note>().Property(x => x.PostId).HasColumnName("note_post_id");
+            modelBuilder.Entity<Note>().Property(x => x.Id).HasColumnName("id");
+            modelBuilder.Entity<Note>().Property(x => x.Text).HasColumnName("text");
+            modelBuilder.Entity<Note>().Property(x => x.PostId).HasColumnName("post_id");
 
             // User
-            modelBuilder.Entity<User>().Property(x => x.Id).HasColumnName("user_id");
-            modelBuilder.Entity<User>().Property(x => x.Age).HasColumnName("user_age");
-            modelBuilder.Entity<User>().Property(x => x.Created).HasColumnName("user_create_date");
-            modelBuilder.Entity<User>().Property(x => x.Location).HasColumnName("user_location");
-            modelBuilder.Entity<User>().Property(x => x.Name).HasColumnName("user_name");
+            modelBuilder.Entity<User>().Property(x => x.Id).HasColumnName("id");
+            modelBuilder.Entity<User>().Property(x => x.Age).HasColumnName("age");
+            modelBuilder.Entity<User>().Property(x => x.Created).HasColumnName("creation_date");
+            modelBuilder.Entity<User>().Property(x => x.Location).HasColumnName("location");
+            modelBuilder.Entity<User>().Property(x => x.Name).HasColumnName("display_name");
 
             // Tag
-            modelBuilder.Entity<Tag>().Property(tag => tag.Id).HasColumnName("tag_id");
-            modelBuilder.Entity<Tag>().Property(tag => tag.Title).HasColumnName("tag_title");
+            //modelBuilder.Entity<Tag>().Property(tag => tag.Id).HasColumnName("tag_id");
+            modelBuilder.Entity<Tag>().Property(tag => tag.Title).HasColumnName("tag");
+            modelBuilder.Entity<Tag>().HasKey(tag => tag.Title);
 
             // QuestionTag
             modelBuilder.Entity<QuestionTag>().ToTable("post_tag");
             modelBuilder.Entity<QuestionTag>().HasKey(qt => new {qt.TagId, qt.QuestionId});
-            modelBuilder.Entity<QuestionTag>().Property(qt => qt.TagId).HasColumnName("parent_tag_id");
-            modelBuilder.Entity<QuestionTag>().Property(qt => qt.QuestionId).HasColumnName("post_parent_tag_id");
+            modelBuilder.Entity<QuestionTag>().Property(qt => qt.TagId).HasColumnName("tag");
+            modelBuilder.Entity<QuestionTag>().Property(qt => qt.QuestionId).HasColumnName("post_id");
             modelBuilder.Entity<QuestionTag>().HasOne(qt => qt.Tag).WithMany(t => t.Questions).HasForeignKey(qt => qt.TagId);
             modelBuilder.Entity<QuestionTag>().HasOne(qt => qt.Question).WithMany(q => q.QuestionTags).HasForeignKey(qt => qt.QuestionId);
 
@@ -109,7 +120,7 @@ namespace DAL
             modelBuilder.Entity<MarkedPost>().HasOne(mp => mp.Post).WithOne().HasForeignKey<MarkedPost>(mp => mp.PostId);
 
             //History
-            modelBuilder.Entity<History>().Property(p => p.Id).HasColumnName("history_id");
+            modelBuilder.Entity<History>().Property(p => p.Id).HasColumnName("id");
             modelBuilder.Entity<History>().Property(p => p.Text).HasColumnName("history_text");
             modelBuilder.Entity<History>().Property(p => p.Created).HasColumnName("searched_date");
         }

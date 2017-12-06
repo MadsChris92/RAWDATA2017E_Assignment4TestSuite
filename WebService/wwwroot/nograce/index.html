@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Mads er ret gay</title>
+    <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css"/>
+</head>
+<body>
+<input data-bind="textInput: test" type="text" name="fname"><br>
+
+<button data-bind="click: getPostList">Get post</button>
+
+<div data-bind="template: {name: 'sPost-template', foreach: resultArray}"></div>
+    
+<script type="text/html" id="sPost-template">
+    <div>
+        <span data-bind="text: title"></span>
+        <br /> <br />
+    </div>
+</script>
+<script src="../lib/requirejs/require.js" data-main="../scripts/main"></script>
+</body>
+</html>

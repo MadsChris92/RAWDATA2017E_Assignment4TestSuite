@@ -1,0 +1,11 @@
+{
+  "name": "asp.net",
+  "private": true,
+  "dependencies": {
+    "requirejs": "2.3.5",
+    "knockout": "v3.4.2",
+    "bootstrap": "v3.3.7",
+    "text": "2.0.15",
+    "jqcloud2": "v2.0.3"
+  }
+}
