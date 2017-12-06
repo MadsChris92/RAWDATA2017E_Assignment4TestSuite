@@ -9,6 +9,15 @@
         event: "event"  // should we have events?
     }
 
+    const getSinglePost = function (link, callback, caller) {
+        $.ajax({
+            url: link,
+            success: function (result) {
+                console.log(result);
+            }
+        });
+    };
+
     const getPosts = function (searchTerm, callback, caller) {
         $.ajax({
             url: `${postApi}/title/${searchTerm}?pageSize=${pageSize}&firstPage=true`,
@@ -98,7 +107,8 @@
         events,
         getPosts,
         getPost,
-        getPostByTag
+        getPostByTag,
+        getSinglePost
     }
 });
 
