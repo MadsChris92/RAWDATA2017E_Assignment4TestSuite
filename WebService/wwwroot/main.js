@@ -33,6 +33,10 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
             })
         };
 
+        var tagSearch = function(param) {
+
+        };
+
         var datGetList = function() {
             var callback = function(sr, self) {
                 console.log(JSON.stringify(self.resultArray()));
