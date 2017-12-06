@@ -11,7 +11,7 @@
 
     const getPosts = function (searchTerm, callback, caller) {
         $.ajax({
-            url: `${postApi}/title/${searchTerm}?pageSize=${pageSize}`,
+            url: `${postApi}/title/${searchTerm}?pageSize=${pageSize}&firstPage=true`,
             success: function (result) {
                 console.log(result);
                 callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
