@@ -66,7 +66,11 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
             if (searchResult) {
                 searchResult().gotoPrev();
             }
-        };
+		};
+
+		var answerCountString = function (param) {
+			return answerCount + " answers"; 
+		}
 
         return {
             searchWord,
@@ -77,7 +81,8 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
             goToNext,
             goToPrev,
             datGetList,
-            searchResult,
+			searchResult,
+			answerCountString,
             tagSearch
         };
     })();
