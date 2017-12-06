@@ -169,7 +169,7 @@ namespace Assignment4.Tests
         {
             var createdNote = service.CreateNote(ValidPostId, "Make note of this");
 
-            var note = service.GetNote(ValidPostId, createdNote.Id);
+            var note = service.GetNote(createdNote.Id);
 
             Assert.Equal(createdNote.Text, note.Text);
             //Assert.Contains(notes, note => note.Text == "Make note of this");
