@@ -1,4 +1,4 @@
-﻿define(["jquery"], function ($) {
+﻿define(["jquery", "knockout"], function ($, ko) {
 
     const postApi = "/api/posts";
     const histApi = "/api/history";
@@ -9,16 +9,14 @@
         event: "event"  // should we have events?
     }
 
-    const getPosts = function (searchTerm, page) {
-        var searchResult = new SearchResult();
+    const getPosts = function (searchTerm, callback, caller) {
         $.ajax({
-            url: `${postApi}/title/${searchTerm}?page=${page}&pageSize=${pageSize}`,
+            url: `${postApi}/title/${searchTerm}?pageSize=${pageSize}`,
             success: function (result) {
                 console.log(result);
-                searchResult.doTheThing(result); // kan ikke returnere fordi den er asyncron... Bruge en event?
+                callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
             }
         });
-        return searchResult;
     }
 
     const getPost = function (id) {
@@ -31,34 +29,46 @@
         });
     }
 
-    const getResults = function(link) {
-        
-    }
-
-
-    function doTheThing(result, search){}
-
     //ideen er at have et objekt der bare kan få besked om at hente den næste/forrige side, uden at bekymre sig om url'er
     function SearchResult(result) {
+        var self = this;
         const page = ko.observable(0);
-        const next = ko.observable(result.next);
-        const prev = ko.observable(result.prev);
+        const next = ko.observable(result.nextPage);
+        const prev = ko.observable(result.previousPage);
         const hasNext = ko.computed(function () {
             return next() || false;
         }, this);
         const hasPrev = ko.computed(function () {
             return prev() || false;
         }, this);
-        const posts = ko.observableArray([]);
+        const posts = ko.observableArray(result.results);
+
         const gotoNext = function () {
             if (hasNext()) {
-                posts(getResults(self.next()));
+                posts([]);
+                $.ajax({
+                    url: self.next(),
+                    success: function (result) {
+                        self.next(result.nextPage);
+                        self.prev(result.previousPage);
+                        self.posts(result.results);
+                    }
+                });
                 page(page() + 1);
             }
         }
+
         const gotoPrev = function () {
             if (hasPrev()) {
-                posts(getResults(self.prev()));
+                posts([]);
+                $.ajax({
+                    url: self.next(),
+                    success: function(result) {
+                        self.next(result.nextPage);
+                        self.prev(result.previousPage);
+                        self.posts(result.results);
+                    }
+                });
                 page(page() - 1);
             }
         }
@@ -67,8 +77,8 @@
             hasPrev,
             gotoNext,
             gotoPrev,
-            pagePosts: posts,
-            pageNumber: page,
+            posts,
+            page,
             getPost
         }
     }
