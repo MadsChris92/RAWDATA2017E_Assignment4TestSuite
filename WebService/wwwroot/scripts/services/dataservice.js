@@ -11,7 +11,7 @@
 
     const getPosts = function (searchTerm, callback, caller) {
         $.ajax({
-            url: `${postApi}/title/${searchTerm}?pageSize=${pageSize}`,
+            url: `${postApi}/title/${searchTerm}?pageSize=${pageSize}&firstPage=true`,
             success: function (result) {
                 console.log(result);
                 callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
@@ -47,11 +47,12 @@
             if (hasNext()) {
                 posts([]);
                 $.ajax({
-                    url: self.next(),
+                    url: next(),
                     success: function (result) {
-                        self.next(result.nextPage);
-                        self.prev(result.previousPage);
-                        self.posts(result.results);
+                        next(result.nextPage);
+                        prev(result.previousPage);
+                        posts(result.results);
+                        //Javascript er fgt joe sproe
                     }
                 });
                 page(page() + 1);
@@ -62,11 +63,11 @@
             if (hasPrev()) {
                 posts([]);
                 $.ajax({
-                    url: self.next(),
+                    url: prev(),
                     success: function(result) {
-                        self.next(result.nextPage);
-                        self.prev(result.previousPage);
-                        self.posts(result.results);
+                        next(result.nextPage);
+                        prev(result.previousPage);
+                        posts(result.results);
                     }
                 });
                 page(page() - 1);
