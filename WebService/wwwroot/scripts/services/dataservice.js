@@ -1,4 +1,4 @@
-﻿define(["jquery"], function ($) {
+﻿define(["jquery", "knockout"], function ($, ko) {
 
     const postApi = "/api/posts";
     const histApi = "/api/history";
@@ -9,15 +9,14 @@
         event: "event"  // should we have events?
     }
 
-    const getPosts = function (searchTerm, callback) {
+    const getPosts = function (searchTerm, callback, caller) {
         $.ajax({
             url: `${postApi}/title/${searchTerm}?pageSize=${pageSize}`,
             success: function (result) {
                 console.log(result);
-                callback(new SearchResult(result));// kan ikke returnere fordi den er asyncron... Bruge en event?
+                callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
             }
         });
-        return searchResult;
     }
 
     const getPost = function (id) {
@@ -46,23 +45,30 @@
 
         const gotoNext = function () {
             if (hasNext()) {
+                posts([]);
                 $.ajax({
                     url: self.next(),
                     success: function (result) {
                         self.next(result.nextPage);
                         self.prev(result.previousPage);
                         self.posts(result.results);
-                        callback(new SearchResult(result));// kan ikke returnere fordi den er asyncron... Bruge en event?
                     }
                 });
-                posts(getResults(self.next()));
                 page(page() + 1);
             }
         }
 
         const gotoPrev = function () {
             if (hasPrev()) {
-                posts(getResults(self.prev()));
+                posts([]);
+                $.ajax({
+                    url: self.next(),
+                    success: function(result) {
+                        self.next(result.nextPage);
+                        self.prev(result.previousPage);
+                        self.posts(result.results);
+                    }
+                });
                 page(page() - 1);
             }
         }
@@ -71,8 +77,8 @@
             hasPrev,
             gotoNext,
             gotoPrev,
-            pagePosts: posts,
-            pageNumber: page,
+            posts,
+            page,
             getPost
         }
     }

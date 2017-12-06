@@ -11,7 +11,8 @@
 })
 
 require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
-    var vm = (function () {
+    var vm = (function() {
+        var self = this;
         var searchWord = ko.observable("");
         var test = ko.observable("GSEDGKWSD");
         var postListArray = ko.observableArray([]);
@@ -32,9 +33,12 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
         };
 
         var datGetList = function() {
-            dat.getPosts(vm.searchWord, function(sr) {
-                postListArray = sr.posts;
-            });
+            var callback = function(sr, self) {
+                console.log(JSON.stringify(self.resultArray()));
+                self.resultArray(sr.posts());
+                console.log(JSON.stringify(self.resultArray()));
+            }
+            dat.getPosts(vm.searchWord(), callback, vm);
         };
 
         return {

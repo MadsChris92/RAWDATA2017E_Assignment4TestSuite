@@ -15,7 +15,10 @@
                 <input data-bind="textInput: searchWord"><br>
 
                 <p data-bind="text: test">Martin er alstå gay</p>
-                <button data-bind="click: getPostList">Get post</button>
+                <button data-bind="click: datGetList">Get post</button>
+                <!-- ko/if-->
+                <button data-bind="click: datGetList"><<</button>
+                <button data-bind="click: datGetList">>></button>
             </div>
 
             <div class="col-sm-4">
