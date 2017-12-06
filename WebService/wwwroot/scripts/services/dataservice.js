@@ -63,11 +63,11 @@
             if (hasPrev()) {
                 posts([]);
                 $.ajax({
-                    url: self.next(),
+                    url: prev(),
                     success: function(result) {
-                        self.next(result.nextPage);
-                        self.prev(result.previousPage);
-                        self.posts(result.results);
+                        next(result.nextPage);
+                        prev(result.previousPage);
+                        posts(result.results);
                     }
                 });
                 page(page() - 1);
