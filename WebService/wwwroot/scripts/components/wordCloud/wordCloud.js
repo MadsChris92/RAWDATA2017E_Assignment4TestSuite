@@ -1,5 +1,4 @@
-﻿
-define(['knockout'], function (ko) {
+﻿define(['knockout'], function (ko) {
     return function (params) {
         var words = ko.observableArray([
             { text: "Lorem", weight: 13 },
