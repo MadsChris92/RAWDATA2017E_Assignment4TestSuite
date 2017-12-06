@@ -19,6 +19,16 @@
         });
     }
 
+    const getPostByTag = function(tagTitle, callback, caller) {
+        $.ajax({
+        url: `${postApi}/tag/${tagTitle}`,
+            success: function (result) {
+                console.log(result);
+                callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
+            }
+    });
+    }
+
     const getPost = function (id) {
         $.ajax({
             url: `${postApi}/${id}`,
@@ -87,7 +97,8 @@
     return {
         events,
         getPosts,
-        getPost
+        getPost,
+        getPostByTag
     }
 });
 

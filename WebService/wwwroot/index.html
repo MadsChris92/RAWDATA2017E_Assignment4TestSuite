@@ -52,12 +52,12 @@
 				</a>
 			</script>
             <script type="text/html" id="tag-template">
-				<a href="#tag" class="list-group-item-action"><span class="badge badge-pill badge-primary" data-bind="text: title">java</span></a>
+				<a href="#tag" class="list-group-item-action" data-bind="click: function(tagTitle) {$root.tagSearch(title, tagTitle)}"><span class="badge badge-pill badge-primary" data-bind="text: title">java</span></a>
             </script>
 			<script src="lib/requirejs/require.js" data-main="main"></script>
 			<div class="switchButtons">
 				<button type="button" class="btn btn-primary" data-bind="click: goToPrev">Previous</button>		
-				<button type="button" class="btn btn-primary" " data-bind="click: goToNext">Next</button>
+				<button type="button" class="btn btn-primary" data-bind="click: goToNext">Next</button>
 			</div>
 		</div>
 	</div>

@@ -33,8 +33,15 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
             })
         };
 
-        var tagSearch = function(param) {
-
+        var tagSearch = function(tagTitle) {
+            console.log(tagTitle);
+            var callback = function(sr, self) {
+                console.log(JSON.stringify(self.resultArray()));
+                self.resultArray(sr.posts());
+                console.log(JSON.stringify(self.resultArray()));
+                self.searchResult(sr);
+            }
+            dat.getPostByTag(tagTitle, callback,vm);
         };
 
         var datGetList = function() {
@@ -70,7 +77,8 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
             goToNext,
             goToPrev,
             datGetList,
-            searchResult
+            searchResult,
+            tagSearch
         };
     })();
 
