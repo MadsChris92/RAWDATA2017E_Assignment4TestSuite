@@ -5,10 +5,10 @@
 
         var getPost = function (postListItem) {
 
-            var callback = function (sr, self) {
-                self.postResult(sr);
-                console.log(JSON.stringify(self.postResult));
-            }
+            //var callback = function (sr, self) {
+            //    self.postResult(sr);
+            //    console.log(JSON.stringify(self.postResult));
+            //}
         }
         return {
             getPost

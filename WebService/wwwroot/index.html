@@ -28,9 +28,7 @@
 							<a class="nav-link" href="#">Tags</a>
 						</li>
 					</ul>
-
 				</div>
-
 				<form class="form-inline my-2 my-lg-0">
 					<input class="form-control mr-sm-2" data-bind="textInput: searchWord" type="search" placeholder="Search" aria-label="Search">
 					<button class="btn btn-outline-primary my-2 my-sm-0" data-bind="click: datGetList" type="submit">Search</button>
@@ -39,7 +37,9 @@
 		</div>
 	</div>
 	<br />
-	<div class="container">
+    <div data-bind='component: "post"'></div>
+
+         <div class="container">
 		<div class="container-fluid bg-light rounded p-4">
 			<!-- ko if:searchResult() !== null-->
 			<div class="list-group" data-bind="template: {name: 'sPost-template', foreach: searchResult().posts}"></div>
