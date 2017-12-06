@@ -1,8 +1,8 @@
 ﻿requirejs.config({
-    baseUrl: 'lib',
+    baseUrl: 'scripts',
     paths: {
-        knockout: 'knockout/dist/knockout',
-        bootstrap: 'bootstrap/dist/js/bootstrap',
+        knockout: '../lib/knockout/dist/knockout',
+        bootstrap: '../lib/bootstrap/dist/js/bootstrap',
         jquery: "../lib/jquery/dist/jquery",
         text: "../lib/text/text",
         jqcloud: "../lib/jqcloud2/dist/jqcloud",
@@ -43,14 +43,15 @@ require(['knockout', 'jquery', 'jqcloud'], function (ko, $) {
 require(["knockout"], function (ko) {
     ko.components.register("wordCloud",
         {
-            viewModel: { require: "scripts/components/wordCloud/wordCloud" },
-            template: { require: "text!scripts/components/wordCloud/wordCloud.html" }
+            viewModel: { require: "../scripts/components/wordCloud/wordCloud" },
+            template: { require: "text!../scripts/components/wordCloud/wordCloud.html" }
         }
     );
+    //dfsdfssgvdsfbbthdbdbg
     ko.components.register("post",
         {
-            viewModel: { require: "scripts/components/postList/singlePost" },
-            template: { require: "scripts/text!components/postList/post.html" }
+            viewModel: { require: "../scripts/components/postList/singlePost" },
+            template: { require: "text!../scripts/components/postList/post.html" }
         }
     );
 });
@@ -85,6 +86,11 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
 			return false;
 		}, this);
 
+       
+        var singlePost = ko.observable({
+            title: "john",
+            body: "johnjohn"
+        });
         var getPostList = function () {
             $.ajax({
                 url: "http://localhost:5001/api/posts/title/" + vm.searchWord,
@@ -105,7 +111,14 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
         var showSinglePost = function (postLink) {
             //dat.getSinglePost(postLink);
             //dat.getPosts(vm.searchWord(), callback, );
-            dat.getSinglePost(postLink, callback, viewModel.getPost);
+
+
+            var callback = function (sr, self) {
+                console.log(sr);
+                self.singlePost(sr);
+            }
+
+            dat.getSinglePost(postLink, callback, vm);
             console.log(postLink);
         };
 
@@ -166,7 +179,8 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
 			searchResult,
 			answerCountString,
             tagSearch,
-			showSinglePost,
+            showSinglePost,
+            singlePost,
 			noResultsFound
         };
     })();
