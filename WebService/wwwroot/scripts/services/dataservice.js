@@ -47,11 +47,12 @@
             if (hasNext()) {
                 posts([]);
                 $.ajax({
-                    url: self.next(),
+                    url: next(),
                     success: function (result) {
-                        self.next(result.nextPage);
-                        self.prev(result.previousPage);
-                        self.posts(result.results);
+                        next(result.nextPage);
+                        prev(result.previousPage);
+                        posts(result.results);
+                        //Javascript er fgt joe sproe
                     }
                 });
                 page(page() + 1);

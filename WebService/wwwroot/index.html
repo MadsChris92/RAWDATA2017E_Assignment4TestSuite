@@ -20,13 +20,15 @@
 				<div class="container">
 					<form class="form-inline my-2 my-lg-0">
 						<input class="form-control mr-sm-2" data-bind="textInput: searchWord" placeholder="Search" aria-label="Search">
-						<button class="btn btn-outline-success my-2 my-sm-0" data-bind="click: getPostList">Search</button>
+						<button class="btn btn-outline-success my-2 my-sm-0" data-bind="click: datGetList">Search</button>
 					</form>
 				</div>
 			</div>
 		</nav>
 		<div class="listbody">
-			<div class="list-group" data-bind="template: {name: 'sPost-template', foreach: resultArray}"></div>
+            <!-- ko if:searchResult() !== null-->
+			<div class="list-group" data-bind="template: {name: 'sPost-template', foreach: searchResult().posts}"></div>
+            <!-- /ko -->
 			<script type="text/html" id="sPost-template">
 				<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
 					<div class="d-flex w-100 justify-content-between">
@@ -41,8 +43,8 @@
 			</script>
 			<script src="lib/requirejs/require.js" data-main="main"></script>
 			<div class="switchButtons">
-				<button class="btn-block">Next</button>
-				<button class="btn-block" data-bind="">Previous</button>	
+				<button class="btn-block" data-bind="click: goToNext">Next</button>
+				<button class="btn-block" data-bind="click: goToPrev">Previous</button>	
 			</div>
 		</div>
 	</div>
