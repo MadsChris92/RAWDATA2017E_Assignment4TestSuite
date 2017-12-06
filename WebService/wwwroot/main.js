@@ -1,8 +1,8 @@
 ﻿requirejs.config({
-    baseUrl: 'lib',
+    baseUrl: 'scripts',
     paths: {
-        knockout: 'knockout/dist/knockout',
-        bootstrap: 'bootstrap/dist/js/bootstrap',
+        knockout: '../lib/knockout/dist/knockout',
+        bootstrap: '../lib/bootstrap/dist/js/bootstrap',
         jquery: "../lib/jquery/dist/jquery",
         text: "../lib/text/text",
         jqcloud: "../lib/jqcloud2/dist/jqcloud",
@@ -43,10 +43,11 @@ require(['knockout', 'jquery', 'jqcloud'], function (ko, $) {
 require(["knockout"], function (ko) {
     ko.components.register("wordCloud",
         {
-            viewModel: { require: "scripts/components/wordCloud/wordCloud" },
-            template: { require: "text!scripts/components/wordCloud/wordCloud.html" }
+            viewModel: { require: "../scripts/components/wordCloud/wordCloud" },
+            template: { require: "text!../scripts/components/wordCloud/wordCloud.html" }
         }
     );
+    //dfsdfssgvdsfbbthdbdbg
     ko.components.register("post",
         {
             viewModel: { require: "scripts/components/postList/singlePost" },
