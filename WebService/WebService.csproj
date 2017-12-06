@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\cloudedView.html" />
     <Content Remove="wwwroot\scripts\components\wordCloud\postList.html" />
     <Content Remove="wwwroot\wordcloud.html" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\cloudedView.html" />
     <Content Include="wwwroot\scripts\components\wordCloud\wordCloud.html" />
   </ItemGroup>
 
