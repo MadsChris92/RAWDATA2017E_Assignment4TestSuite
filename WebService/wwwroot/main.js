@@ -47,9 +47,6 @@ require(["knockout"], function (ko) {
             template: { require: "text!scripts/components/wordCloud/wordCloud.html" }
         }
     );
-});
-
-require(["knockout"], function (ko) {
     ko.components.register("post",
         {
             viewModel: { require: "scripts/components/postList/singlePost" },
