@@ -47,9 +47,13 @@
 					<p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
 					<small class="text-muted" data-bind="text: ownerName">Alexander Ibsen</small><br />
 					<span class="badge badge-pill badge-primary" data-bind="text: answerCount"></span>
-					<span class="badge badge-pill badge-primary">java</span>
+					<!--<span class="badge badge-pill badge-primary">java</span>-->
+                    <div data-bind="template: {name: 'tag-template', foreach: tags}"></div>
 				</a>
 			</script>
+            <script type="text/html" id="tag-template">
+                <span class="badge badge-pill badge-primary" data-bind="text: title">java</span>
+            </script>
 			<script src="lib/requirejs/require.js" data-main="main"></script>
 			<div class="switchButtons">
 				<button type="button" class="btn btn-primary"" data-bind="click: goToNext">Next</button>
