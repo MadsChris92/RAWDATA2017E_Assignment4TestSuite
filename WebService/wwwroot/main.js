@@ -50,8 +50,8 @@ require(["knockout"], function (ko) {
     //dfsdfssgvdsfbbthdbdbg
     ko.components.register("post",
         {
-            viewModel: { require: "scripts/components/postList/singlePost" },
-            template: { require: "scripts/text!components/postList/post.html" }
+            viewModel: { require: "../scripts/components/postList/singlePost" },
+            template: { require: "text!../scripts/components/postList/post.html" }
         }
     );
 });
@@ -64,6 +64,10 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
         var postListArray = ko.observableArray([]);
         var resultArray = ko.observableArray([]);
         var searchResult = ko.observable(null);
+        var singlePost = ko.observable({
+            title: "john",
+            body: "johnjohn"
+        });
         var getPostList = function () {
             $.ajax({
                 url: "http://localhost:5001/api/posts/title/" + vm.searchWord,
@@ -82,7 +86,14 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
         var showSinglePost = function (postLink) {
             //dat.getSinglePost(postLink);
             //dat.getPosts(vm.searchWord(), callback, );
-            dat.getSinglePost(postLink, callback, viewModel.getPost);
+
+
+            var callback = function (sr, self) {
+                console.log(sr);
+                self.singlePost(sr);
+            }
+
+            dat.getSinglePost(postLink, callback, vm);
             console.log(postLink);
         };
 
@@ -137,7 +148,8 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
 			searchResult,
 			answerCountString,
             tagSearch,
-            showSinglePost
+            showSinglePost,
+            singlePost
         };
     })();
 
