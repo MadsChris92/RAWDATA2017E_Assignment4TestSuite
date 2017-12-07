@@ -50,7 +50,7 @@
 			<div class="list-group p-2" data-bind="template: {name: 'sPost-template', foreach: searchResult().posts}"></div>
 			<!-- /ko -->
 			<script type="text/html" id="sPost-template">
-				<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+				<a href="#" class="list-group-item list-group-item-action flex-column align-items-start" data-bind="click: function(link) {$root.showSinglePost(url, link)}">
 					<div class="d-flex w-100 justify-content-between">
 						<h5 class="mb-1" data-bind="text: title"></h5>
 						<small class="text-muted">3 days ago</small>
@@ -73,5 +73,6 @@
 			</div>
 		</div>
 	</div>
+    <div data-bind="component: {name: 'post' , params: {name: singlePost}}"></div>
 </body>
 </html>
