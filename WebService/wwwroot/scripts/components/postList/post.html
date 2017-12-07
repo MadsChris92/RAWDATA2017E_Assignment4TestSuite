@@ -1,4 +1,25 @@
 ﻿
 <div class="pageDiv"> <!--data-bind="with: postResult">-->
     <span data-bind="text: postResult().title">DSAFASFASKGASKGAK</span>
+    <br />
+    <span data-bind="text: postResult().body"></span>
+
+    <div data-bind="template: {name: 'comment-template', foreach: postResult().comments}"></div>
+    <div data-bind="template: {name: 'answer-template', foreach: postResult().answers}"></div>
+
+    <!-- Post Template -->
+    <script type="text/html" id="comment-template">
+        <span>Comment: </span>
+        <span data-bind="text: text"></span>
+        <br />
+    </script>
+
+    <!-- Answer Template -->
+    <script type="text/html" id="answer-template">
+        <span>Answer: </span>
+        <span data-bind="text: body"></span>
+        <br />
+        <div data-bind="template: {name: 'comment-template', foreach: comments}"></div>
+    </script>
+
 </div>
