@@ -47,7 +47,7 @@ namespace DAL
                 if (question == null) return null;
                 question.FillAnswers();
                 question.FillComments();
-                //question.FillTags();
+                question.FillTags();
 
                 foreach (Answer answer in question.Answers)
                 {
