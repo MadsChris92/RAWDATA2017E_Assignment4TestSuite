@@ -91,22 +91,6 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
             title: "john",
             body: "johnjohn"
         });
-        var getPostList = function () {
-            $.ajax({
-                url: "http://localhost:5001/api/posts/title/" + vm.searchWord,
-                method: "GET",
-                dataType: "json",
-                success: function (data) {
-
-                    vm.postListArray(data);
-                    vm.resultArray(data.results);
-                    console.log(data);
-                    console.log(vm.searchWord);
-
-                }
-			});
-
-        };
 
         var showSinglePost = function (postLink) {
             //dat.getSinglePost(postLink);
@@ -135,9 +119,9 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
 
         var datGetList = function() {
             var callback = function(sr, self) {
-                console.log(JSON.stringify(self.resultArray()));
+                //console.log(JSON.stringify(self.resultArray()));
                 self.resultArray(sr.posts());
-                console.log(JSON.stringify(self.resultArray()));
+                //console.log(JSON.stringify(self.resultArray()));
                 self.searchResult(sr);
             }
             dat.getPosts(vm.searchWord(), callback, vm);
@@ -159,10 +143,6 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
             }
 		};
 
-		var answerCountString = function (param) {
-			return answerCount + " answers"; 
-		}
-
 
 
         return {
@@ -170,14 +150,12 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
             test,
             postListArray,
             resultArray,
-            getPostList,
             goToNext,
 			goToPrev,
 			hasNext,
 			hasPrev,
             datGetList,
 			searchResult,
-			answerCountString,
             tagSearch,
             showSinglePost,
             singlePost,

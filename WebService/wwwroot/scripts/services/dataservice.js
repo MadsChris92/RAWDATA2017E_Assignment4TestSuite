@@ -13,7 +13,8 @@
         $.ajax({
             url: link,
             success: function (result) {
-                console.log(result);
+                //console.log(result);
+                callback(result, caller); // getSinglePost returnerede ikke noget før
             }
         });
     };
@@ -22,7 +23,7 @@
         $.ajax({
             url: `${postApi}/title/${searchTerm}?pageSize=${pageSize}&firstPage=true`,
             success: function (result) {
-                console.log(result);
+                //console.log(result);
                 callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
             }
         });
@@ -32,7 +33,7 @@
         $.ajax({
         url: `${postApi}/tag/${tagTitle}`,
             success: function (result) {
-                console.log(result);
+                //console.log(result);
                 callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
             }
     });
@@ -42,7 +43,7 @@
         $.ajax({
             url: `${postApi}/${id}`,
             success: function (result) {
-                console.log(result);
+                //console.log(result);
                 return result;
             }
         });
