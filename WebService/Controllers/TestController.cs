@@ -43,7 +43,6 @@ namespace WebService.Controllers
         public IActionResult GetQuestion(int id)
         {
             var question = _dataService.GetQuestionAllData(id);
-            Console.WriteLine(question.OwnerId);
             JSONObjects.Question result = null;
             if (question != null)
             {
