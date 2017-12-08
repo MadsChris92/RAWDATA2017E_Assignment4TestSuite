@@ -104,7 +104,7 @@ namespace WebService.Controllers
 
             return Ok(result);
         }
-        [HttpGet("{score}", Name = nameof(GetPostsByScore))]
+        [HttpGet("score", Name = nameof(GetPostsByScore))]
         public IActionResult GetPostsByScore(string name, int page = 0, int pageSize = 5, bool firstPage = false)
         {
             var question = _dataService.GetPostsHighestScore(page, pageSize, out var totalResults);
@@ -116,7 +116,7 @@ namespace WebService.Controllers
                 {
                     Url = Url.Link(nameof(GetPost), que.Id),
                     Body = que.Body,
-                    OwnerUrl = Url.Link(nameof(GetUser), que.OwnerId),
+                    OwnerUrl = Url.Link(nameof(TestController.GetUser), que.OwnerId),
                     Created = que.Created,
                     Score = que.Score,
                     Title = que.Title,
@@ -125,13 +125,13 @@ namespace WebService.Controllers
                     {
                         Url = Url.Link(nameof(GetPost), answer.Id),
                         Body = answer.Body,
-                        OwnerUrl = Url.Link(nameof(GetUser), answer.OwnerId),
+                        OwnerUrl = Url.Link(nameof(TestController.GetUser), answer.OwnerId),
                         Created = answer.Created,
                         Score = answer.Score,
                         Comments = answer.Comments.Select(comment => new JSONObjects.Comment
                         {
                             Created = comment.Created,
-                            OwnerUrl = Url.Link(nameof(GetUser), comment.OwnerId),
+                            OwnerUrl = Url.Link(nameof(TestController.GetUser), comment.OwnerId),
                             Score = comment.Score,
                             Text = comment.Text
                         }).ToList()
@@ -141,11 +141,11 @@ namespace WebService.Controllers
                     Comments = que.Comments.Select(comment => new JSONObjects.Comment
                     {
                         Created = comment.Created,
-                        OwnerUrl = Url.Link(nameof(GetUser), comment.OwnerId),
+                        OwnerUrl = Url.Link(nameof(TestController.GetUser), comment.OwnerId),
                         Score = comment.Score,
                         Text = comment.Text
                     }).ToList()
-                });
+                }).ToList();
             }
 
             var result = new PaginatedResult<JSONObjects.Question>
