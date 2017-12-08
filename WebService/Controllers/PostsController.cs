@@ -104,6 +104,27 @@ namespace WebService.Controllers
 
             return Ok(result);
         }
+        //[HttpGet("{score}", Name = nameof(GetPostsByScore))]
+        //public IActionResult GetPostsByScore(string name, int page = 0, int pageSize = 5, bool firstPage = false)
+        //{
+        //    var posts = _dataService.GetPostsHighestScore(page, pageSize, out var totalResults);
+        //    posts.ForEach(post => post.Url = Url.Link(nameof(GetPost), new { id = post.Id }));
+
+        //    var result = new PaginatedResult<SearchQuestion>
+        //    {
+        //        TotalResults = totalResults,
+        //        ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
+        //        PreviousPage = page > 0
+        //            ? Url.Link(nameof(GetPostsByScore), new { page = page - 1, pageSize })
+        //            : null,
+        //        NextPage = (page + 1) * pageSize < totalResults
+        //            ? Url.Link(nameof(GetPostsByScore), new { page = page + 1, pageSize })
+        //            : null,
+        //        Results = posts
+        //    };
+
+        //    return Ok(result);
+        //}
 
         [HttpGet("tag/{name}", Name = nameof(GetPostsByTag))]
         public IActionResult GetPostsByTag(string name, int page = 0, int pageSize = 5, bool firstPage=false)

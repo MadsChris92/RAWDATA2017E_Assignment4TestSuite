@@ -62,7 +62,7 @@ namespace DAL
         {
             using (var db = new SovaContext())
             {
-                return db.Answers.Select(ans => (Post) ans).Concat(db.Questions.Select(que => (Post) que))
+                return db.Answers.Select(ans => (Post)ans).Concat(db.Questions.Select(que => (Post)que))
                     .FirstOrDefault(post => post.Id == id);
             }
         }
@@ -87,6 +87,17 @@ namespace DAL
                 return returnPosts;
             }
         }
+
+        //public List<RankedSearchQuestion> GetPostsHighestScore(int page, int pageSize, out int totalResults)
+        //{
+        //    using (var db = new SovaContext()) {
+
+        //        List<RankedSearchQuestion> returnQuestions =  db.Questions.Paginated(page, pageSize, out totalResults).ToList();
+        //        returnQuestions.OrderBy(x => x.Score);
+
+        //        return returnQuestions;
+        //    }
+        //}
 
         public Boolean MarkPost(int id)
         {
@@ -253,6 +264,11 @@ namespace DAL
                 return returnPosts;
 
             }
+        }
+
+        List<Question> IDataService.GetPostsHighestScore(int page, int pageSize, out int totalResults)
+        {
+            throw new NotImplementedException();
         }
     }
 
