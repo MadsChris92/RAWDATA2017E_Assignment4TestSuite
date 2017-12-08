@@ -104,27 +104,65 @@ namespace WebService.Controllers
 
             return Ok(result);
         }
-        //[HttpGet("{score}", Name = nameof(GetPostsByScore))]
-        //public IActionResult GetPostsByScore(string name, int page = 0, int pageSize = 5, bool firstPage = false)
-        //{
-        //    var posts = _dataService.GetPostsHighestScore(page, pageSize, out var totalResults);
-        //    posts.ForEach(post => post.Url = Url.Link(nameof(GetPost), new { id = post.Id }));
+        [HttpGet("{score}", Name = nameof(GetPostsByScore))]
+        public IActionResult GetPostsByScore(string name, int page = 0, int pageSize = 5, bool firstPage = false)
+        {
+            var question = _dataService.GetPostsHighestScore(page, pageSize, out var totalResults);
+            List<JSONObjects.Question> posts = null;
 
-        //    var result = new PaginatedResult<SearchQuestion>
-        //    {
-        //        TotalResults = totalResults,
-        //        ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
-        //        PreviousPage = page > 0
-        //            ? Url.Link(nameof(GetPostsByScore), new { page = page - 1, pageSize })
-        //            : null,
-        //        NextPage = (page + 1) * pageSize < totalResults
-        //            ? Url.Link(nameof(GetPostsByScore), new { page = page + 1, pageSize })
-        //            : null,
-        //        Results = posts
-        //    };
+            if (question != null)
+            {
+                posts = question.Select(que => new JSONObjects.Question
+                {
+                    Url = Url.Link(nameof(GetPost), que.Id),
+                    Body = que.Body,
+                    OwnerUrl = Url.Link(nameof(GetUser), que.OwnerId),
+                    Created = que.Created,
+                    Score = que.Score,
+                    Title = que.Title,
+                    Closed = que.Closed,
+                    Answers = que.Answers.Select(answer => new JSONObjects.Answer
+                    {
+                        Url = Url.Link(nameof(GetPost), answer.Id),
+                        Body = answer.Body,
+                        OwnerUrl = Url.Link(nameof(GetUser), answer.OwnerId),
+                        Created = answer.Created,
+                        Score = answer.Score,
+                        Comments = answer.Comments.Select(comment => new JSONObjects.Comment
+                        {
+                            Created = comment.Created,
+                            OwnerUrl = Url.Link(nameof(GetUser), comment.OwnerId),
+                            Score = comment.Score,
+                            Text = comment.Text
+                        }).ToList()
+                    }).ToList(),
 
-        //    return Ok(result);
-        //}
+                    Tags = que.Tags.Select<Tag, string>(tag => tag.Title).ToList(),
+                    Comments = que.Comments.Select(comment => new JSONObjects.Comment
+                    {
+                        Created = comment.Created,
+                        OwnerUrl = Url.Link(nameof(GetUser), comment.OwnerId),
+                        Score = comment.Score,
+                        Text = comment.Text
+                    }).ToList()
+                });
+            }
+
+            var result = new PaginatedResult<JSONObjects.Question>
+            {
+                TotalResults = totalResults,
+                ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
+                PreviousPage = page > 0
+                    ? Url.Link(nameof(GetPostsByScore), new { page = page - 1, pageSize })
+                    : null,
+                NextPage = (page + 1) * pageSize < totalResults
+                    ? Url.Link(nameof(GetPostsByScore), new { page = page + 1, pageSize })
+                    : null,
+                Results = posts
+            };
+
+            return result != null ? (IActionResult)Ok(result) : NotFound();
+        }
 
         [HttpGet("tag/{name}", Name = nameof(GetPostsByTag))]
         public IActionResult GetPostsByTag(string name, int page = 0, int pageSize = 5, bool firstPage=false)

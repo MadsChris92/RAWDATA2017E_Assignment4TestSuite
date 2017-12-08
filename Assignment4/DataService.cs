@@ -88,16 +88,18 @@ namespace DAL
             }
         }
 
-        //public List<RankedSearchQuestion> GetPostsHighestScore(int page, int pageSize, out int totalResults)
-        //{
-        //    using (var db = new SovaContext()) {
+        public List<Question> GetPostsHighestScore(int page, int pageSize, out int totalResults)
+        {
+            using (var db = new SovaContext()) {
 
-        //        List<RankedSearchQuestion> returnQuestions =  db.Questions.Paginated(page, pageSize, out totalResults).ToList();
-        //        returnQuestions.OrderBy(x => x.Score);
+                List<Question> returnQuestions = db.Questions.Paginated(page, pageSize, out totalResults).ToList();
+                returnQuestions.OrderBy(x => x.Score);
+                return returnQuestions;
 
-        //        return returnQuestions;
-        //    }
-        //}
+            }
+            
+        }
+    
 
         public Boolean MarkPost(int id)
         {
