@@ -1,25 +1,38 @@
 ﻿
-<div class="pageDiv"> <!--data-bind="with: postResult">-->
-    <span data-bind="text: postResult().title">DSAFASFASKGASKGAK</span>
+<div class="container pageDiv"> <!--data-bind="with: postResult">-->
+    <h5 data-bind="text: postResult().title">asd</h5>
     <br />
-    <span data-bind="text: postResult().body"></span>
+    <p data-bind="text: postResult().body">asd</p>
 
-    <div data-bind="template: {name: 'comment-template', foreach: postResult().comments}"></div>
-    <div data-bind="template: {name: 'answer-template', foreach: postResult().answers}"></div>
-
-    <!-- Post Template -->
+	<div class="container alert-success p-3">
+		<h6>Comments</h6>
+		<div class="list-group" data-bind="template: {name: 'comment-template', foreach: postResult().comments}"></div>
+	</div>
+	<br />
+	<h6 data-bind="text: $root.answerCount"></h6><h6>Answers</h6>
+	<div class="list-group" data-bind="template: {name: 'answer-template', foreach: postResult().answers}"></div>
+    <!-- Comment Template -->
     <script type="text/html" id="comment-template">
-        <span>Comment: </span>
-        <span data-bind="text: text"></span>
-        <br />
+		<div class="list-group-item">
+			<span>Comment: </span>
+			<span data-bind="text: text"></span>
+		</div>
+
     </script>
 
     <!-- Answer Template -->
     <script type="text/html" id="answer-template">
-        <span>Answer: </span>
-        <span data-bind="text: body"></span>
-        <br />
-        <div data-bind="template: {name: 'comment-template', foreach: comments}"></div>
-    </script>
+		<div class="list-group-item">
+			<span data-bind="text: body"></span>
+			<br />
+			<br />
+			<div class="container alert-success p-3">
+				<h6>Comments</h6>
+				<div data-bind="template: {name: 'comment-template', foreach: comments}"></div>
+
+			</div>
+		</div>
+		<br />
+</script>
 
 </div>

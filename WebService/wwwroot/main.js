@@ -92,17 +92,16 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
             body: "johnjohn"
         });
 
-        var showSinglePost = function (postLink) {
+		var showSinglePost = function (postLink) {
             //dat.getSinglePost(postLink);
             //dat.getPosts(vm.searchWord(), callback, );
 
-
             var callback = function (sr, self) {
-                console.log(sr);
+                console.log("SR: "+sr);
                 self.singlePost(sr);
             }
 
-            dat.getSinglePost(postLink, callback, vm);
+			dat.getSinglePost(postLink, callback, vm);
             console.log(postLink);
         };
 
