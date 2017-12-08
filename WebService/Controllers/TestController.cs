@@ -32,7 +32,7 @@ namespace WebService.Controllers
             return Ok(data);
         }
 
-        [HttpGet("user/{id}")]
+        [HttpGet("user/{id}", Name = nameof(GetUser))]
         public IActionResult GetUser(int id=1)
         {
             var data = _dataService.GetUser(id);
@@ -42,8 +42,45 @@ namespace WebService.Controllers
         [HttpGet("question/{id}")]
         public IActionResult GetQuestion(int id)
         {
-            var prod = _dataService.GetQuestionAllData(id);
-            return prod != null ? (IActionResult)Ok(prod) : NotFound();
+            var question = _dataService.GetQuestionAllData(id);
+            JSONObjects.Question result = null;
+            if (question != null)
+            {
+                result = new JSONObjects.Question()
+                {
+                    Url = Url.Link(nameof(GetPost), question.Id),
+                    Body = question.Body,
+                    OwnerUrl = Url.Link(nameof(GetUser), question.OwnerId),
+                    Created = question.Created,
+                    Score = question.Score,
+                    Title = question.Title,
+                    Closed = question.Closed,
+                    Answers = question.Answers.Select(answer => new JSONObjects.Answer
+                    {
+                        Url = Url.Link(nameof(GetPost), answer.Id),
+                        Body = answer.Body,
+                        OwnerUrl = Url.Link(nameof(GetUser), answer.OwnerId),
+                        Created = answer.Created,
+                        Score = answer.Score,
+                        Comments = answer.Comments.Select(comment => new JSONObjects.Comment
+                        {
+                            Created = comment.Created,
+                            OwnerUrl = Url.Link(nameof(GetUser), comment.OwnerId),
+                            Score = comment.Score,
+                            Text = comment.Text
+                        }).ToList()
+                    }).ToList(),
+                    Tags = question.Tags.Select<Tag, string>(tag => tag.Title).ToList(),
+                    Comments = question.Comments.Select(comment => new JSONObjects.Comment
+                    {
+                        Created = comment.Created,
+                        OwnerUrl = Url.Link(nameof(GetUser), comment.OwnerId),
+                        Score = comment.Score,
+                        Text = comment.Text
+                    }).ToList()
+                };
+            }
+            return result != null ? (IActionResult)Ok(result) : NotFound();
         }
 
         // GET api/values/5
