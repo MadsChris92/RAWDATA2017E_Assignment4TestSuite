@@ -39,16 +39,6 @@
     });
     }
 
-    const getPost = function (id) {
-        $.ajax({
-            url: `${postApi}/${id}`,
-            success: function (result) {
-                //console.log(result);
-                return result;
-            }
-        });
-    }
-
     //ideen er at have et objekt der bare kan få besked om at hente den næste/forrige side, uden at bekymre sig om url'er
     function SearchResult(result) {
         var self = this;
@@ -98,15 +88,13 @@
             gotoNext,
             gotoPrev,
             posts,
-            page,
-            getPost
+            page
         }
     }
 
     return {
         events,
         getPosts,
-        getPost,
         getPostByTag,
         getSinglePost
     }

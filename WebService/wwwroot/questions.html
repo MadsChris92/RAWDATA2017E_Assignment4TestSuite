@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <title>Portfolio IV</title>
-    <link href="lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
-	
+    <!--<link href="lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>-->
+	<link href="lib/jqcloud2/dist/jqcloud.min.css" rel="stylesheet" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link href="style/styleshit.css" rel="stylesheet" />
-    <link href="lib/jqcloud2/dist/jqcloud.min.css" rel="stylesheet"/>
+
 </head>
 <body>
 <div class="bg-light">
@@ -27,7 +27,7 @@
                         <a class="nav-link active" href="#">Questions <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Tags</a>
+                        <a class="nav-link" href="tags.html">Tags</a>
                     </li>
                 </ul>
 
@@ -60,6 +60,7 @@
 					<!--<span class="badge badge-pill badge-primary">java</span>-->
 					<div data-bind="template: {name: 'tag-template', foreach: tags}"></div>
 				</a>
+				<div hidden class="list-group-item" data-bind="component: {name: 'post' , params: {name: $parent.singlePost}}"></div>
 			</script>
 			<script type="text/html" id="tag-template">
 				<a href="#tag" class="list-group-item-action" data-bind="click: function(tagTitle) {$root.tagSearch(title, tagTitle)}"><span class="badge badge-pill badge-primary" data-bind="text: title">java</span></a>
@@ -72,7 +73,9 @@
 				</div>
 			</div>
 		</div>
+		<br />
+		<div class="container bg-light p-4 rounded border border-primary" data-bind="component: {name: 'post' , params: {name: singlePost}}"></div>
 	</div>
-    <div data-bind="component: {name: 'post' , params: {name: singlePost}}"></div>
+	
 </body>
 </html>
