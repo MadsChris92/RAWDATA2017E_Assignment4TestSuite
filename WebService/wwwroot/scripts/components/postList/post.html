@@ -1,38 +1,45 @@
 ﻿
-<div class="container pageDiv"> <!--data-bind="with: postResult">-->
-    <h5 data-bind="text: postResult().title">asd</h5>
+<div class="container pageDiv" data-bind="with: postResult">
+    <h5 data-bind="text: title">asd</h5>
     <br />
-    <p data-bind="text: postResult().body">asd</p>
-
-	<div class="container alert-success p-3">
-		<h6>Comments</h6>
-		<div class="list-group" data-bind="template: {name: 'comment-template', foreach: postResult().comments}"></div>
-	</div>
-	<br />
-	<h6 data-bind="text: $root.answerCount"></h6><h6>Answers</h6>
-	<div class="list-group" data-bind="template: {name: 'answer-template', foreach: postResult().answers}"></div>
-    <!-- Comment Template -->
-    <script type="text/html" id="comment-template">
-		<div class="list-group-item">
-			<span>Comment: </span>
-			<span data-bind="text: text"></span>
-		</div>
-
-    </script>
-
-    <!-- Answer Template -->
-    <script type="text/html" id="answer-template">
-		<div class="list-group-item">
-			<span data-bind="text: body"></span>
-			<br />
-			<br />
-			<div class="container alert-success p-3">
-				<h6>Comments</h6>
-				<div data-bind="template: {name: 'comment-template', foreach: comments}"></div>
-
-			</div>
-		</div>
-		<br />
-</script>
+    <p data-bind="html: body">asd</p>
+    <!-- ko if:$parent.hasComments--><!-- only show comments if there are comments to show -->
+    <div class="container alert-success p-3">
+        <h6>Comments</h6>
+        <div class="list-group" data-bind="template: {name: 'comment-template', foreach: comments}"></div>
+    </div>
+    <br />
+    <!-- /ko -->
+    <h6 data-bind="text: $root.answerCount"></h6><h6>Answers</h6>
+    <div class="list-group" data-bind="template: {name: 'answer-template', foreach: answers}"></div>
+    
 
 </div>
+<!-- Comment Template -->
+<script type="text/html" id="comment-template">
+    <div class="list-group-item">
+        <span>Comment: </span>
+        <span data-bind="text: text"></span>
+        <small class="text-muted" data-bind="text: created"></small>
+        <small class="text-muted" data-bind="text: owner.name"></small>
+        <span data-bind="text: score"></span>
+    </div>
+
+</script>
+
+<!-- Answer Template -->
+<script type="text/html" id="answer-template">
+    <div class="list-group-item">
+        <span data-bind="html: body"></span>
+        <br />
+        <br />
+        <!-- ko if:$parent.hasComments--><!-- only show comments if there are comments to show -->
+        <div class="container alert-success p-3">
+            <h6>Comments</h6>
+            <div data-bind="template: {name: 'comment-template', foreach: comments}"></div>
+
+        </div>
+        <!-- /ko -->
+    </div>
+    <br />
+</script>
