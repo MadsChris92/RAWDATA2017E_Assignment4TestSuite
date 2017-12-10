@@ -44,12 +44,12 @@
 			<!-- ko if:searchResult() !== null-->
 			<div class="list-group" data-bind="template: {name: 'sPost-template', foreach: searchResult().posts}"></div>
 			<!-- /ko -->
-			<script type="text/html" id="sPost-template">
-				<a href="#" class="list-group-item list-group-item-action flex-column align-items-start" data-bind="click: function(link) {$root.showSinglePost(url, link)}">
-					<div class="d-flex w-100 justify-content-between">
-						<h5 class="mb-1" data-bind="text: title"></h5>
-						<small class="text-muted">3 days ago</small>
-					</div>
+		    <script type="text/html" id="sPost-template">
+		        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" data-bind="click: function(link) {$root.showSinglePost(url, link)}">
+		            <div class="d-flex w-100 justify-content-between">
+		                <h5 class="mb-1" data-bind="text: title"></h5>
+		                <small class="text-muted" data-bind="date:created">3 days ago</small>
+		            </div>
 					<small class="text-muted" data-bind="text: ownerName">Alexander Ibsen</small><br />
 					<span class="badge badge-pill badge-success"><span data-bind="text: answerCount"></span> answers</span>
 					<!--<span class="badge badge-pill badge-primary">java</span>-->

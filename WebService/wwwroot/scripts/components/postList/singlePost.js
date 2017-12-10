@@ -9,7 +9,6 @@
         //var postResult = ko.observable(params.name || '');
 
         
-        console.log(postResult);
         return {
             postResult,
             hasComments

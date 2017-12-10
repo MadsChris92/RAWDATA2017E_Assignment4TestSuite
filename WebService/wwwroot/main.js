@@ -6,7 +6,8 @@
         jquery: "../lib/jquery/dist/jquery",
         text: "../lib/text/text",
         jqcloud: "../lib/jqcloud2/dist/jqcloud",
-        dataservice: "../scripts/services/dataservice"
+        dataservice: "../scripts/services/dataservice",
+        sugarDate: "../lib/sugar-date/dist/sugar-date"
     },
     shim: {
         jqcloud: {
@@ -15,7 +16,7 @@
     }
 });
 
-require(['knockout', 'jquery', 'jqcloud'], function (ko, $) {
+require(['knockout', 'jquery', 'jqcloud', 'sugarDate'], function (ko, $) {
     ko.bindingHandlers.cloud = {
         init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
             // This will be called when the binding is first applied to an element
@@ -37,6 +38,18 @@ require(['knockout', 'jquery', 'jqcloud'], function (ko, $) {
             $(element).jQCloud(words);
         }
     };
+
+    ko.bindingHandlers.date = {
+        update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+            // This will be called once when the binding is first applied to an element,
+            // and again whenever any observables/computeds that are accessed change
+            // Update the DOM element based on the supplied values here.
+            var date = new Sugar.Date(ko.unwrap(valueAccessor()));
+            element.innerText = date.relative().raw;
+            element.title = date.raw;
+            console.log(ko.unwrap(valueAccessor()));
+        }
+    };
 });
 
 
@@ -47,7 +60,6 @@ require(["knockout"], function (ko) {
             template: { require: "text!../scripts/components/wordCloud/wordCloud.html" }
         }
     );
-    //dfsdfssgvdsfbbthdbdbg
     ko.components.register("post",
         {
             viewModel: { require: "../scripts/components/postList/singlePost" },
@@ -89,7 +101,8 @@ require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
        
         var singlePost = ko.observable({
             title: "john",
-            body: "johnjohn"
+            body: "johnjohn",
+            answers: []
         });
 
 		var showSinglePost = function (postLink) {
