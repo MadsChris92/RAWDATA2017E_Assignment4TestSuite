@@ -4,10 +4,8 @@
         
         var postResult = params.name;
         var hasComments = ko.computed(function() {
-            return typeof postResult().comments !== "undefined" && postResult().comments.length > 0;
+            return typeof postResult().comments !== "undefined";
         }, this);
-        //var postResult = ko.observable(params.name || '');
-
         
         return {
             postResult,

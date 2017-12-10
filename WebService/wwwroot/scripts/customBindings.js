@@ -29,7 +29,6 @@
             var date = new Sugar.Date(ko.unwrap(valueAccessor()));
             element.innerText = date.relative().raw;
             element.title = date.raw;
-            console.log(ko.unwrap(valueAccessor()));
         }
     };
 });

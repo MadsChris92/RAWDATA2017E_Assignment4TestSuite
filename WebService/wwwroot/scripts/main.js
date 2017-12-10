@@ -32,7 +32,8 @@
         var singlePost = ko.observable({
             title: "john",
             body: "johnjohn",
-            answers: []
+            answers: [],
+            comments: []
         });
 
         var showSinglePost = function (postLink) {
@@ -40,20 +41,20 @@
             //dat.getPosts(vm.searchWord(), callback, );
 
             var callback = function (sr, self) {
-                console.log("SR: " + sr);
+                //console.log("SR: " + sr);
                 self.singlePost(sr);
             }
 
             dat.getSinglePost(postLink, callback, vm);
-            console.log(postLink);
+            //console.log(postLink);
         };
 
         var tagSearch = function (tagTitle) {
             console.log(tagTitle);
             var callback = function (sr, self) {
-                console.log(JSON.stringify(self.resultArray()));
+                //console.log(JSON.stringify(self.resultArray()));
                 self.resultArray(sr.posts());
-                console.log(JSON.stringify(self.resultArray()));
+                //console.log(JSON.stringify(self.resultArray()));
                 self.searchResult(sr);
             }
             dat.getPostByTag(tagTitle, callback, vm);
@@ -72,7 +73,6 @@
         var goToNext = function () {
             console.log("Next Activated");
             if (searchResult) {
-                console.log("next");
                 searchResult().gotoNext();
             }
         };
