@@ -123,7 +123,7 @@ namespace DAL
             }
         }
 
-        private List<MarkedPost> GetMarkedPosts(int page, int pageSize, out int totalResults)
+        public List<MarkedPost> GetMarkedPosts(int page, int pageSize, out int totalResults)
         {
             using (var db = new SovaContext())
             {
@@ -268,9 +268,73 @@ namespace DAL
             }
         }
 
-        List<Question> IDataService.GetPostsHighestScore(int page, int pageSize, out int totalResults)
+        public List<RankedSearchQuestion> SearchPostsOrderedByScore(string title, int page, int pageSize, out int totalResults)
         {
-            throw new NotImplementedException();
+
+            using (var db = new SovaContext())
+            {
+                var returnPosts = db.RankedSearchQuestion.FromSql("CALL bestmatch({0})", title)
+                    .OrderByDescending(q => q.Score)
+                    .Paginated(page, pageSize, out totalResults)
+                    .ToList();
+                foreach (var post in returnPosts)
+                {
+                    post.FillTags();
+                }
+                return returnPosts;
+            }
+        }
+
+        public List<RankedSearchQuestion> SearchPostsOrderedByNewest(string title, int page, int pageSize, string orderBy, out int totalResults)
+        {
+
+            using (var db = new SovaContext())
+            {
+                var returnPosts = db.RankedSearchQuestion.FromSql("CALL bestmatch({0})", title)
+                    .OrderByDescending(q => q.Created)
+                    .Paginated(page, pageSize, out totalResults)
+                    .ToList();
+                foreach (var post in returnPosts)
+                {
+                    post.FillTags();
+                }
+                return returnPosts;
+            }
+        }
+        public List<RankedSearchQuestion> SearchPostsOrderedByRanking(string title, int page, int pageSize, out int totalResults)
+        {
+
+            using (var db = new SovaContext())
+            {
+                var returnPosts = db.RankedSearchQuestion.FromSql("CALL bestmatch({0})", title)
+                    .Paginated(page, pageSize, out totalResults)
+                    .ToList();
+                foreach (var post in returnPosts)
+                {
+                    post.FillTags();
+                }
+                return returnPosts;
+            }
+        }
+
+        public List<RankedSearchQuestion> SearchPosts(string terms, int page, int pageSize, string orderBy, out int totalResults)
+        {
+            using (var db = new SovaContext())
+            {
+                var searchResult = db.RankedSearchQuestion.FromSql("CALL bestmatch({0})", terms);
+                switch (orderBy)
+                {
+                    case "age":
+                        searchResult = searchResult.OrderByDescending(item => item.Created);
+                        break;
+                    case "score":
+                        searchResult = searchResult.OrderByDescending(item => item.Score);
+                        break;
+                }
+                var currentPage = searchResult.Paginated(page, pageSize, out totalResults).ToList();
+                currentPage.ForEach(post => post.FillTags());
+                return currentPage;
+            }
         }
     }
 
