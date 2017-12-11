@@ -33,7 +33,7 @@
         $.ajax({
         url: `${postApi}/tag/${tagTitle}`,
             success: function (result) {
-                //console.log(result);
+                console.log(result);
                 callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
             }
     });

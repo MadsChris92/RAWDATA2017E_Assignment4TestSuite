@@ -6,6 +6,8 @@
         var postListArray = ko.observableArray([]);
         var resultArray = ko.observableArray([]);
         var searchResult = ko.observable(null);
+        var activePost = ko.observable(-1);
+        this.activePost = activePost;
         this.searchResult = searchResult;
         var noResultsFound = ko.computed(function () {
             if (resultArray().length < 1) {
@@ -14,7 +16,6 @@
                 return false;
             }
         }, this);
-        var resultsShowing = ko.observable("");
 
         var hasNext = ko.computed(function () {
             if (searchResult() != null) {
@@ -38,17 +39,15 @@
             comments: []
         });
 
-        var showSinglePost = function (postLink) {
-            //dat.getSinglePost(postLink);
-            //dat.getPosts(vm.searchWord(), callback, );
+        var showSinglePost = function (postLink, index) {
 
             var callback = function (sr, self) {
-                //console.log("SR: " + sr);
                 self.singlePost(sr);
             }
+            self.activePost(index());
+            console.log(index());
 
             dat.getSinglePost(postLink, callback, vm);
-            //console.log(postLink);
         };
 
         var tagSearch = function (tagTitle) {
@@ -65,9 +64,7 @@
         var datGetList = function () {
             var callback = function (sr, self) {
                 //console.log(JSON.stringify(self.resultArray()));
-                self.resultsShowing(sr.showingResults());
                 self.resultArray(sr.posts());
-                console.log(sr.showingResults());
                 self.searchResult(sr);
             }
             dat.getPosts(vm.searchWord(), callback, vm);
@@ -89,7 +86,6 @@
         };
 
         (function () {
-
             dat.getPostsHighscore(function(result, self) {
                 self.searchResult(result);
             }, self);
@@ -110,7 +106,7 @@
             showSinglePost,
             singlePost,
             noResultsFound,
-            resultsShowing
+            activePost
         };
     })();
 
