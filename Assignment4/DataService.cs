@@ -92,11 +92,17 @@ namespace DAL
         {
             using (var db = new SovaContext()) {
 
-                List<Question> returnQuestions = db.Questions.OrderBy(x => x.Score).Paginated(page, pageSize, out totalResults).ToList();
+                List<Question> returnQuestions = db.Questions
+                    .Include(x => x.Answers)
+                    .ThenInclude(y => y.Comments)
+                    .Include(x => x.Comments)
+                    .OrderBy(x => x.Score)
+                    .Paginated(page, pageSize, out totalResults)
+                    .ToList();
+                returnQuestions.ForEach(post => post.FillTags());
                 return returnQuestions;
 
-            }
-            
+            }     
         }
     
 
