@@ -3,12 +3,13 @@
         var self = this;
         
         var postResult = params.name;
-        //var postResult = ko.observable(params.name || '');
-
+        var hasComments = ko.computed(function() {
+            return typeof postResult().comments !== "undefined";
+        }, this);
         
-        console.log(postResult);
         return {
-            postResult
+            postResult,
+            hasComments
         };
 
     }

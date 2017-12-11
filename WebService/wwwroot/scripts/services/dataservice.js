@@ -14,7 +14,7 @@
             url: link,
             success: function (result) {
                 //console.log(result);
-                callback(result, caller); // getSinglePost returnerede ikke noget før
+                callback(result, caller);
             }
         });
     };
