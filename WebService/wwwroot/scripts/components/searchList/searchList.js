@@ -1,21 +1,8 @@
-﻿require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
-    var vm = (function () {
+﻿define(['knockout', 'dataservice'], function (ko, dat) {
+    return function (params) {
         var self = this;
+
         var searchWord = ko.observable("");
-		var test = ko.observable("GSEDGKWSD");
-        
-		var minPostShowing = ko.observable(1);
-		var totalPosts = ko.observable(10);
-		var postsShowingAmount = ko.observable(10);
-		var postsShowing = ko.computed(function () {
-			return minPostShowing() + "-" + (minPostShowing() + postsShowingAmount()-1) + " out of " + totalPosts();
-		}, this);
-        var postListArray = ko.observableArray([]);
-        var resultArray = ko.observableArray([]);
-        var searchResult = ko.observable(null);
-        var activePost = ko.observable(-1);
-        this.activePost = activePost;
-        this.searchResult = searchResult;
         var noResultsFound = ko.computed(function () {
             if (resultArray().length < 1) {
                 return true;
@@ -24,27 +11,17 @@
             }
         }, this);
 
-        var hasNext = ko.computed(function () {
-            if (searchResult() != null) {
-                return searchResult().hasNext();
-            }
-            return false;
-        }, this);
 
-        var hasPrev = ko.computed(function () {
-            if (searchResult() != null) {
-                return searchResult().hasPrev();
-            }
-            return false;
+
+        var minPostShowing = ko.observable(1);
+        var totalPosts = ko.observable(10);
+        var postsShowingAmount = ko.observable(10);
+        var postsShowing = ko.computed(function () {
+            return minPostShowing() + "-" + (minPostShowing() + postsShowingAmount() - 1) + " out of " + totalPosts();
         }, this);
 
 
-        var singlePost = ko.observable({
-            title: "john",
-            body: "johnjohn",
-            answers: [],
-            comments: []
-        });
+        var singlePost = ko.observable();
 
         var showSinglePost = function (postLink, index) {
 
@@ -71,21 +48,36 @@
         var datGetList = function () {
             var callback = function (sr, self) {
                 //console.log(JSON.stringify(self.resultArray()));
-				//self.resultsShowing(sr.showingResults());
-				totalPosts(sr.totalResults());
+                //self.resultsShowing(sr.showingResults());
+                totalPosts(sr.totalResults());
                 self.resultArray(sr.posts());
                 self.searchResult(sr);
             }
             dat.getPosts(vm.searchWord(), callback, vm);
         };
 
+
+        var hasNext = ko.computed(function () {
+            if (searchResult() != null) {
+                return searchResult().hasNext();
+            }
+            return false;
+        }, this);
+
+        var hasPrev = ko.computed(function () {
+            if (searchResult() != null) {
+                return searchResult().hasPrev();
+            }
+            return false;
+        }, this);
+
         var goToNext = function () {
             console.log("Next Activated");
             if (searchResult) {
                 searchResult().gotoNext();
-			}
+            }
 
-			minPostShowing(minPostShowing() + postsShowingAmount());
+            minPostShowing(minPostShowing() + postsShowingAmount());
         };
 
         var goToPrev = function () {
@@ -93,8 +85,8 @@
             if (searchResult) {
                 searchResult().gotoPrev();
 
-			}
-			minPostShowing(minPostShowing() - postsShowingAmount());
+            }
+            minPostShowing(minPostShowing() - postsShowingAmount());
         };
 
         var isActive = function (index) {
@@ -102,17 +94,8 @@
             return activePost() == index;
         };
 
-        (function () {
-            dat.getPostsHighscore(function(result, self) {
-                self.searchResult(result);
-            }, self);
-        })();
-           
         return {
             searchWord,
-            test,
-            postListArray,
-            resultArray,
             goToNext,
             goToPrev,
             hasNext,
@@ -127,7 +110,6 @@
             postsShowing,
             isActive
         };
-    })();
 
-    ko.applyBindings(vm);
+    }
 });
