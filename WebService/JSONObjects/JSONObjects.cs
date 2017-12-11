@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAL.DomainObjects;
 
 namespace WebService.JSONObjects
 {
@@ -19,6 +20,7 @@ namespace WebService.JSONObjects
         public string Url { get; set; }
         public string Body { get; set; }
         public string OwnerUrl { get; set; }
+        public User Owner { get; set; }
         public DateTime Created { get; set; }
         public int Score { get; set; }
         public string Title { get; set; }
@@ -33,6 +35,7 @@ namespace WebService.JSONObjects
         public string Url { get; set; }
         public string Body { get; set; }
         public string OwnerUrl { get; set; }
+        public User Owner { get; set; }
         public DateTime Created { get; set; }
         public int Score { get; set; }
         public List<Comment> Comments { get; set; }
@@ -40,8 +43,8 @@ namespace WebService.JSONObjects
 
     public class Comment
     {
-        //public string Url { get; set; }
         public string OwnerUrl { get; set; }
+        public User Owner { get; set; }
         public int Score { get; set; }
         public string Text { get; set; }
         public DateTime Created { get; set; }

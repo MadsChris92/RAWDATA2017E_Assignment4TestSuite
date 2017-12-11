@@ -25,11 +25,43 @@ namespace WebService.Controllers
         [HttpGet("{id}", Name = nameof(GetPost))]
         public IActionResult GetPost(int id)
         {
-            var post = _dataService.GetQuestionAllData(id);
-            if (post != null)
-                return Ok(post);
-            else
-                return NotFound();
+            var que = _dataService.GetQuestionAllData(id);
+            if (que == null) return NotFound();
+            var quest = new JSONObjects.Question
+            {
+                Url = Url.Link(nameof(GetPost), que.Id),
+                Body = que.Body,
+                Owner = que.Owner,
+                Created = que.Created,
+                Score = que.Score,
+                Title = que.Title,
+                Closed = que.Closed,
+                Answers = que.Answers.Select(answer => new JSONObjects.Answer
+                {
+                    Url = Url.Link(nameof(GetPost), answer.Id),
+                    Body = answer.Body,
+                    Owner = que.Owner,
+                    Created = answer.Created,
+                    Score = answer.Score,
+                    Comments = answer.Comments.Select(comment => new JSONObjects.Comment
+                    {
+                        Created = comment.Created,
+                        Owner = que.Owner,
+                        Score = comment.Score,
+                        Text = comment.Text
+                    }).ToList()
+                }).ToList(),
+
+                Tags = que.Tags.Select<Tag, string>(tag => tag.Title).ToList(),
+                Comments = que.Comments.Select(comment => new JSONObjects.Comment
+                {
+                    Created = comment.Created,
+                    Owner = que.Owner,
+                    Score = comment.Score,
+                    Text = comment.Text
+                }).ToList()
+            };
+            return Ok(quest);
         }
         /*
         [HttpGet("title/{name}", Name = nameof(GetPostsByName))]
