@@ -33,7 +33,7 @@
         $.ajax({
         url: `${postApi}/tag/${tagTitle}`,
             success: function (result) {
-                //console.log(result);
+                console.log(result);
                 callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
             }
     });
@@ -41,7 +41,7 @@
 
     const getPostsHighscore = function (callback, caller) {
         $.ajax({
-            url: `${postApi}/score`,
+            url: `${postApi}/title/score`,
             success: function (result) {
                 //console.log(result);
                 callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
@@ -62,7 +62,8 @@
             return prev() || false;
         }, this);
         const posts = ko.observableArray(result.results);
-
+        const showingResults = ko.observable(result.showingResults);
+        const totalResults = ko.observable(result.totalResults);
         const gotoNext = function () {
             if (hasNext()) {
                 posts([]);
@@ -98,7 +99,9 @@
             gotoNext,
             gotoPrev,
             posts,
-            page
+            page,
+            showingResults,
+            totalResults
         }
     }
 
