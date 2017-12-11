@@ -66,8 +66,9 @@
                 //console.log(JSON.stringify(self.resultArray()));
                 self.resultArray(sr.posts());
                 //console.log(JSON.stringify(self.resultArray()));
-                self.searchResult(sr);
-            }
+				self.searchResult(sr);
+			}
+
             dat.getPosts(vm.searchWord(), callback, vm);
         };
 

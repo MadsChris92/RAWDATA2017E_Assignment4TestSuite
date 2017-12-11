@@ -35,7 +35,7 @@
 <script type="text/html" id="answer-template">
     <div class="list-group-item">
         <span data-bind="html: body"></span>
-		
+		<small class="text-muted float-left" data-bind="text: owner.name"></small>
     </div>
     <div class="container bg-light p-3" data-bind="template: {name: 'comment-template', if:comments.length >0}"></div>
 
