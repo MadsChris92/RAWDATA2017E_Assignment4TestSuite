@@ -97,6 +97,11 @@
 			minPostShowing(minPostShowing() - postsShowingAmount());
         };
 
+        var isActive = function (index) {
+            console.log(index);
+            return activePost() == index;
+        };
+
         (function () {
             dat.getPostsHighscore(function(result, self) {
                 self.searchResult(result);
@@ -118,8 +123,9 @@
             showSinglePost,
             singlePost,
             noResultsFound,
-            activePost
-			postsShowing,
+            activePost,
+            postsShowing,
+            isActive
         };
     })();
 
