@@ -16,14 +16,16 @@
     <h6>Comments</h6>
     <div class="list-group " data-bind="foreach: comments">
         <div class="list-group-item">
-            <div class="center-block float-left" data-bind="css: function(score){return score>0?'alert-success':'alert-warning'}">
+            <div class="d-inline-block center-block float-left p-1 mr-2 alert" data-bind="css: function(score){return score>0? 'alert-success':'alert-warning'}">
                 <span class="glyphicon-book glyphicon" data-bind="text: score"></span>
             </div>
-            <div class="small" data-bind="text: text"></div>
-            <div>
-                <small class="text-muted float-right" data-bind="text: created"></small>
-                <small class="text-muted float-left" data-bind="text: owner.name"></small>
-            </div>
+			<div class="d-inline">
+				<div class="small" data-bind="text: text"></div>
+				<div>
+					<small class="text-muted float-right" data-bind="text: created"></small>
+					<small class="text-muted float-left" data-bind="text: owner.name"></small>
+				</div>
+			</div>
         </div>
     </div>
 </script>
