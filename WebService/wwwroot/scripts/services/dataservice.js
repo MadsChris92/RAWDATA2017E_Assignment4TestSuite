@@ -14,7 +14,7 @@
             url: link,
             success: function (result) {
                 //console.log(result);
-                callback(result, caller); // getSinglePost returnerede ikke noget før
+                callback(result, caller);
             }
         });
     };
@@ -37,16 +37,6 @@
                 callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
             }
     });
-    }
-
-    const getPost = function (id) {
-        $.ajax({
-            url: `${postApi}/${id}`,
-            success: function (result) {
-                //console.log(result);
-                return result;
-            }
-        });
     }
 
     //ideen er at have et objekt der bare kan få besked om at hente den næste/forrige side, uden at bekymre sig om url'er
@@ -98,15 +88,13 @@
             gotoNext,
             gotoPrev,
             posts,
-            page,
-            getPost
+            page
         }
     }
 
     return {
         events,
         getPosts,
-        getPost,
         getPostByTag,
         getSinglePost
     }

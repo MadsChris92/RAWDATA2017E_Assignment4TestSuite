@@ -43,6 +43,7 @@ namespace DAL.DomainObjects
         public int Score { get; set; }
         public string Title { get; set; }
         public int AnswerCount { get; set; }
+        public DateTime Created { get; set; }
         public double Ranking { get; set; }
         public string OwnerName { get; set; }
         [NotMapped]
