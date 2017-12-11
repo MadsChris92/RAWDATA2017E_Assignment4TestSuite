@@ -104,6 +104,31 @@ namespace WebService.Controllers
 
             return Ok(result);
         }
+
+
+        [HttpGet("title/score", Name = nameof(GetRankedPostsByScore))]
+        public IActionResult GetRankedPostsByScore(int page = 0, int pageSize = 5, bool firstPage = false)
+        {
+
+            var posts = _dataService.SearchPostsOrderedByScore("java", page, pageSize, out var totalResults);
+            posts.ForEach(post => post.Url = Url.Link(nameof(GetPost), new { id = post.Id }));
+
+            var result = new PaginatedResult<RankedSearchQuestion>
+            {
+                TotalResults = totalResults,
+                ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
+                PreviousPage = page > 0
+                    ? Url.Link(nameof(GetRankedPostsByName), new { page = page - 1, pageSize })
+                    : null,
+                NextPage = (page + 1) * pageSize < totalResults
+                    ? Url.Link(nameof(GetRankedPostsByName), new { page = page + 1, pageSize })
+                    : null,
+                Results = posts
+            };
+
+            return Ok(result);
+        }
+
         [HttpGet("score", Name = nameof(GetPostsByScore))]
         public IActionResult GetPostsByScore(string name, int page = 0, int pageSize = 5, bool firstPage = false)
         {

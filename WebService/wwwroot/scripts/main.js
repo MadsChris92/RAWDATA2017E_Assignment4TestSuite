@@ -14,6 +14,7 @@
                 return false;
             }
         }, this);
+        var resultsShowing = ko.observable("");
 
         var hasNext = ko.computed(function () {
             if (searchResult() != null) {
@@ -64,8 +65,9 @@
         var datGetList = function () {
             var callback = function (sr, self) {
                 //console.log(JSON.stringify(self.resultArray()));
+                self.resultsShowing(sr.showingResults());
                 self.resultArray(sr.posts());
-                //console.log(JSON.stringify(self.resultArray()));
+                console.log(sr.showingResults());
                 self.searchResult(sr);
             }
             dat.getPosts(vm.searchWord(), callback, vm);
@@ -92,8 +94,7 @@
                 self.searchResult(result);
             }, self);
         })();
-
-
+           
         return {
             searchWord,
             test,
@@ -108,7 +109,8 @@
             tagSearch,
             showSinglePost,
             singlePost,
-            noResultsFound
+            noResultsFound,
+            resultsShowing
         };
     })();
 
