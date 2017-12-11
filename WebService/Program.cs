@@ -14,6 +14,7 @@ namespace WebService
         {
             return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseIISIntegration()
                 .Build();
         }
     }
