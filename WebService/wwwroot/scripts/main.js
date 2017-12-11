@@ -85,6 +85,11 @@
             }
         };
 
+        (function() {
+            dat.getPostsHighscore(function(result, self) {
+                self.searchResult(result);
+            });
+        })();
 
 
         return {
