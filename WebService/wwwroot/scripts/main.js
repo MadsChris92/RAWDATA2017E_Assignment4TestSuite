@@ -6,6 +6,7 @@
         var postListArray = ko.observableArray([]);
         var resultArray = ko.observableArray([]);
         var searchResult = ko.observable(null);
+        this.searchResult = searchResult;
         var noResultsFound = ko.computed(function () {
             if (resultArray().length < 1) {
                 return true;
@@ -85,10 +86,11 @@
             }
         };
 
-        (function() {
+        (function () {
+
             dat.getPostsHighscore(function(result, self) {
                 self.searchResult(result);
-            });
+            }, self);
         })();
 
 

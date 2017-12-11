@@ -41,7 +41,7 @@
 
     const getPostsHighscore = function (callback, caller) {
         $.ajax({
-            url: `${postApi}/score}`,
+            url: `${postApi}/score`,
             success: function (result) {
                 //console.log(result);
                 callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
