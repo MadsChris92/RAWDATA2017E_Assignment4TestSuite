@@ -4,7 +4,7 @@
     <br />
     <p data-bind="html: body">asd</p>
     <!-- ko if:$parent.hasComments--><!-- only show comments if there are comments to show -->
-    <div class="container bg-light p-3"  data-bind="template: {name: 'comment-template'}"></div>
+    <div class="container bg-light p-3"  data-bind="template: {name: 'comment-template', if: comments.length >0}"></div>
     <!-- /ko -->
     <h5><span data-bind="text: answers.length"></span> Answers</h5>
     <div class="list-group" data-bind="template: {name: 'answer-template', foreach: answers}"></div>
@@ -16,7 +16,7 @@
     <h6>Comments</h6>
     <div class="list-group " data-bind="foreach: comments">
         <div class="list-group-item">
-            <div class="d-inline-block center-block float-left p-1 mr-2 alert" data-bind="css: function(score){return score>0? 'alert-success':'alert-warning'}">
+            <div class="d-inline-block center-block float-left p-1 mr-2 alert" data-bind="css: score>0? 'alert-success':'alert-warning'">
                 <span class="glyphicon-book glyphicon" data-bind="text: score"></span>
             </div>
 			<div class="d-inline">
@@ -35,7 +35,9 @@
 <script type="text/html" id="answer-template">
     <div class="list-group-item">
         <span data-bind="html: body"></span>
+		
     </div>
-    <div class="container bg-light p-3" data-bind="template: {name: 'comment-template', if:comments}"></div>
+    <div class="container bg-light p-3" data-bind="template: {name: 'comment-template', if:comments.length >0}"></div>
+
     <br />
 </script>
