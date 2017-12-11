@@ -48,11 +48,10 @@
         <!-- ko if:searchResult() !== null-->
         <div class="list-group p-2" data-bind="template: {name: 'sPost-template', foreach: searchResult().posts}"></div>
         <!-- /ko -->
-        <div class="row">
-            <div class="col align-self-center">
-                <button type="button" class="btn btn-primary" data-bind="click: goToPrev, enable: hasPrev">Previous</button>
-                <button type="button" class="btn btn-primary" data-bind="click: goToNext, enable: hasNext">Next</button>
-            </div>
+        <div class="row justify-content-md-center">
+                <button class="col-2 btn btn-primary" data-bind="click: goToPrev, enable: hasPrev">Previous</button>
+			    <h6 class="col-2 text-center align-self-center" data-bind="text: "></h6>
+                <button class="col-2 btn btn-primary" data-bind="click: goToNext, enable: hasNext">Next</button>
         </div>
     </div>
     <br />
