@@ -40,13 +40,13 @@ namespace WebService.Controllers
                 {
                     Url = Url.Link(nameof(GetPost), answer.Id),
                     Body = answer.Body,
-                    Owner = que.Owner,
+                    Owner = answer.Owner,
                     Created = answer.Created,
                     Score = answer.Score,
                     Comments = answer.Comments.Select(comment => new JSONObjects.Comment
                     {
                         Created = comment.Created,
-                        Owner = que.Owner,
+                        Owner = comment.Owner,
                         Score = comment.Score,
                         Text = comment.Text
                     }).ToList()
@@ -56,7 +56,7 @@ namespace WebService.Controllers
                 Comments = que.Comments.Select(comment => new JSONObjects.Comment
                 {
                     Created = comment.Created,
-                    Owner = que.Owner,
+                    Owner = comment.Owner,
                     Score = comment.Score,
                     Text = comment.Text
                 }).ToList()
