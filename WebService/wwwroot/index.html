@@ -36,7 +36,10 @@
 		</div>
 	</div>
 	<br />
-    <h5 data-bind="text: resultsShowing">Show</h5>
+    <!-- ko if:searchResult() !== null-->
+    <h5 data-bind="text: searchResult().showingResults">Show</h5>
+    <h5 data-bind="text: searchResult().totalResults">Show</h5>
+    <!-- /ko -->
     <div data-bind="component: {name: 'post' , params: {name: singlePost}}"></div>
          <div class="container">
 		<div class="container-fluid bg-light rounded p-4">

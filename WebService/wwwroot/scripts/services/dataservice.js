@@ -63,6 +63,7 @@
         }, this);
         const posts = ko.observableArray(result.results);
         const showingResults = ko.observable(result.showingResults);
+        const totalResults = ko.observable(result.totalResults);
         const gotoNext = function () {
             if (hasNext()) {
                 posts([]);
@@ -99,7 +100,8 @@
             gotoPrev,
             posts,
             page,
-            showingResults
+            showingResults,
+            totalResults
         }
     }
 
