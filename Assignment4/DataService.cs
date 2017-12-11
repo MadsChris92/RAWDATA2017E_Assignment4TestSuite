@@ -92,8 +92,7 @@ namespace DAL
         {
             using (var db = new SovaContext()) {
 
-                List<Question> returnQuestions = db.Questions.Paginated(page, pageSize, out totalResults).ToList();
-                returnQuestions.OrderBy(x => x.Score);
+                List<Question> returnQuestions = db.Questions.OrderBy(x => x.Score).Paginated(page, pageSize, out totalResults).ToList();
                 return returnQuestions;
 
             }
@@ -266,11 +265,6 @@ namespace DAL
                 return returnPosts;
 
             }
-        }
-
-        List<Question> IDataService.GetPostsHighestScore(int page, int pageSize, out int totalResults)
-        {
-            throw new NotImplementedException();
         }
     }
 
