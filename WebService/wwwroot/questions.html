@@ -65,11 +65,11 @@
 <script type="text/html" id="sPost-template">
     <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" data-bind="click: function(link) {$root.showSinglePost(url, link)}">
 		<div class="row">
-			<div class="col-2">
-				<h6 class="alert" data-bind="text: score+' Score', css: score>0? 'alert-success':'alert-warning'"></h6>
-				<h6 class="alert" data-bind="text: answerCount+' Answers', css: answerCount>0? 'alert-success':'alert-warning'"></h6>
+			<div class="col-lg-2">
+				<h6 class="d-sm-inline-block alert" data-bind="text: score+' Score', css: score>0? 'alert-success':'alert-warning'"></h6>
+				<h6 class="d-sm-inline-block alert" data-bind="text: answerCount+' Answers', css: answerCount>0? 'alert-success':'alert-warning'"></h6>
 			</div>
-			<div class="col-10">
+			<div class="col-lg-10 col-sm-12">
 				<div class="d-flex w-100 justify-content-between">
 					<h5 class="mb-1" data-bind="text: title"></h5>
 					<small class="text-muted">3 days ago</small>
