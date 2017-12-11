@@ -43,16 +43,13 @@ namespace DAL
         {
             using (var db = new SovaContext())
             {
-                var question = db.Questions.FirstOrDefault(x => x.Id == id);
+                var question = db.Questions.Include(q => q.Owner)
+                    .Include(q => q.Comments).ThenInclude(c => c.Owner)
+                    .Include(q => q.Answers).ThenInclude(a => a.Owner)
+                    .Include(q => q.Answers).ThenInclude(a => a.Comments).ThenInclude(c => c.Owner)
+                    .FirstOrDefault(x => x.Id == id);
                 if (question == null) return null;
-                question.FillAnswers();
-                question.FillComments();
                 question.FillTags();
-
-                foreach (Answer answer in question.Answers)
-                {
-                    answer.FillComments();
-                }
                 return question;
             }
 

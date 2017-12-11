@@ -48,11 +48,10 @@
         <!-- ko if:searchResult() !== null-->
         <div class="list-group p-2" data-bind="template: {name: 'sPost-template', foreach: searchResult().posts}"></div>
         <!-- /ko -->
-        <div class="row">
-            <div class="col align-self-center">
-                <button type="button" class="btn btn-primary" data-bind="click: goToPrev, enable: hasPrev">Previous</button>
-                <button type="button" class="btn btn-primary" data-bind="click: goToNext, enable: hasNext">Next</button>
-            </div>
+        <div class="row justify-content-md-center">
+                <button class="col-2 btn btn-primary" data-bind="click: goToPrev, enable: hasPrev">Previous</button>
+			    <h6 class="col-2 text-center align-self-center" data-bind="text: "></h6>
+                <button class="col-2 btn btn-primary" data-bind="click: goToNext, enable: hasNext">Next</button>
         </div>
     </div>
     <br />
@@ -64,15 +63,24 @@
 
 <script type="text/html" id="sPost-template">
     <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" data-bind="click: function(link) {$root.showSinglePost(url, link)}">
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1" data-bind="text: title"></h5>
-            <small class="text-muted">3 days ago</small>
-        </div>
-        <small class="text-muted" data-bind="text: ownerName">Alexander Ibsen</small><br />
-        <span class="badge badge-pill badge-success"><span data-bind="text: answerCount"></span> answers</span>
-        <!--<span class="badge badge-pill badge-primary">java</span>-->
-        <div data-bind="template: {name: 'tag-template', foreach: tags}"></div>
-    </a>
+		<div class="row">
+			<div class="col-lg-2">
+				<h6 class="d-sm-inline-block alert" data-bind="text: score+' Score', css: score>0? 'alert-success':'alert-warning'"></h6>
+				<h6 class="d-sm-inline-block alert" data-bind="text: answerCount+' Answers', css: answerCount>0? 'alert-success':'alert-warning'"></h6>
+			</div>
+			<div class="col-lg-10 col-sm-12">
+				<div class="d-flex w-100 justify-content-between">
+					<h5 class="mb-1" data-bind="text: title"></h5>
+					<small class="text-muted">3 days ago</small>
+				</div>
+
+
+				<small class="text-muted" data-bind="text: ownerName">Alexander Ibsen</small><br />
+				<!--<span class="badge badge-pill badge-primary">java</span>-->
+				<div data-bind="template: {name: 'tag-template', foreach: tags}"></div>
+			</div>
+		</div>
+</a>
     <div class="list-group-item" data-bind="component: {name: 'post' , params: {name: $parent.singlePost}}"></div>
 </script>
 <script type="text/html" id="tag-template">
