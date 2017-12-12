@@ -49,9 +49,13 @@
 			<div class="list-group" data-bind="template: {name: 'sPost-template', foreach: searchResult().posts}"></div>
 
 			<!-- /ko -->
-			<div class="switchButtons">
-				<button type="button" class="btn btn-primary" data-bind="click: goToPrev">Previous</button>
+			<div class="switchButtons d-none">
+				<button type="button" class="btn btn-primary" data-bind="click: goToPrev">Previous </button>
 				<button type="button" class="btn btn-primary" data-bind="click: goToNext">Next</button>
+			</div>
+			<div class="switchButtons d-block d-sm-none">
+				<button type="button" class="btn btn-primary" data-bind="click: goToPrev"><<</button>
+				<button type="button" class="btn btn-primary" data-bind="click: goToNext">>></button>
 			</div>
 		</div>
 	</div>
