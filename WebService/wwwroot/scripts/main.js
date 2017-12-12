@@ -118,7 +118,6 @@
             hasNext,
             hasPrev,
             datGetList,
-            searchResult,
             tagSearch,
             showSinglePost,
             singlePost,

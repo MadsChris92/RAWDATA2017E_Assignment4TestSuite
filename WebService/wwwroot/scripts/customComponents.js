@@ -11,4 +11,16 @@
             template: { require: "text!../scripts/components/singlePost/singlePost.html" }
         }
     );
+    ko.components.register("searchList",
+        {
+            viewModel: { require: "../scripts/components/searchList/searchList" },
+            template: { require: "text!../scripts/components/searchList/searchList.html" }
+        }
+    );
+    ko.components.register("searchListItem",
+        {
+            viewModel: { require: "../scripts/components/searchListItem/searchListItem" },
+            template: { require: "text!../scripts/components/searchListItem/searchListItem.html" }
+        }
+    );
 });
