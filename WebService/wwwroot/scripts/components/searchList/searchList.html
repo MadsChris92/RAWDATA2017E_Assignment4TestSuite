@@ -1,9 +1,12 @@
 ﻿<div class="container">
     <div class="container-fluid alert alert-primary" id="postListBar">
         <h5>Question search</h5>
-        <form class="form-inline p-3">
-            <input class="form-control mr-4 w-75" data-bind="textInput: searchWord" placeholder="Type your search words here..." aria-label="Search">
-            <button class="btn btn-primary my-2 my-lg-0" data-bind="click: datGetList">Search</button>
+        <form class="form-inline input-group">
+            <input class="form-control" data-bind="textInput: searchWord" placeholder="Type your search words here..." aria-label="Search">
+            <div class="input-group-btn">
+                <button class="btn btn-primary" data-bind="click: datGetList">Search</button>
+            </div>
+            
         </form>
     </div>
     <div class="alert alert-warning" data-bind="visible: noResultsFound">No questions match the search words.</div>
@@ -15,7 +18,7 @@
         <!-- /ko -->
         <div class="row justify-content-md-center">
             <button class="col-2 btn btn-primary" data-bind="click: goToPrev, enable: hasPrev">Previous</button>
-            <h6 class="col-2 text-center align-self-center" data-bind="text: postsShowing"></h6>
+            <h6 class="col-4 text-center align-self-center" data-bind="text: postsShowing"></h6>
             <button class="col-2 btn btn-primary" data-bind="click: goToNext, enable: hasNext">Next</button>
         </div>
     </div>
