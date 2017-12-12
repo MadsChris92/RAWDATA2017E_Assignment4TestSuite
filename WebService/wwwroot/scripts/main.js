@@ -60,6 +60,7 @@
         var tagSearch = function (tagTitle) {
             console.log(tagTitle);
             var callback = function (sr, self) {
+                console.log('Tagsearch: ');
                 //console.log(JSON.stringify(self.resultArray()));
                 self.resultArray(sr.posts());
                 //console.log(JSON.stringify(self.resultArray()));

@@ -11,9 +11,6 @@
             return this.activePost() == this.index && this.singlePost() != null;
         }, this)
 
-
-
-
         this.singlePost = ko.observable(null);
 
         var showSinglePost = function () {
@@ -22,16 +19,30 @@
                 self.singlePost(sr);
             }
             self.activePost(self.index);
-            console.log(index);
 
             dat.getSinglePost(post.url, callback, self);
         };
+
+
+        var tagSearch = function (tagTitle) {
+            console.log(tagTitle);
+            var callback = function (sr, self) {
+                console.log('Tagsearch: ');
+                //console.log(JSON.stringify(self.resultArray()));
+                self.resultArray(sr.posts());
+                //console.log(JSON.stringify(self.resultArray()));
+                self.searchResult(sr);
+            }
+            dat.getPostByTag(tagTitle, callback, vm);
+        };
+
 
         return {
             post,
             isActive,
             singlePost: self.singlePost,
-            showSinglePost
+            showSinglePost,
+            tagSearch
         };
 
     }
