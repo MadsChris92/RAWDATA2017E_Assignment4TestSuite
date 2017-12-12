@@ -28,11 +28,11 @@ namespace WebService
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
 
             app.UseFileServer();
             app.UseMvc();
-            app.UseBrowserLink();
         }
     }
 }
