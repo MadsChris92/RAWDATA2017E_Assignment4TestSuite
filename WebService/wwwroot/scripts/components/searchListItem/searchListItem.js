@@ -31,11 +31,26 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             }
         };
 
+
+        var tagSearch = function (tagTitle) {
+            console.log(tagTitle);
+            var callback = function (sr, self) {
+                console.log('Tagsearch: ');
+                //console.log(JSON.stringify(self.resultArray()));
+                self.resultArray(sr.posts());
+                //console.log(JSON.stringify(self.resultArray()));
+                self.searchResult(sr);
+            }
+            dat.getPostByTag(tagTitle, callback, vm);
+        };
+
+
         return {
             post,
             isActive,
             singlePost: self.singlePost,
-            showSinglePost
+            showSinglePost,
+            tagSearch
         };
 
     }
