@@ -12,7 +12,7 @@ namespace DAL
         Question GetQuestionAllData(int id);
         Post GetPost(int id);
         User GetUser(int id);
-        List<SearchQuestion> GetQuestionByTag(string tag, int page, int pageSize, out int totalResults);
+        List<RankedSearchQuestion> GetQuestionByTag(string tag, int page, int pageSize, out int totalResults);
         List<Question> GetPostsHighestScore(int page, int pageSize, out int totalResults);
         Boolean MarkPost(int id);
         List<MarkedPost> GetMarkedPosts(int page, int pageSize, out int totalResults);

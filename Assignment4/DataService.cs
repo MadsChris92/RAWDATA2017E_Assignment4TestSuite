@@ -72,11 +72,11 @@ namespace DAL
             }
         }
 
-        public List<SearchQuestion> GetQuestionByTag(string tag, int page, int pageSize, out int totalResults)
+        public List<RankedSearchQuestion> GetQuestionByTag(string tag, int page, int pageSize, out int totalResults)
         {
             using (var db = new SovaContext())
             {
-                var returnPosts = db.SearchQuestions.FromSql("CALL tagSearch({0})", tag).Paginated(page, pageSize, out totalResults).ToList();
+                var returnPosts = db.RankedSearchQuestion.FromSql("CALL tagSearch({0})", tag).Paginated(page, pageSize, out totalResults).ToList();
                 foreach (var post in returnPosts)
                 {
                     post.FillTags();

@@ -230,7 +230,7 @@ namespace WebService.Controllers
             var posts = _dataService.GetQuestionByTag(name, page, pageSize, out var totalResults);
             posts.ForEach(post => post.Url = Url.Link(nameof(GetPost), new { id = post.Id }));
 
-            var result = new PaginatedResult<SearchQuestion>
+            var result = new PaginatedResult<RankedSearchQuestion>
             {
                 TotalResults = totalResults, ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
                 PreviousPage = page > 0
