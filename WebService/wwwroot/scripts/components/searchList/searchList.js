@@ -92,6 +92,5 @@
             activePost,
             postsShowing
         };
-
     }
 });
