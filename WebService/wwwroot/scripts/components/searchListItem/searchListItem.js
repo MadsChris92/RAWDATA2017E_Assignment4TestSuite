@@ -1,4 +1,4 @@
-﻿define(['knockout', 'dataservice'], function (ko, dat) {
+define(['knockout', 'dataservice'], function (ko, dat) {
     return function (params) {
         var self = this;
 
@@ -11,16 +11,24 @@
             return this.activePost() == this.index && this.singlePost() != null;
         }, this)
 
+
+
+
         this.singlePost = ko.observable(null);
 
         var showSinglePost = function () {
 
-            var callback = function (sr, self) {
-                self.singlePost(sr);
-            }
-            self.activePost(self.index);
+            if (self.activePost() === self.index) {
+                self.activePost(-1);
+            } else {
+                if (self.singlePost() === null) {
+                    dat.getSinglePost(post.url, (sr, self) => {
+                        self.singlePost(sr);
+                    }, self);
+                }
 
-            dat.getSinglePost(post.url, callback, self);
+                self.activePost(self.index);
+            }
         };
 
 

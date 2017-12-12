@@ -1,4 +1,4 @@
-﻿define(['knockout'], function (ko) {
+define(['knockout'], function (ko) {
     return function (params) {
         var words = params && params.words || ko.observableArray([
             { text: "Lorem", weight: 13 },
@@ -10,9 +10,8 @@
             { text: "Adipiscing", weight: 5 }
         ]);
 
-        var test = params.test;
+        var test = ko.observable("hi");
 
-        console.log("why");
         return {
             words
         };
