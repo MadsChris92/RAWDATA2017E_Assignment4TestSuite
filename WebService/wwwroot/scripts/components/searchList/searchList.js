@@ -3,34 +3,24 @@ define(['knockout', 'dataservice'], function (ko, dat) {
         var self = this;
 
         this.searchWord = ko.observable("");
-        this.searchResult = ko.observable(null);
+        this.searchResult = params.searchResult;
         this.activePost = ko.observable(-1);
-        var noResultsFound = ko.computed(function () {
-            if (self.searchResult() && self.searchResult().posts.length > 1) {
-                return false;
-            } else {
-                return true;
+
+        this.totalPosts = ko.computed(function(){
+            if(this.searchResult() !== null){
+                    return searchResult().totalResults();
             }
+            return -1;
         }, this);
-
-
-
-        var minPostShowing = ko.observable(1);
-        var totalPosts = ko.observable(10);
-        var postsShowingAmount = ko.observable(10);
+        
+        this.noResultsFound = ko.computed(function () {
+            return this.totalPosts() === 0;
+        }, this);
+        
         var postsShowing = ko.computed(function () {
-            return minPostShowing() + "-" + (minPostShowing() + postsShowingAmount() - 1) + " out of " + totalPosts();
+            if(this.searchResult() === null) return "";
+            return this.searchResult().page() * this.searchResult().pageSize() + 1 + "-" + (this.searchResult().page() + 1) * this.searchResult().pageSize() + " out of " + this.totalPosts();
         }, this);
-
-        var datGetList = function () {
-            var callback = function (sr, self) {
-                //console.log(JSON.stringify(self.resultArray()));
-                //self.resultsShowing(sr.showingResults());
-                totalPosts(sr.totalResults());
-                self.searchResult(sr);
-            }
-            dat.getPosts(self.searchWord(), callback, self);
-        };
 
 
         var hasNext = ko.computed(function () {
@@ -65,11 +55,6 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             minPostShowing(minPostShowing() - postsShowingAmount());
         };
 
-        var isActive = function (index) {
-            console.log(index);
-            return self.activePost() == index;
-        };
-
         return {
             searchWord: self.searchWord,
             searchResult: self.searchResult,
@@ -77,8 +62,7 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             goToPrev,
             hasNext,
             hasPrev,
-            datGetList,
-            noResultsFound,
+            noResultsFound: self.noResultsFound,
             activePost: self.activePost,
             postsShowing
         };

@@ -1,4 +1,4 @@
-﻿define(["jquery", "knockout"], function ($, ko) {
+define(["jquery", "knockout"], function ($, ko) {
 
     const postApi = "/api/posts";
     const histApi = "/api/history";
@@ -41,7 +41,7 @@
 
     const getPostsHighscore = function (callback, caller) {
         $.ajax({
-            url: `${postApi}/title/score`,
+            url: `${searchApi}/?pageSize=${pageSize}`,
             success: function (result) {
                 //console.log(result);
                 callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
@@ -52,7 +52,6 @@
     //ideen er at have et objekt der bare kan få besked om at hente den næste/forrige side, uden at bekymre sig om url'er
     function SearchResult(result) {
         var self = this;
-        const page = ko.observable(0);
         const next = ko.observable(result.nextPage);
         const prev = ko.observable(result.previousPage);
         const hasNext = ko.computed(function () {
@@ -64,6 +63,14 @@
         const posts = ko.observableArray(result.results);
         const showingResults = ko.observable(result.showingResults);
         const totalResults = ko.observable(result.totalResults);
+
+        const page = ko.observable(0);
+        const pageSize = ko.observable(10);
+        const totalPages = ko.computed(() => {
+            return totalResults / pageSize;
+        }, this);
+
+
         const gotoNext = function () {
             if (hasNext()) {
                 posts([]);
@@ -100,6 +107,8 @@
             gotoPrev,
             posts,
             page,
+            pageSize,
+            totalPages,
             showingResults,
             totalResults
         }

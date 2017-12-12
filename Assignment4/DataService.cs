@@ -91,9 +91,8 @@ namespace DAL
 
                 List<Question> returnQuestions = db.Questions
                     .Include(x => x.Answers)
-                    .ThenInclude(y => y.Comments)
-                    .Include(x => x.Comments)
-                    .OrderBy(x => x.Score)
+                    .Include(x => x.Owner)
+                    .OrderByDescending(x => x.Score)
                     .Paginated(page, pageSize, out totalResults)
                     .ToList();
                 returnQuestions.ForEach(post => post.FillTags());

@@ -45,5 +45,47 @@ namespace WebService.Controllers
 
             return Ok(result);
         }
+
+
+        [HttpGet("", Name = nameof(GetPostsByScore))]
+        public IActionResult GetPostsByScore(string name, int page = 0, int pageSize = 5, bool firstPage = false)
+        {
+            var questions = _dataService.GetPostsHighestScore(page, pageSize, out var totalResults);
+            List<RankedSearchQuestion> posts;
+
+            if (questions != null)
+            {
+                posts = questions.Select(que => new RankedSearchQuestion
+                {
+                    Url = Url.Link(nameof(PostsController.GetPost), new {que.Id, controller="Posts"}),
+                    Title = que.Title,
+                    OwnerName = que.Owner.Name,
+                    AnswerCount = que.Answers.Count,
+                    Created = que.Created,
+                    Score = que.Score,
+                    Tags = que.Tags.ToList()
+                }).ToList();
+            }
+            else
+            {
+                return NotFound();
+            }
+
+            var result = new PaginatedResult<RankedSearchQuestion>
+            {
+                TotalResults = totalResults,
+                ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
+                PreviousPage = page > 0
+                    ? Url.Link(nameof(GetPostsByScore), new { page = page - 1, pageSize })
+                    : null,
+                NextPage = (page + 1) * pageSize < totalResults
+                    ? Url.Link(nameof(GetPostsByScore), new { page = page + 1, pageSize })
+                    : null,
+                Results = posts
+            };
+
+            return Ok(result);
+        }
+
     }
 }
