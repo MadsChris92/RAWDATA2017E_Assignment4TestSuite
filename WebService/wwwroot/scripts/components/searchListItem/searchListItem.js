@@ -1,4 +1,4 @@
-﻿define(['knockout', 'dataservice'], function (ko, dat) {
+define(['knockout', 'dataservice'], function (ko, dat) {
     return function (params) {
         var self = this;
 
@@ -21,7 +21,7 @@
             if (self.activePost() === self.index) {
                 self.activePost(-1);
             } else {
-                if (singlePost() === null) {
+                if (self.singlePost() === null) {
                     dat.getSinglePost(post.url, (sr, self) => {
                         self.singlePost(sr);
                     }, self);
