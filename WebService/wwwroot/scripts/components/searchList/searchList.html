@@ -9,7 +9,9 @@
     <div class="alert alert-warning" data-bind="visible: noResultsFound">No questions match the search words.</div>
     <div class="container-fluid bg-light rounded p-4">
         <!-- ko if:searchResult() !== null-->
-        <div class="list-group p-2" data-bind="template: {name: 'sPost-template', foreach: searchResult().posts}"></div>
+        <div class="list-group p-2" data-bind="foreach: searchResult().posts">
+            <div data-bind="component: {name: 'searchListItem', params:{post:$data, activePost:activePost, index:$index}}"></div>
+        </div>
         <!-- /ko -->
         <div class="row justify-content-md-center">
             <button class="col-2 btn btn-primary" data-bind="click: goToPrev, enable: hasPrev">Previous</button>
