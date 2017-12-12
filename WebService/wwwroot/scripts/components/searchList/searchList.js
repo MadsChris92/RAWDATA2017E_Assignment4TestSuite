@@ -22,16 +22,6 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             return minPostShowing() + "-" + (minPostShowing() + postsShowingAmount() - 1) + " out of " + totalPosts();
         }, this);
 
-        var tagSearch = function (tagTitle) {
-            console.log(tagTitle);
-            var callback = function (sr, self) {
-                //console.log(JSON.stringify(self.resultArray()));
-                //console.log(JSON.stringify(self.resultArray()));
-                self.searchResult(sr);
-            }
-            dat.getPostByTag(tagTitle, callback, self);
-        };
-
         var datGetList = function () {
             var callback = function (sr, self) {
                 //console.log(JSON.stringify(self.resultArray()));
@@ -88,7 +78,6 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             hasNext,
             hasPrev,
             datGetList,
-            tagSearch,
             noResultsFound,
             activePost: self.activePost,
             postsShowing

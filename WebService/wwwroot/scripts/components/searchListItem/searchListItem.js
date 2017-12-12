@@ -50,7 +50,7 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             isActive,
             singlePost: self.singlePost,
             showSinglePost,
-            tagSearch
+            tagSearch: self.tagSearch
         };
 
     }
