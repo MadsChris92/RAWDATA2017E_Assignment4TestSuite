@@ -47,7 +47,7 @@
         </form>
     </div>
     <div class="alert alert-warning" data-bind="visible: noResultsFound">No questions match the search words.</div>
-    <div class="container-fluid bg-light rounded p-4">
+    <div class="container-fluid bg-light rounded p-0 p-sm-4">
         <!-- ko if:searchResult() !== null-->
         <div class="list-group p-2" data-bind="template: {name: 'sPost-template', foreach: searchResult().posts}"></div>
         <!-- /ko -->
@@ -73,8 +73,8 @@
     <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" data-bind="click: function(data, event) {$root.showSinglePost(url, $index, data, event)}">
 		<div class="row">
 			<div class="col-lg-2">
-				<h6 class="d-sm-inline-block alert" data-bind="text: score+' Score', css: score>0? 'alert-success':'alert-warning'"></h6>
-				<h6 class="d-sm-inline-block alert" data-bind="text: answerCount+' Answers', css: answerCount>0? 'alert-success':'alert-warning'"></h6>
+				<h6 class="d-inline-block d-lg-block alert" data-bind="text: score+' Score', css: score>0? 'alert-success':'alert-warning'"></h6>
+				<h6 class="d-inline-block d-lg-block alert" data-bind="text: answerCount+' Answers', css: answerCount>0? 'alert-success':'alert-warning'"></h6>
 			</div>
 			<div class="col-lg-10 col-sm-12">
 				<div class="d-flex w-100 justify-content-between">
