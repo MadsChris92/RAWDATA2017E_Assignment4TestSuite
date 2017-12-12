@@ -124,7 +124,8 @@
             noResultsFound,
             activePost,
             postsShowing,
-            isActive
+            isActive,
+            searchResult
         };
     })();
 
