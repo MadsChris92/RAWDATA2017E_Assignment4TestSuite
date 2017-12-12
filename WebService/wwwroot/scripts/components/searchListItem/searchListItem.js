@@ -6,6 +6,7 @@ define(['knockout', 'dataservice'], function (ko, dat) {
         var index = params.index;
         this.activePost = params.activePost;
         this.index = params.index;
+        this.parent = params.parent;
 
         var isActive = ko.computed(function () {
             return this.activePost() == this.index && this.singlePost() != null;
@@ -32,16 +33,16 @@ define(['knockout', 'dataservice'], function (ko, dat) {
         };
 
 
-        var tagSearch = function (tagTitle) {
+        this.tagSearch = function (tagTitle) {
             console.log(tagTitle);
             var callback = function (sr, self) {
                 console.log('Tagsearch: ');
                 //console.log(JSON.stringify(self.resultArray()));
-                self.resultArray(sr.posts());
+                //self.resultArray(sr.posts());
                 //console.log(JSON.stringify(self.resultArray()));
                 self.searchResult(sr);
             }
-            dat.getPostByTag(tagTitle, callback, vm);
+            dat.getPostByTag(tagTitle, callback, parent);
         };
 
 
