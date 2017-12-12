@@ -1,9 +1,10 @@
-﻿define(['knockout', 'dataservice'], function (ko, dat) {
+define(['knockout', 'dataservice'], function (ko, dat) {
     return function (params) {
         var self = this;
 
         this.searchWord = ko.observable("");
         this.searchResult = ko.observable(null);
+        this.activePost = ko.observable(-1);
         var noResultsFound = ko.computed(function () {
             if (self.searchResult() && self.searchResult().posts.length > 1) {
                 return false;
@@ -76,7 +77,7 @@
 
         var isActive = function (index) {
             console.log(index);
-            return activePost() == index;
+            return self.activePost() == index;
         };
 
         return {
@@ -89,7 +90,7 @@
             datGetList,
             tagSearch,
             noResultsFound,
-            activePost,
+            activePost: self.activePost,
             postsShowing
         };
     }

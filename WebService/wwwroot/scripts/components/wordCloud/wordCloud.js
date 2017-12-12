@@ -10,8 +10,6 @@ define(['knockout'], function (ko) {
             { text: "Adipiscing", weight: 5 }
         ]);
 
-        var test = ko.observable("hi");
-
         return {
             words
         };
