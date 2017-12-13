@@ -1,4 +1,4 @@
-﻿
+
 <div class="container pageDiv" data-bind="with: postResult">
     <h4 data-bind="text: title">asd</h4>
     <br />
@@ -13,8 +13,18 @@
 </div>
 <!-- Comments Template -->
 <script type="text/html" id="comment-template">
-    <h6>Comments</h6>
-    <div class="list-group " data-bind="foreach: comments">
+	<p>
+	  <a class="btn btn-primary" data-toggle="collapse" data-bind="attr: {href: "#"+id}" aria-expanded="false" aria-controls="collapseExample">
+		Comments
+	  </a>
+	</p>
+	<div class="collapse" id="collapseExample">
+	  <div class="card card-body">
+		Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+	  </div>
+	</div>
+    
+    <div class="list-group collapse" data-bind="foreach: comments, attr:{id:""+id}">
         <div class="list-group-item">
             <div class="d-inline-block center-block float-left p-1 mr-2 alert" data-bind="css: score>0? 'alert-success':'alert-warning'">
                 <span class="glyphicon-book glyphicon" data-bind="text: score"></span>

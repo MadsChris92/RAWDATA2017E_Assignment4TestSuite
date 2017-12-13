@@ -10,32 +10,32 @@
 </head>
 <body>
 	<div class="bg-light">
-		<div class="container">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<a class="navbar-brand" href="#">Queue Underflow</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+	    <div class="container">
+	        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+	            <a class="navbar-brand" href="#">Queue Underflow</a>
+	            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	                <span class="navbar-toggler-icon"></span>
+	            </button>
 
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav mr-auto">
-						<li class="nav-item">
-							<a class="nav-link active" href="index.html">Home <span class="sr-only">(current)</span></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="questions.html">Questions</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="tags.html">Tags</a>
-						</li>
-					</ul>
-				</div>
-				<form class="form-inline my-2 my-lg-0">
-					<input class="form-control mr-sm-2" data-bind="textInput: searchWord" type="search" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-primary my-2 my-sm-0" data-bind="click: datGetList" type="submit">Search</button>
-				</form>
-			</nav>
-		</div>
+	            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	                <ul class="navbar-nav mr-auto">
+	                    <li class="nav-item">
+	                        <a class="nav-link active" href="index.html">Home <span class="sr-only">(current)</span></a>
+	                    </li>
+	                    <li class="nav-item">
+	                        <a class="nav-link" href="questions.html">Questions</a>
+	                    </li>
+	                    <li class="nav-item">
+	                        <a class="nav-link" href="tags.html">Tags</a>
+	                    </li>
+	                </ul>
+	            </div>
+	            <form class="form-inline my-2 my-lg-0">
+	                <input class="form-control mr-sm-2" data-bind="textInput: searchWord" type="search" placeholder="Search" aria-label="Search">
+	                <button class="btn btn-outline-primary my-2 my-sm-0" data-bind="click: datGetList" type="submit">Search</button>
+	            </form>
+	        </nav>
+	    </div>
 	</div>
 	<br />
     <!-- ko if:searchResult() !== null-->

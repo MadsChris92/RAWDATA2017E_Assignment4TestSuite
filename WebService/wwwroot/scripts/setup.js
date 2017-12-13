@@ -1,8 +1,8 @@
 ﻿requirejs.config({
-    baseUrl: 'scripts',
+    baseUrl: "scripts",
     paths: {
-        knockout: '../lib/knockout/dist/knockout',
-        bootstrap: '../lib/bootstrap/dist/js/bootstrap',
+        knockout: "../lib/knockout/dist/knockout",
+        bootstrap: "../lib/bootstrap/dist/js/bootstrap",
         jquery: "../lib/jquery/dist/jquery",
         text: "../lib/text/text",
         jqcloud: "../lib/jqcloud2/dist/jqcloud",
@@ -11,7 +11,7 @@
     },
     shim: {
         jqcloud: {
-            deps: ['jquery']
+            deps: ["jquery"]
         }
     }
 });

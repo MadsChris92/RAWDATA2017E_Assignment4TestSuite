@@ -23,4 +23,5 @@
             template: { require: "text!../scripts/components/searchListItem/searchListItem.html" }
         }
     );
+    //TODO Add force network component
 });
