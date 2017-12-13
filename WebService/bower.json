@@ -6,6 +6,7 @@
     "knockout": "v3.4.2",
     "text": "2.0.15",
     "jqcloud2": "v2.0.3",
-    "sugar-date": "2.0.4"
+    "sugar-date": "2.0.4",
+    "popper.js": "v1.13.0-next"
   }
 }

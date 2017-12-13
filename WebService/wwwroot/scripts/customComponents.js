@@ -23,5 +23,11 @@
             template: { require: "text!../scripts/components/searchListItem/searchListItem.html" }
         }
     );
+    ko.components.register("forceNetwork",
+        {
+            viewModel: { require: "../scripts/components/forceNetwork/forceNetwork" },
+            template: { require: "text!../scripts/components/forceNetwork/forceNetwork.html" }
+        }
+    );
     //TODO Add force network component
 });

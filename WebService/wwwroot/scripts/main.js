@@ -1,4 +1,4 @@
-require(["knockout", "jquery", "dataservice"], function (ko, $, dat) {
+require(["knockout", "jquery", "dataservice", "bootstrap"], function (ko, $, dat) {
     var vm = (function () {
         var self = this;
 
