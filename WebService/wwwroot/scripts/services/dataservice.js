@@ -49,6 +49,17 @@ define(["jquery", "knockout"], function ($, ko) {
         });
     }
 
+    const getCoOccuringWords = function (searchString, callback, caller) {
+        if (searchString) {
+            $.ajax({
+                url: `${searchApi}/words/${searchString}?pageSize=${pageSize}`,
+                success: function (result) {
+                    callback(new SearchResult(result), caller);
+                }
+            });
+        }
+    }
+
     //ideen er at have et objekt der bare kan få besked om at hente den næste/forrige side, uden at bekymre sig om url'er
     function SearchResult(result) {
         var self = this;

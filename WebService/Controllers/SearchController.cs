@@ -46,6 +46,28 @@ namespace WebService.Controllers
             return Ok(result);
         }
 
+        [HttpGet("words/{terms}", Name = nameof(SearchWordsOccur))]
+        public IActionResult SearchWordsOccur([FromRoute] string terms, int page = 0, int pageSize = 50, bool firstPage = false)
+        {
+            if (firstPage) _dataService.AddHistory(terms);
+            var posts = _dataService.GetRelatedWords(terms, page, pageSize, out var totalResults);
+
+            var result = new PaginatedResult<RankedWordPair>
+            {
+                TotalResults = totalResults,
+                ShowingResults = ""+page,
+                PreviousPage = page > 0
+                    ? Url.Link(nameof(SearchPosts), new { page = page - 1, pageSize })
+                    : null,
+                NextPage = (page + 1) * pageSize < totalResults
+                    ? Url.Link(nameof(SearchPosts), new { page = page + 1, pageSize })
+                    : null,
+                Results = posts
+            };
+
+            return Ok(result);
+        }
+
 
         [HttpGet("", Name = nameof(GetPostsByScore))]
         public IActionResult GetPostsByScore(string name, int page = 0, int pageSize = 5, bool firstPage = false)

@@ -18,6 +18,7 @@ namespace DAL
         public DbSet<History> History { get; set; }
         public DbSet<RankedSearchQuestion> RankedSearchQuestion { get; set; }
         public DbSet<RankedWord> RankedWord { get; set; }
+        public DbSet<RankedWordPair> RankedWordPair { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -67,6 +68,8 @@ namespace DAL
             // Ranked Word
             modelBuilder.Entity<RankedWord>().HasKey(c => c.Word);
 
+            // Ranked Word Pair
+            modelBuilder.Entity<RankedWordPair>().HasKey(c => new {c.Word1, c.Word2} );
 
 
             // Answer

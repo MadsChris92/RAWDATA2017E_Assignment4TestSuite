@@ -337,6 +337,17 @@ namespace DAL
                 return currentPage;
             }
         }
+
+        public List<RankedWordPair> GetRelatedWords(string terms, int page, int pageSize, out int totalResults)
+        {
+            using (var db = new SovaContext())
+            {
+                var searchResult = db.RankedWordPair.FromSql("CALL co_occuring_words({0})", terms);
+                
+                var currentPage = searchResult.Paginated(page, pageSize, out totalResults).ToList();
+                return currentPage;
+            }
+        }
     }
 
     static class Util{

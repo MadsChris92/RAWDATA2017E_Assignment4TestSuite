@@ -30,6 +30,7 @@ namespace DAL
         List<RankedSearchQuestion> SearchPostsOrderedByNewest(string title, int page, int pageSize, string orderBy, out int totalResults);
         List<RankedSearchQuestion> SearchPostsOrderedByRanking(string title, int page, int pageSize, out int totalResults);
         List<RankedSearchQuestion> SearchPosts(string terms, int page, int pageSize, string orderBy, out int totalResults);
+        List<RankedWordPair> GetRelatedWords(string terms, int page, int pageSize, out int totalResults);
     }
 
     

@@ -58,6 +58,14 @@ namespace DAL.DomainObjects
         public string Word { get; set; }
     }
 
+
+    public class RankedWordPair
+    {
+        public string Word1 { get; set; }
+        public string Word2 { get; set; }
+        public int Occurences { get; set; }
+    }
+
     public class Answer : Post
     {
         public int QuestionId { get; set; }
