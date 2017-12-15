@@ -3,7 +3,7 @@ define(["jquery", "knockout"], function ($, ko) {
     const postApi = "/api/posts";
     const histApi = "/api/history";
     const searchApi = "/api/search"; // Does it make sense to implement a search api?(that is, move the search functionality over to its own controller)
-    var pageSize = 10;
+    var defaultPageSize = 10;
 
     const events = {
         event: "event"  // should we have events?
@@ -21,7 +21,7 @@ define(["jquery", "knockout"], function ($, ko) {
 
     const getPosts = function (searchTerm, callback, caller) {
         $.ajax({
-            url: `${postApi}/title/${searchTerm}?pageSize=${pageSize}&firstPage=true`,
+            url: `${postApi}/title/${searchTerm}?pageSize=${callback.pageSize || defaultPageSize}&firstPage=true`,
             success: function (result) {
                 console.log(result);
                 callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
@@ -41,7 +41,7 @@ define(["jquery", "knockout"], function ($, ko) {
 
     const getPostsHighscore = function (callback, caller) {
         $.ajax({
-            url: `${searchApi}/?pageSize=${pageSize}`,
+            url: `${searchApi}/?pageSize=${callback.pageSize || defaultPageSize}`,
             success: function (result) {
                 //console.log(result);
                 callback(new SearchResult(result), caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
@@ -49,10 +49,21 @@ define(["jquery", "knockout"], function ($, ko) {
         });
     }
 
-    const getCoOccuringWords = function (searchString, callback, caller) {
+    const getRelatedWords = function (searchString, callback, caller) {
         if (searchString) {
             $.ajax({
-                url: `${searchApi}/words/${searchString}?pageSize=${pageSize}`,
+                url: `${searchApi}/words/related/${searchString}?pageSize=${callback.pageSize || defaultPageSize}`,
+                success: function (result) {
+                    callback(result.results, caller);
+                }
+            });
+        }
+    }
+
+    const getRankedWords = function (searchString, callback, caller) {
+        if (searchString) {
+            $.ajax({
+                url: `${searchApi}/words/ranked/${searchString}?pageSize=${callback.pageSize || defaultPageSize}`,
                 success: function (result) {
                     callback(new SearchResult(result), caller);
                 }
@@ -62,66 +73,66 @@ define(["jquery", "knockout"], function ($, ko) {
 
     //ideen er at have et objekt der bare kan få besked om at hente den næste/forrige side, uden at bekymre sig om url'er
     function SearchResult(result) {
-        var self = this;
-        const next = ko.observable(result.nextPage);
-        const prev = ko.observable(result.previousPage);
-        const hasNext = ko.computed(function () {
-            return next() || false;
+        const self = this;
+        this.next = ko.observable(result.nextPage);
+        this.prev = ko.observable(result.previousPage);
+        this.hasNext = ko.computed(() => {
+            return this.next() || false;
         }, this);
-        const hasPrev = ko.computed(function () {
-            return prev() || false;
+        this.hasPrev = ko.computed(() => {
+            return this.prev() || false;
         }, this);
-        const posts = ko.observableArray(result.results);
-        const showingResults = ko.observable(result.showingResults);
-        const totalResults = ko.observable(result.totalResults);
+        this.posts = ko.observableArray(result.results);
+        this.showingResults = ko.observable(result.showingResults);
+        this.totalResults = ko.observable(result.totalResults);
 
-        const page = ko.observable(0);
-        const pageSize = ko.observable(10);
-        const totalPages = ko.computed(() => {
-            return totalResults / pageSize;
+        this.page = ko.observable(0);
+        this.pageSize = ko.observable(defaultPageSize); // TODO Page size i searchresult vil altid være default, selv hvis en anden er brugt
+        this.totalPages = ko.computed(() => {
+            return this.totalResults / this.pageSize;
         }, this);
 
 
-        const gotoNext = function () {
-            if (hasNext()) {
-                posts([]);
+        this.gotoNext = () => {
+            if (this.hasNext()) {
+                this.posts([]);
                 $.ajax({
-                    url: next(),
+                    url: this.next(),
                     success: function (result) {
-                        next(result.nextPage);
-                        prev(result.previousPage);
-                        posts(result.results);
+                        self.next(result.nextPage);
+                        self.prev(result.previousPage);
+                        self.posts(result.results);
                     }
                 });
-                page(page() + 1);
+                this.page(this.page() + 1);
             }
         }
 
-        const gotoPrev = function () {
-            if (hasPrev()) {
-                posts([]);
+        this.gotoPrev = () => {
+            if (this.hasPrev()) {
+                this.posts([]);
                 $.ajax({
-                    url: prev(),
+                    url: this.prev(),
                     success: function(result) {
-                        next(result.nextPage);
-                        prev(result.previousPage);
-                        posts(result.results);
+                        self.next(result.nextPage);
+                        self.prev(result.previousPage);
+                        self.posts(result.results);
                     }
                 });
-                page(page() - 1);
+                this.page(this.page() - 1);
             }
         }
         return {
-            hasNext,
-            hasPrev,
-            gotoNext,
-            gotoPrev,
-            posts,
-            page,
-            pageSize,
-            totalPages,
-            showingResults,
-            totalResults
+            hasNext: self.hasNext,
+            hasPrev: self.hasPrev,
+            gotoNext: self.gotoNext,
+            gotoPrev: self.gotoPrev,
+            posts: self.posts,
+            page: self.page,
+            pageSize: self.pageSize,
+            totalPages: self.totalPages,
+            showingResults: self.showingResults,
+            totalResults: self.totalResults
         }
     }
 
@@ -130,7 +141,9 @@ define(["jquery", "knockout"], function ($, ko) {
         getPosts,
         getPostByTag,
         getPostsHighscore,
-        getSinglePost
+        getSinglePost,
+        getRelatedWords,
+        getRankedWords
     }
 });
 

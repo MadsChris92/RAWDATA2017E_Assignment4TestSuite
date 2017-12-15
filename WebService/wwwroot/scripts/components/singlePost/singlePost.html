@@ -20,8 +20,8 @@
     <div class="collapse" data-bind="attr:{id:'comments'+$component.getId(url)}">
         <div class="list-group" data-bind="foreach: comments">
             <div class="list-group-item">
-                <div class="d-inline-block center-block float-left p-1 mr-2 alert" data-bind="css: score>0? 'alert-success':'alert-warning'">
-                    <span class="glyphicon-book glyphicon" data-bind="text: score"></span>
+                <div class="d-inline-block float-left p-1 mr-2 alert" data-bind="css: score>0? 'alert-success':'alert-warning'">
+                    <span class="" data-bind="text: score"></span>
                 </div>
                 <div class="d-inline">
                     <div class="small" data-bind="text: text"></div>

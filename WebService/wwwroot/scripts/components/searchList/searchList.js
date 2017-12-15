@@ -24,14 +24,14 @@ define(['knockout', 'dataservice'], function (ko, dat) {
 
 
         var hasNext = ko.computed(function () {
-            if (self.searchResult() != null) {
+            if (self.searchResult() !== null) {
                 return self.searchResult().hasNext();
             }
             return false;
         }, this);
 
         var hasPrev = ko.computed(function () {
-            if (self.searchResult() != null) {
+            if (self.searchResult() !== null) {
                 return self.searchResult().hasPrev();
             }
             return false;

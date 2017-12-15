@@ -5,8 +5,7 @@
 	<title>Portfolio IV</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="lib/jqcloud2/dist/jqcloud.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb">
-	<link href="style/styleshit.css" rel="stylesheet" />
+	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
     
 </head>
 <body>
@@ -42,13 +41,13 @@
 		<form class="form-inline input-group">
 			<input class="form-control" data-bind="textInput: searchWord" placeholder="Type your search words here..." aria-label="Search">
 			<div class="input-group-btn">
-				<button class="btn btn-primary" data-bind="click: datGetList">Search</button>
+				<button class="btn btn-primary" data-bind="click: searchMethod">Search</button>
 			</div>
 
 		</form>
 	</div>
     <!-- TODO hook up word cloud to actual data -->
-	<div class="container" data-bind="component: {name: currentView, params:{searchResult: searchResult}}">
+	<div class="container" data-bind="component: {name: currentView, params:{searchResult: searchResult, searchGraph: searchGraph, searchCloud: searchCloud}}">
 	</div>
 </body>
 </html>

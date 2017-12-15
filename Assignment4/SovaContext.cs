@@ -25,7 +25,7 @@ namespace DAL
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseMySql("server=wt-220.ruc.dk;database=raw10;uid=raw10;pwd=raw10");
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
