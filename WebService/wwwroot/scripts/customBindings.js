@@ -3,21 +3,14 @@ require(['knockout', 'jquery', 'd3js', 'jqcloud', 'sugarDate'], function (ko, $,
         init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
             // This will be called when the binding is first applied to an element
             // Set up any initial state, event handlers, etc. here
-            var words = allBindings.get('cloud').words;
-            if (words && ko.isObservable(words)) {
-                words.subscribe(function () {
-                    $(element).jQCloud('update', ko.unwrap(words));
-                });
-            }
-            console.log("in init: ");
+            console.log("in init: cloud");
+            var words = ko.unwrap(valueAccessor()).words;
+            $(element).jQCloud(ko.unwrap(words));
         },
         update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-            console.log("in update: ");
-            // This will be called once when the binding is first applied to an element,
-            // and again whenever any observables/computeds that are accessed change
-            // Update the DOM element based on the supplied values here.
-            var words = ko.unwrap(allBindings.get('cloud').words) || [];
-            $(element).jQCloud(words);
+            console.log("in update: cloud");
+            var words = ko.unwrap(ko.unwrap(valueAccessor()).words) || [];
+            $(element).jQCloud('update', ko.unwrap(words));
         }
     };
 
