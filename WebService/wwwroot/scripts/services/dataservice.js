@@ -82,12 +82,22 @@ define(["jquery", "knockout"], function ($, ko) {
         });
     }
 
+    const clearHistory = function () {
+        $.ajax({
+            url: `${histApi}/`,
+            type: 'DELETE', 
+            success: function (result) {
+                console.log(result);
+            }
+        });
+    }
+
     const markPost = function(id) {
         $.ajax({
             url: `${postApi}/mark/${id}`,
             success: function (result) {
                 
-                console.log("Marked: " + result);
+                console.log("Marked");
             }
         });
     }
@@ -98,10 +108,12 @@ define(["jquery", "knockout"], function ($, ko) {
             type: 'DELETE',
             success: function (result) {
 
-                console.log("Unmarked: " + result);
+                console.log("Unmarked");
             }
         });
     }
+
+
 
     //ideen er at have et objekt der bare kan få besked om at hente den næste/forrige side, uden at bekymre sig om url'er
     function SearchResult(result) {
