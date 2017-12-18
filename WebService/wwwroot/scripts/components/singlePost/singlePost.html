@@ -5,7 +5,7 @@
             <h4 class="col-10" data-bind="text: title">asd</h4>
             <hr />
             <button type="button" class="btn btn-outline-secondary mr-1" title="Note" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></button>
-            <button type="button" class="btn btn-outline-warning" title="Favorite"><i class="fa fa-star" aria-hidden="true"></i></button>
+            <button data-bind="css: {active: marked}, click: $parent.markPost" type="button" class="btn btn-outline-warning" title="Favorite"><i class="fa fa-star" aria-hidden="true"></i></button>
         </div>
         <br />
         <p data-bind="html: body">asd</p>
