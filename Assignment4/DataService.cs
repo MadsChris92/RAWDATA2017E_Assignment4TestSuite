@@ -136,8 +136,23 @@ namespace DAL
         {
             using (var db = new SovaContext())
             {
-                return db.Marked.Include(mp => mp.Post).Paginated(page, pageSize, out totalResults).ToList();
+                var posts = db.Marked.Include(mp => mp.Post)
+                    .ThenInclude(mp => mp.Answers)
+                    .Include(mp => mp.Post)
+                    .ThenInclude(mp => mp.Owner)
+                    .Paginated(page, pageSize, out totalResults).ToList();
+
+                foreach (var post in posts)
+                {
+                    
+                    post.Post.FillTags();
+                }
+
+                return posts;
             }
+
+
+
         }
 
         public bool UnmarkPost(int id)

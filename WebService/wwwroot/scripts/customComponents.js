@@ -36,5 +36,12 @@
             template: { require: "text!../scripts/components/history/history.html" }
         }
     );
+
+    ko.components.register("favorites",
+        {
+            viewModel: { require: "../scripts/components/favorites/favorites" },
+            template: { require: "text!../scripts/components/favorites/favorites.html" }
+        }
+    );
     //TODO Add force network component
 });

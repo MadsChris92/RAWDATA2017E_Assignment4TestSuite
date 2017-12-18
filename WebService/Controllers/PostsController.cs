@@ -66,30 +66,6 @@ namespace WebService.Controllers
             };
             return Ok(quest);
         }
-        /*
-        [HttpGet("title/{name}", Name = nameof(GetPostsByName))]
-        public IActionResult GetPostsByName(string name, int page=0, int pageSize=5, bool firstPage=false)
-        {
-
-            if (firstPage) _dataService.AddHistory(name);
-
-            var posts = _dataService.GetQuestionByTitle(name, page, pageSize, out var totalResults);
-            posts.ForEach(post => post.Url = Url.Link(nameof(GetPost), new {id=post.Id}));
-
-            var result = new PaginatedResult<SearchQuestion>
-            {
-                TotalResults = totalResults, ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
-                PreviousPage = page > 0
-                    ? Url.Link(nameof(GetPostsByName), new { page = page - 1, pageSize })
-                    : null,
-                NextPage = (page + 1) * pageSize < totalResults
-                    ? Url.Link(nameof(GetPostsByName), new { page = page + 1, pageSize })
-                    : null,
-                Results = posts
-            };
-
-            return Ok(result);
-        }*/
 
         [HttpGet("words/{name}", Name = nameof(GetPostsWords))]
         public IActionResult GetPostsWords(string name, int page = 0, int pageSize = 5, bool firstPage = false)
@@ -164,66 +140,6 @@ namespace WebService.Controllers
             return Ok(result);
         }
 
-        //[HttpGet("score", Name = nameof(GetPostsByScore))]
-        //public IActionResult GetPostsByScore(string name, int page = 0, int pageSize = 5, bool firstPage = false)
-        //{
-        //    var question = _dataService.GetPostsHighestScore(page, pageSize, out var totalResults);
-        //    List<JSONObjects.Question> posts = null;
-
-        //    if (question != null)
-        //    {
-        //        posts = question.Select(que => new JSONObjects.Question
-        //        {
-        //            Url = Url.Link(nameof(GetPost), que.Id),
-        //            Body = que.Body,
-        //            OwnerUrl = Url.Link(nameof(TestController.GetUser), que.OwnerId),
-        //            Created = que.Created,
-        //            Score = que.Score,
-        //            Title = que.Title,
-        //            Closed = que.Closed,
-        //            Answers = que.Answers.Select(answer => new JSONObjects.Answer
-        //            {
-        //                Url = Url.Link(nameof(GetPost), answer.Id),
-        //                Body = answer.Body,
-        //                OwnerUrl = Url.Link(nameof(TestController.GetUser), answer.OwnerId),
-        //                Created = answer.Created,
-        //                Score = answer.Score,
-        //                Comments = answer.Comments.Select(comment => new JSONObjects.Comment
-        //                {
-        //                    Created = comment.Created,
-        //                    OwnerUrl = Url.Link(nameof(TestController.GetUser), comment.OwnerId),
-        //                    Score = comment.Score,
-        //                    Text = comment.Text
-        //                }).ToList()
-        //            }).ToList(),
-
-        //            Tags = que.Tags.Select<Tag, string>(tag => tag.Title).ToList(),
-        //            Comments = que.Comments.Select(comment => new JSONObjects.Comment
-        //            {
-        //                Created = comment.Created,
-        //                OwnerUrl = Url.Link(nameof(TestController.GetUser), comment.OwnerId),
-        //                Score = comment.Score,
-        //                Text = comment.Text
-        //            }).ToList()
-        //        }).ToList();
-        //    }
-
-        //    var result = new PaginatedResult<JSONObjects.Question>
-        //    {
-        //        TotalResults = totalResults,
-        //        ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
-        //        PreviousPage = page > 0
-        //            ? Url.Link(nameof(GetPostsByScore), new { page = page - 1, pageSize })
-        //            : null,
-        //        NextPage = (page + 1) * pageSize < totalResults
-        //            ? Url.Link(nameof(GetPostsByScore), new { page = page + 1, pageSize })
-        //            : null,
-        //        Results = posts
-        //    };
-
-        //    return result != null ? (IActionResult)Ok(result) : NotFound();
-        //}
-
         [HttpGet("tag/{name}", Name = nameof(GetPostsByTag))]
         public IActionResult GetPostsByTag(string name, int page = 0, int pageSize = 5, bool firstPage=false)
         {
@@ -273,7 +189,40 @@ namespace WebService.Controllers
             return result != false ?
                 (IActionResult)Ok(result) : NotFound();
         }
-        
+
+        [HttpGet("mark", Name = nameof(GetMarkedPosts))]
+        public IActionResult GetMarkedPosts(int page = 0, int pageSize = 5)
+        {
+            var posts = _dataService.GetMarkedPosts(page, pageSize, out var totalResults);
+
+            List<RankedSearchQuestion> questions = posts.Select(que => new RankedSearchQuestion
+            {
+                Url = Url.Link(nameof(GetPost), new { que.Post.Id}),
+                Title = que.Post.Title,
+                OwnerName = que.Post.Owner.Name,
+                AnswerCount = que.Post.Answers.Count,
+                Created = que.Post.Created,
+                Score = que.Post.Score,
+                Tags = que.Post.Tags.ToList()
+            }).ToList();
+
+            var result = new
+            {
+                TotalResults = totalResults,
+                ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
+                PreviousPage = page > 0
+                    ? Url.Link(nameof(GetPostsByTag), new { page = page - 1, pageSize })
+                    : null,
+                NextPage = (page + 1) * pageSize < totalResults
+                    ? Url.Link(nameof(GetPostsByTag), new { page = page + 1, pageSize })
+                    : null,
+                    Results = questions
+            };
+
+
+            return Ok(result);
+        }
+
         [HttpPost("{id}/note", Name = nameof(CreateNote))]
         public IActionResult CreateNote(int id, [FromBody] TextGetter note)
         {
@@ -333,7 +282,6 @@ namespace WebService.Controllers
                     : null,
                 Results = notes
             };
-
 
             return Ok(result);
         }

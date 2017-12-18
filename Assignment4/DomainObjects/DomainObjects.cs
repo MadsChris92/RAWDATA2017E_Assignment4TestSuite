@@ -9,7 +9,7 @@ namespace DAL.DomainObjects
     public class MarkedPost
     {
         public int PostId { get; set; }
-        public virtual Post Post { get; set; }
+        public virtual Question Post { get; set; }
     }
 
     /// <summary>
