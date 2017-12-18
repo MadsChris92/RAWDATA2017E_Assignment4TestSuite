@@ -2,9 +2,8 @@
 <div class="container-fluid bg-light rounded p-0 p-sm-2 p-lg-4">
     <!-- ko if:searchHistory() !== null-->
     <div class="list-group p-2" data-bind="foreach: searchHistory().posts">
-        <div data-bind="text: text"></div>hmmm
+        <div data-bind="text: text"></div>
     </div>
-    what
     <div class="row justify-content-center d-none d-sm-flex">
         <button class="col-3 col-md-2 btn btn-primary" data-bind="click: goToPrev, enable: hasPrev">Previous</button>
         <h6 class="col-3 col-md-2 text-center align-self-center" data-bind="text: postsShowing"></h6>
