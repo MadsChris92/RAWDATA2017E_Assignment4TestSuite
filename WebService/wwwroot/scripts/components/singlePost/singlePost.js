@@ -33,7 +33,7 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             hasComments,
             getId,
             getNotes,
-            notes: this.notes
+            notes: this.notes,
             markPost: self.markPost
         };
 
