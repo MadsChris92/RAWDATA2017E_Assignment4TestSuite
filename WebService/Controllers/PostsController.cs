@@ -212,10 +212,10 @@ namespace WebService.Controllers
                 TotalResults = totalResults,
                 ShowingResults = "Showing results " + (page * pageSize + 1) + "-" + (page + 1) * pageSize + ".",
                 PreviousPage = page > 0
-                    ? Url.Link(nameof(GetPostsByTag), new { page = page - 1, pageSize })
+                    ? Url.Link(nameof(GetMarkedPosts), new { page = page - 1, pageSize })
                     : null,
                 NextPage = (page + 1) * pageSize < totalResults
-                    ? Url.Link(nameof(GetPostsByTag), new { page = page + 1, pageSize })
+                    ? Url.Link(nameof(GetMarkedPosts), new { page = page + 1, pageSize })
                     : null,
                     Results = questions
             };

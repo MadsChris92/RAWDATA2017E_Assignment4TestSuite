@@ -7,8 +7,9 @@ define(['knockout', 'dataservice'], function (ko, dat) {
         this.activePost = ko.observable(-1);
 
         this.totalPosts = ko.computed(function(){
-            if(this.searchResult() !== null){
-                    return searchResult().totalResults();
+            if (this.searchResult() !== null) {
+                return searchResult().totalResults();
+
             }
             return -1;
         }, this);
@@ -26,6 +27,7 @@ define(['knockout', 'dataservice'], function (ko, dat) {
         var hasNext = ko.computed(function () {
             if (self.searchResult() !== null) {
                 return self.searchResult().hasNext();
+               
             }
             return false;
         }, this);
@@ -39,6 +41,7 @@ define(['knockout', 'dataservice'], function (ko, dat) {
 
         var goToNext = function () {
             console.log("Next Activated");
+            console.log(self.searchResult().hasNext());
             if (self.searchResult) {
                 self.searchResult().gotoNext();
             }

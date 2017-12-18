@@ -39,19 +39,22 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             }, self);
         }
 
-        var editNote = {
-            active: ko.observable(-1),
-            oldText: "",
+        this.editNote = {
+            active: ko.observable(null),
+            newText: ko.observable(""),
             Begin: function (note) {
-                editNote.active = ko.observable(note);
+                self.editNote.active(note);
+                self.editNote.newText(note.text);
+                console.log(note);
             },
-            Commit: function(note) {
-                dat.editNote(self.postResult(), note, (result, caller) => {
-                    caller.
+            Commit: function (note) {
+                note.text = self.editNote.newText();
+                dat.updateNote(postResult(), note, (result, caller) => {
+                    caller.editNote.active(null);
                 }, self);
             },
             Cancel: function() {
-                
+                self.editNote.active(null);
             }
         }
 
@@ -70,7 +73,7 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             markPost: self.markPost,
             newNoteText: self.newNoteText,
             createNote,
-            editNote,
+            editNote: self.editNote,
             deleteNote,
 			postMarked
         };

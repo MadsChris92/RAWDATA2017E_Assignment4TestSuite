@@ -69,14 +69,17 @@
                 <h6>Notes:</h6>
                 <div class="list-group" data-bind="foreach: notes">
                     <div class="list-group-item">
-                        <div class="form-group" data-bind="visible:$component.editNote.index === $index">
-                            <button type="button" class="float-right btn btn-outline-primary mb-2"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
-                            <textarea data-bind="textInput: $data.text, visible:$component.editNote.index == $index" class="form-control" style="min-height: 200px;"></textarea>
-                            
+                        <div data-bind="if:$component.editNote.active() === $data">
+                            <!--<button type="button" class="float-right btn btn-outline-primary mb-2"><i class="fa fa-save" aria-hidden="true"></i> Save</button>-->
+                            <button data-bind="click: $component.editNote.Cancel" type="button" class="d-inline-block float-right btn btn-outline-warning" title="Cancel"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            <button data-bind="click: $component.editNote.Commit" type="button" class="d-inline-block float-right btn btn-outline-success mr-1" title="Commit"><i class="fa fa-check" aria-hidden="true"></i></button>
+                            <textarea data-bind="textInput: $component.editNote.newText" class="form-control" style="min-height: 200px;"></textarea>
                         </div>
-                        <button data-bind="click: $component.deleteNote" type="button" class="d-inline-block float-right btn btn-outline-danger" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                        <button data-bind="click: $component.editNote.Begin" type="button" class="d-inline-block float-right btn btn-outline-primary mr-1" title="Edit"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                        <p data-bind="text: $data.text"></p>
+                        <div data-bind="if:$component.editNote.active() !== $data">
+                            <button data-bind="click: $component.deleteNote" type="button" class="d-inline-block float-right btn btn-outline-danger" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            <button data-bind="click: $component.editNote.Begin" type="button" class="d-inline-block float-right btn btn-outline-primary mr-1" title="Edit"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                            <p data-bind="text: $data.text"></p>
+                        </div>
                     </div>
                     <div class="list-group-item">
                     </div>
