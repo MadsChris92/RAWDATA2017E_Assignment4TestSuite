@@ -19,11 +19,11 @@
 </div>
 <!-- Comments Template -->
 <script type="text/html" id="comment-template">
-    <a class="btn btn-secondary" data-toggle="collapse" data-bind="attr: {href: '#comments'+$component.getId(url)}" aria-expanded="false" aria-controls="collapseExample">
+    <a class="btn btn-secondary" data-toggle="collapse" data-bind="attr: {href: '#comments'+$component.counter}" aria-expanded="false" aria-controls="collapseExample">
         Comments
     </a>
     
-    <div class="collapse" data-bind="attr:{id:'comments'+$component.getId(url)}">
+    <div class="collapse" data-bind="attr:{id:'comments'+$component.counter++}">
         <div class="list-group" data-bind="foreach: comments">
             <div class="list-group-item">
                 <div class="d-inline-block float-left p-1 mr-2 alert" data-bind="css: score>0? 'alert-success':'alert-warning'">
