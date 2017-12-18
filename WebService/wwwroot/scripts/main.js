@@ -3,6 +3,10 @@ require(["knockout", "jquery", "dataservice", "bootstrap"], function (ko, $, dat
         var self = this;
 
         this.currentView = ko.observable("searchList");
+        this.searchWord = ko.observable("");
+        this.searchHistory = ko.observable(null);
+        this.searchResult = ko.observable(null);
+
         this.isCurrentView = function(arg) {
             return ko.computed(function() {
                     return arg === this.currentView();
@@ -43,12 +47,22 @@ require(["knockout", "jquery", "dataservice", "bootstrap"], function (ko, $, dat
             }
         }
 
+        this.showFavoritesView = function() {
+            if (self.currentView !== "favorites") {
+                self.currentView("favorites");
+                self.searchAction(self.getMarkedPosts);
+                self.searchAction()();
+            }
+        }
 
-        this.searchWord = ko.observable("");
+        this.getMarkedPosts = function() {
+            let callback = (sr, caller) => {
+                caller.searchResult(sr);
+                console.log(self.searchResult());
+            };
+            dat.getMarkedPosts(callback, self);
 
-        this.searchHistory = ko.observable(null);
-
-        this.searchResult = ko.observable(null);
+        }
 
         this.datGetList = function () {
             let callback = (sr, caller) => {
@@ -102,6 +116,7 @@ require(["knockout", "jquery", "dataservice", "bootstrap"], function (ko, $, dat
             showCloudView: self.showCloudView,
             showForceView: self.showForceView,
             showHistoryView: self.showHistoryView,
+            showFavoritesView: self.showFavoritesView,
             searchWord: self.searchWord,
             searchResult: self.searchResult,
             searchMethod: self.searchMethod,
