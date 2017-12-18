@@ -3,11 +3,13 @@
    data-bind="click: showSinglePost">
     <div class="row" data-bind="with:post">
         <div class="col-lg-2">
-            <h6 class="d-inline-block d-lg-block alert"
-                data-bind="text: score+' Score', css: score>0? 'alert-success':'alert-warning'"></h6>
-            <h6 class="d-inline-block d-lg-block alert"
-                data-bind="text: answerCount+' Answers', css: answerCount>0? 'alert-success':'alert-warning'"></h6>
-        </div>
+			<div class="d-inline-block d-lg-block alert" data-bind="css: score>0 ? 'alert-success':'alert-warning'">
+				<i class="d-inline fa fa-star" aria-hidden="true"></i> <h6 class="d-inline"data-bind="text: score+' Score'"></h6>
+			</div>
+			<div class="d-inline-block d-lg-block alert" data-bind="css: answerCount>0 ? 'alert-success':'alert-warning'">
+				<i class="d- inline fa fa-comment" aria-hidden="true"></i> <h6 class="d-inline" data-bind="text: answerCount+' Answers', "></h6>
+			</div>
+		</div>
         <div class="col-lg-10 col-sm-12">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1" data-bind="text: title"></h5>

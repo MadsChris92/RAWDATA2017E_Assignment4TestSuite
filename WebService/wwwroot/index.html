@@ -23,29 +23,35 @@
 				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 					<ul class="nav nav-pills">
 						<li class="nav-item">
-							<a data-bind="click: showSearchView, css: {active: isCurrentView('searchList')}" class="nav-link active" href="#Search">Search<span class="sr-only">(current)</span></a>
+							<a data-bind="click: showSearchView, css: {active: isCurrentView('searchList')}" class="nav-link active" href="#Search">
+								<i class="fa fa-search" aria-hidden="true"></i> Search
+							</a>
 						</li>
 						<li class="nav-item">
-							<a data-bind="click: showCloudView, css: {active: isCurrentView('wordCloud')}" class="nav-link" href="#Cloud">Wordcloud</a>
+							<a data-bind="click: showCloudView, css: {active: isCurrentView('wordCloud')}" class="nav-link" href="#Cloud">
+								<i class="fa fa-cloud" aria-hidden="true"></i> Wordcloud
+							</a>
 						</li>
 					    <li class="nav-item">
-					        <a data-bind="click: showForceView, css: {active: isCurrentView('forceNetwork')}" class="nav-link" href="#Force">Force Network</a>
+					        <a data-bind="click: showForceView, css: {active: isCurrentView('forceNetwork')}" class="nav-link" href="#Force">
+								<i class="fa fa-connectdevelop" aria-hidden="true"></i> Force Network
+							</a>
 					    </li>
 					    <li class="nav-item">
-					        <a data-bind="click: showHistoryView, css: {active: isCurrentView('history')}" class="nav-link" href="#History">History</a>
+					        <a data-bind="click: showHistoryView, css: {active: isCurrentView('history')}" class="nav-link" href="#History">
+								<i class="fa fa-history" aria-hidden="true"></i> History
+							</a>
 					    </li>
 					</ul>
 				</div>
 			</nav>
 		</div>
 	</div>
-
 	<div class="container container-fluid alert alert-primary my-3" id="postListBar">
-		<h5>Question search</h5>
 		<form class="form-inline input-group">
 			<input class="form-control" data-bind="textInput: searchWord" placeholder="Type your search words here..." aria-label="Search">
 			<div class="input-group-btn">
-				<button class="btn btn-primary" data-bind="click: searchMethod">Search</button>
+				<button class="btn btn-primary" data-bind="click: searchMethod"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
 			</div>
 
 		</form>
