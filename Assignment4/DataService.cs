@@ -124,6 +124,14 @@ namespace DAL
             }
         }
 
+        public bool IsPostMarked(int id)
+        {
+            using (var db = new SovaContext())
+            {
+                return db.Marked.Any(mp => mp.PostId == id);
+            }
+        }
+
         public List<MarkedPost> GetMarkedPosts(int page, int pageSize, out int totalResults)
         {
             using (var db = new SovaContext())
