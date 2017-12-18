@@ -48,7 +48,7 @@ namespace WebService.Controllers
                 nextPage = (page + 1) * pageSize < totalResults
                     ? Url.Link(nameof(GetHistory), new { page = page + 1, pageSize })
                     : null,
-                history
+                results = history
             };
             return Ok(result);
         }

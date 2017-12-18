@@ -5,7 +5,8 @@
 	<title>Portfolio IV</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="lib/jqcloud2/dist/jqcloud.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="lib/font-awesome-4.7.0/css/font-awesome.min.css" />
     
 </head>
 <body>
@@ -27,9 +28,12 @@
 						<li class="nav-item">
 							<a data-bind="click: showCloudView, css: {active: isCurrentView('wordCloud')}" class="nav-link" href="#Cloud">Wordcloud</a>
 						</li>
-						<li class="nav-item">
-							<a data-bind="click: showForceView, css: {active: isCurrentView('forceNetwork')}" class="nav-link" href="#Force">Force Network</a>
-						</li>
+					    <li class="nav-item">
+					        <a data-bind="click: showForceView, css: {active: isCurrentView('forceNetwork')}" class="nav-link" href="#Force">Force Network</a>
+					    </li>
+					    <li class="nav-item">
+					        <a data-bind="click: showHistoryView, css: {active: isCurrentView('history')}" class="nav-link" href="#History">History</a>
+					    </li>
 					</ul>
 				</div>
 			</nav>
@@ -47,7 +51,7 @@
 		</form>
 	</div>
     <!-- TODO hook up word cloud to actual data -->
-	<div class="container p-0 p-sm-2" data-bind="component: {name: currentView, params:{searchResult: searchResult, searchGraph: searchGraph, searchCloud: searchCloud}}">
+	<div class="container p-0 p-sm-2" data-bind="component: {name: currentView, params:{searchResult: searchResult, searchGraph: searchGraph, searchCloud: searchCloud, searchHistory: searchHistory}}">
 	</div>
 </body>
 </html>

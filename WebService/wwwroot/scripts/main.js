@@ -9,7 +9,6 @@ require(["knockout", "jquery", "dataservice", "bootstrap"], function (ko, $, dat
                 }, self);
         }
 
-
         this.showSearchView = function () {
             if (self.currentView() !== "searchList") {
                 self.currentView("searchList");
@@ -35,15 +34,35 @@ require(["knockout", "jquery", "dataservice", "bootstrap"], function (ko, $, dat
             }
         }
 
+        this.showHistoryView = function() {
+            if (self.currentView !== "history") {
+                self.currentView("history");
+                self.searchAction(self.datGetHistory);
+                self.searchResult(null);
+                self.searchAction()();
+            }
+        }
+
 
         this.searchWord = ko.observable("");
 
+        this.searchHistory = ko.observable(null);
+
         this.searchResult = ko.observable(null);
+
         this.datGetList = function () {
             let callback = (sr, caller) => {
                 caller.searchResult(sr);
             };
             dat.getPosts(self.searchWord(), callback, self);
+        }
+
+        this.datGetHistory = function() {
+            let callback = (sr, caller) => {
+                caller.searchHistory(sr);
+                console.log(sr);
+            };
+            dat.getHistory(callback, self);
         }
 
         this.searchCloud = ko.observable(null);
@@ -82,11 +101,13 @@ require(["knockout", "jquery", "dataservice", "bootstrap"], function (ko, $, dat
             showSearchView: self.showSearchView,
             showCloudView: self.showCloudView,
             showForceView: self.showForceView,
+            showHistoryView: self.showHistoryView,
             searchWord: self.searchWord,
             searchResult: self.searchResult,
             searchMethod: self.searchMethod,
             searchGraph: self.searchGraph,
-            searchCloud: self.searchCloud
+            searchCloud: self.searchCloud,
+            searchHistory: self.searchHistory
         };
     })();
 

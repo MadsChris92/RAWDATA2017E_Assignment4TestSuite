@@ -29,5 +29,12 @@
             template: { require: "text!../scripts/components/forceNetwork/forceNetwork.html" }
         }
     );
+
+    ko.components.register("history",
+        {
+            viewModel: { require: "../scripts/components/history/history" },
+            template: { require: "text!../scripts/components/history/history.html" }
+        }
+    );
     //TODO Add force network component
 });
