@@ -5,6 +5,7 @@
 		<h4>Search history</h4>
 		<button class="col-md-2 btn btn-danger" data-bind="click: clearHistory"><i class="fa fa-trash" aria-hidden="true"></i>  Clear History</button>
 	</div>
+	<div class="alert alert-warning" data-bind="visible: searchHistory().totalResults() < 1">There is no search history to show.</div>
     <div class="list-group p-2" data-bind="foreach: searchHistory().posts">
 		<div class="list-group-item">
 			<div class="row justify-content-between mx-2">

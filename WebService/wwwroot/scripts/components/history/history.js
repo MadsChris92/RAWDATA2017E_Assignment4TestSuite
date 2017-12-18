@@ -64,7 +64,7 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             hasPrev,
             noResultsFound: self.noResultsFound,
             postsShowing,
-            clearHistory
+			clearHistory
         };
     }
 });
