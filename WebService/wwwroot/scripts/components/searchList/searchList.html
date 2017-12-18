@@ -1,7 +1,7 @@
 <div class="alert alert-warning" data-bind="visible: noResultsFound">No questions match the search words.</div>
 <div class="container-fluid bg-light rounded p-0 p-sm-2 p-lg-4">
     <!-- ko if:searchResult() !== null-->
-    <div class="list-group p-2" data-bind="foreach: searchResult().posts">
+    <div class="list-group p-0 p-sm-2" data-bind="foreach: searchResult().posts">
         <div data-bind="component: {name: 'searchListItem', params:{post:$data, activePost:$parent.activePost, index:$index, searchList:$component}}"></div>
     </div>
     <div class="row justify-content-center d-none d-sm-flex">
@@ -15,4 +15,52 @@
         <button class="col-3 col-md-2 btn btn-primary" data-bind="click: goToNext, enable: hasNext">>></button>
     </div>
     <!-- /ko -->
+	<div class="modal fade bd-example-modal-sm " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Java herp derp lerp to the left</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="list-group">
+						<div class="list-group-item">
+							<p>Lorem ipsum dit dolor amet con sinution det am biono del calami.
+								Lorem ipsum dit dolor amet con sinution det am biono del calami.
+							</p>
+						</div>
+						<div class="list-group-item">
+							<p>Lorem ipsum dit dolor amet con sinution det am biono del calami.
+								Lorem ipsum dit dolor amet con sinution det am biono del calami.
+								Lorem ipsum dit dolor amet con sinution det am biono del calami.
+								Lorem ipsum dit dolor amet con sinution det am biono del calami.
+							</p>
+						</div>
+						<div class="list-group-item">
+							<p>
+								Lorem ipsum dit dolor amet con sinution det am biono del calami.
+								Lorem ipsum dit dolor amet con sinution det am biono del calami.
+								Lorem ipsum dit dolor amet con sinution det am biono del calami.
+							</p>
+						</div>
+					</div>
+
+					<hr />
+					<form >
+						<div class="form-group">
+							<label for="message-text" class="col-form-label">Note:</label>
+							<textarea class="form-control" placeholder="Write your note here..." id="message-text"></textarea>
+						</div>
+					</form>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
