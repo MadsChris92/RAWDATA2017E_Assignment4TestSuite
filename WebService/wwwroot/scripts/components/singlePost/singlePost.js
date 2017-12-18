@@ -62,7 +62,9 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             dat.deleteNote(postResult(), note, (result, caller) => {
                 caller.notes.remove(note);
             }, self);
-        } 
+        }
+
+        var counter = 0;
         
         return {
             postResult,
@@ -75,7 +77,8 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             createNote,
             editNote: self.editNote,
             deleteNote,
-			postMarked
+            postMarked,
+            counter
         };
 
     }
