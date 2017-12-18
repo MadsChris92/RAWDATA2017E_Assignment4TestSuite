@@ -1,11 +1,7 @@
 
 <div class="container-fluid bg-light rounded p-0 p-sm-2 p-lg-4">
     <!-- ko if:searchResult() !== null-->
-    <div class="row justify-content-between p-4">
-        <h4>Search history</h4>
-        <button class="col-md-2 btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i>  Clear History</button>
-    </div>
-
+	<h4>Favorited Posts</h4>
     <div class="container p-0 p-sm-2" data-bind="component: {name: 'searchList', params:{searchResult: searchResult}}"></div>
     <!-- /ko -->
 </div>
