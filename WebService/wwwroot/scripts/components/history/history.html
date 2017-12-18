@@ -1,10 +1,19 @@
 
 <div class="container-fluid bg-light rounded p-0 p-sm-2 p-lg-4">
     <!-- ko if:searchHistory() !== null-->
+	<div class="row justify-content-between p-4">
+		<h4>Search history</h4>
+		<button class="col-md-2 btn btn-danger" data-bind="click: goToNext, enable: hasNext"><i class="fa fa-trash" aria-hidden="true"></i>  Clear History</button>
+	</div>
     <div class="list-group p-2" data-bind="foreach: searchHistory().posts">
-        <div data-bind="text: text"></div>hmmm
+		<div class="list-group-item">
+			<div class="row justify-content-between mx-2">
+				<p class="" data-bind="text: text"></p>
+				<small class="" data-bind="date: created"></small>
+			</div>
+		</div>
     </div>
-    what
+    
     <div class="row justify-content-center d-none d-sm-flex">
         <button class="col-3 col-md-2 btn btn-primary" data-bind="click: goToPrev, enable: hasPrev">Previous</button>
         <h6 class="col-3 col-md-2 text-center align-self-center" data-bind="text: postsShowing"></h6>
@@ -15,5 +24,6 @@
         <h6 class="col-3 col-md-2 text-center align-self-center" data-bind="text: postsShowing"></h6>
         <button class="col-3 col-md-2 btn btn-primary" data-bind="click: goToNext, enable: hasNext">>></button>
     </div>
+	<br />
     <!-- /ko -->
 </div>
