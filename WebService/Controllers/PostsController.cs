@@ -38,6 +38,7 @@ namespace WebService.Controllers
                 Title = que.Title,
                 Closed = que.Closed,
                 Marked = marked,
+                NotesUrl = Url.Link(nameof(GetNotes), new {pid=que.Id}),
                 Answers = que.Answers.Select(answer => new JSONObjects.Answer
                 {
                     Url = Url.Link(nameof(GetPost), answer.Id),
@@ -316,8 +317,24 @@ namespace WebService.Controllers
                 (IActionResult)Ok(result) : NotFound();
         }
 
-        [HttpGet("{pid}/note", Name = nameof(GetNotes))]
-        public IActionResult GetNotes(int pid, int page=0, int pageSize=10)
+        [HttpGet("{pid}/notes", Name = nameof(GetNotes))]
+        public IActionResult GetNotes(int pid)
+        {
+            var notes = _dataService.GetNotes(pid);
+
+            var result = notes.Select(note => new
+            {
+                note.Text,
+                PostUrl = Url.Link(nameof(GetPost), new {Id = note.PostId}),
+                Url = Url.Link(nameof(UpdateNote), new { pid = note.PostId, id = note.Id})
+            });
+
+
+            return Ok(result);
+        }
+
+        [HttpGet("{pid}/notes/paginated")]
+        public IActionResult GetNotesPaginated(int pid, int page = 0, int pageSize = 10)
         {
             var notes = _dataService.GetNotes(pid, page, pageSize, out var totalResults);
             var result = new PaginatedResult<Note>

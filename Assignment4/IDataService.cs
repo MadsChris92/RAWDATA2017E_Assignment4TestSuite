@@ -20,6 +20,7 @@ namespace DAL
         bool UnmarkPost(int id);
         bool AddHistory(string searchWord);
         Note GetNote(int noteId);
+        List<Note> GetNotes(int pid);
         List<Note> GetNotes(int postId, int page, int pageSize, out int totalResults);
         Note CreateNote(int postId, string text);
         Boolean DeleteNote(int noteId);

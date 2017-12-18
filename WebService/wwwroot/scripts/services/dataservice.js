@@ -29,6 +29,16 @@ define(["jquery", "knockout"], function ($, ko) {
         });
     }
 
+    const getPostNotes = function (post, callback, caller) {
+        $.ajax({
+            url: post.notesUrl,
+            success: function (result) {
+                console.log(result);
+                callback(result, caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
+            }
+        });
+    }
+
     const getPostByTag = function(tagTitle, callback, caller) {
         $.ajax({
         url: `${postApi}/tag/${tagTitle}`,
