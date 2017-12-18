@@ -50,7 +50,7 @@
 			</nav>
 		</div>
 	</div>
-	<div class="container container-fluid alert alert-primary my-3" id="postListBar">
+	<div class="container container-fluid alert alert-primary my-3" id="postListBar" data-bind="visible: currentView() != 'history'">
 		<form class="form-inline input-group">
 			<input class="form-control" data-bind="textInput: searchWord" placeholder="Type your search words here..." aria-label="Search">
 			<div class="input-group-btn">
