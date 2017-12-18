@@ -27,9 +27,12 @@
 						<li class="nav-item">
 							<a data-bind="click: showCloudView, css: {active: isCurrentView('wordCloud')}" class="nav-link" href="#Cloud">Wordcloud</a>
 						</li>
-						<li class="nav-item">
-							<a data-bind="click: showForceView, css: {active: isCurrentView('forceNetwork')}" class="nav-link" href="#Force">Force Network</a>
-						</li>
+					    <li class="nav-item">
+					        <a data-bind="click: showForceView, css: {active: isCurrentView('forceNetwork')}" class="nav-link" href="#Force">Force Network</a>
+					    </li>
+					    <li class="nav-item">
+					        <a data-bind="click: showHistoryView, css: {active: isCurrentView('history')}" class="nav-link" href="#History">History</a>
+					    </li>
 					</ul>
 				</div>
 			</nav>
@@ -47,7 +50,7 @@
 		</form>
 	</div>
     <!-- TODO hook up word cloud to actual data -->
-	<div class="container" data-bind="component: {name: currentView, params:{searchResult: searchResult, searchGraph: searchGraph, searchCloud: searchCloud}}">
+	<div class="container" data-bind="component: {name: currentView, params:{searchResult: searchResult, searchGraph: searchGraph, searchCloud: searchCloud, searchHistory: searchHistory}}">
 	</div>
 </body>
 </html>
