@@ -42,8 +42,6 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             if (self.searchResult) {
                 self.searchResult().gotoNext();
             }
-
-            minPostShowing(minPostShowing() + postsShowingAmount());
         };
 
         var goToPrev = function () {
