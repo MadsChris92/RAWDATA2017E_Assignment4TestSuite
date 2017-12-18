@@ -1,12 +1,12 @@
 define(['knockout', 'dataservice'], function (ko, dat) {
     return function (params) {
         var self = this;
-        this.searchHistory = params.searchHistory;
+        this.searchResult = params.searchResult;
 
         this.totalPosts = ko.computed(function () {
-            if (this.searchHistory() !== null) {
+            if (this.searchResult() !== null) {
 
-                return searchHistory().totalResults();
+                return searchResult().totalResults();
             }
             return -1;
         }, this);
@@ -16,55 +16,48 @@ define(['knockout', 'dataservice'], function (ko, dat) {
         }, this);
 
         var postsShowing = ko.computed(function () {
-            if (this.searchHistory() === null) return "";
-            return this.searchHistory().page() * this.searchHistory().pageSize() + 1 + "-" + (this.searchHistory().page() + 1) * this.searchHistory().pageSize() + " out of " + this.totalPosts();
+            if (this.searchResult() === null) return "";
+            return this.searchResult().page() * this.searchResult().pageSize() + 1 + "-" + (this.searchResult().page() + 1) * this.searchResult().pageSize() + " out of " + this.totalPosts();
         }, this);
 
 
         var hasNext = ko.computed(function () {
-            if (self.searchHistory() !== null) {
-                return self.searchHistory().hasNext();
+            if (self.searchResult() !== null) {
+                return self.searchResult().hasNext();
             }
             return false;
         }, this);
 
         var hasPrev = ko.computed(function () {
-            if (self.searchHistory() !== null) {
-                return self.searchHistory().hasPrev();
+            if (self.searchResult() !== null) {
+                return self.searchResult().hasPrev();
             }
             return false;
         }, this);
 
         var goToNext = function () {
             console.log("Next Activated");
-            if (self.searchHistory) {
-                self.searchHistory().gotoNext();
+            if (self.searchResult) {
+                self.searchResult().gotoNext();
             }
         };
 
         var goToPrev = function () {
             console.log("Prev Activated");
-            if (self.searchHistory) {
-                self.searchHistory().gotoPrev();
+            if (self.searchResult) {
+                self.searchResult().gotoPrev();
 
             }
         };
 
-        var clearHistory = function () {
-            dat.clearHistory();
-            console.log("Clearing");
-            self.searchHistory().posts(null);
-        } 
-
         return {
-            searchHistory: self.searchHistory,
+            searchResult: self.searchResult,
             goToNext,
             goToPrev,
             hasNext,
             hasPrev,
             noResultsFound: self.noResultsFound,
             postsShowing,
-			clearHistory
         };
     }
 });

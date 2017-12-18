@@ -169,6 +169,15 @@ define(["jquery", "knockout"], function ($, ko) {
         });
     }
 
+    const getMarkedPosts = function(callback, caller) {
+        $.ajax({
+            url: `${postApi}/mark`,
+            success: function (result) {
+                callback(new SearchResult(result), caller);
+            }
+        });
+    }
+
 
 
     //ideen er at have et objekt der bare kan få besked om at hente den næste/forrige side, uden at bekymre sig om url'er
@@ -250,7 +259,9 @@ define(["jquery", "knockout"], function ($, ko) {
         updateNote,
         deleteNote,
         markPost,
-        unmarkPost
+        unmarkPost,
+        clearHistory,
+        getMarkedPosts
     }
 });
 

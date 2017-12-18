@@ -2,7 +2,8 @@ define(['knockout', 'dataservice'], function (ko, dat) {
     return function (params) {
         var self = this;
         
-        var postResult = params.name;
+		var postResult = params.name;
+		var postMarked = ko.observable(postResult().marked);
         var hasComments = ko.computed(function() {
             return typeof postResult().comments !== "undefined";
         }, this);
@@ -13,11 +14,13 @@ define(['knockout', 'dataservice'], function (ko, dat) {
 
         this.markPost = function () {
             if (postResult().marked === true) {
-                dat.unmarkPost(postResult().id);
-                postResult().marked = false;
+				dat.unmarkPost(postResult().id);
+				postResult().marked = false;
+				postMarked(false);
             } else {
-                dat.markPost(postResult().id);
-                postResult().marked = true;
+				dat.markPost(postResult().id);
+				postResult().marked = true;
+				postMarked(true);
             }
         };
         
@@ -68,7 +71,8 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             newNoteText: self.newNoteText,
             createNote,
             editNote,
-            deleteNote
+            deleteNote,
+			postMarked
         };
 
     }
