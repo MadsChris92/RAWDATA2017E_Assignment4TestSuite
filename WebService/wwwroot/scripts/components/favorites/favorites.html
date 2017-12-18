@@ -1,28 +1,11 @@
 
 <div class="container-fluid bg-light rounded p-0 p-sm-2 p-lg-4">
     <!-- ko if:searchResult() !== null-->
-	<div class="row justify-content-between p-4">
-		<h4>Search history</h4>
-		<button class="col-md-2 btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i>  Clear History</button>
-	</div>
-    <div class="list-group p-2" data-bind="foreach: searchResult().posts">
-		<div class="list-group-item">
-			<div class="row justify-content-between mx-2">
-				<p class="" data-bind="text: title"></p>
-			</div>
-		</div>
+    <div class="row justify-content-between p-4">
+        <h4>Search history</h4>
+        <button class="col-md-2 btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i>  Clear History</button>
     </div>
-    
-    <div class="row justify-content-center d-none d-sm-flex">
-        <button class="col-3 col-md-2 btn btn-primary" data-bind="click: goToPrev, enable: hasPrev">Previous</button>
-        <h6 class="col-3 col-md-2 text-center align-self-center" data-bind="text: postsShowing"></h6>
-        <button class="col-3 col-md-2 btn btn-primary" data-bind="click: goToNext, enable: hasNext">Next</button>
-    </div>
-    <div class="row justify-content-center d-flex d-sm-none">
-        <button class="col-3 col-md-2 btn btn-primary" data-bind="click: goToPrev, enable: hasPrev"><<</button>
-        <h6 class="col-3 col-md-2 text-center align-self-center" data-bind="text: postsShowing"></h6>
-        <button class="col-3 col-md-2 btn btn-primary" data-bind="click: goToNext, enable: hasNext">>></button>
-    </div>
-	<br />
+
+    <div class="container p-0 p-sm-2" data-bind="component: {name: 'searchList', params:{searchResult: searchResult}}"></div>
     <!-- /ko -->
 </div>
