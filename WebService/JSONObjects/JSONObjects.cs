@@ -28,6 +28,7 @@ namespace WebService.JSONObjects
         public List<Answer> Answers { get; set; }
         public List<string> Tags { get; set; }
         public List<Comment> Comments { get; set; }
+        public bool Marked { get; set; }
     }
 
     public class Answer

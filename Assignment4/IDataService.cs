@@ -14,7 +14,8 @@ namespace DAL
         User GetUser(int id);
         List<RankedSearchQuestion> GetQuestionByTag(string tag, int page, int pageSize, out int totalResults);
         List<Question> GetPostsHighestScore(int page, int pageSize, out int totalResults);
-        Boolean MarkPost(int id);
+        bool MarkPost(int id);
+        bool IsPostMarked(int id);
         List<MarkedPost> GetMarkedPosts(int page, int pageSize, out int totalResults);
         bool UnmarkPost(int id);
         bool AddHistory(string searchWord);

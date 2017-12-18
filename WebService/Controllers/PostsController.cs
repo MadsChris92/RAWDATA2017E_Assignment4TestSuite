@@ -27,6 +27,7 @@ namespace WebService.Controllers
         {
             var que = _dataService.GetQuestionAllData(id);
             if (que == null) return NotFound();
+            var marked = _dataService.IsPostMarked(id);
             var quest = new JSONObjects.Question
             {
                 Url = Url.Link(nameof(GetPost), que.Id),
@@ -36,6 +37,7 @@ namespace WebService.Controllers
                 Score = que.Score,
                 Title = que.Title,
                 Closed = que.Closed,
+                Marked = marked,
                 Answers = que.Answers.Select(answer => new JSONObjects.Answer
                 {
                     Url = Url.Link(nameof(GetPost), answer.Id),

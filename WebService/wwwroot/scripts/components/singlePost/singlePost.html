@@ -1,15 +1,16 @@
 
-<div class="container pageDiv" data-bind="with: postResult">
-    <h4 data-bind="text: title">asd</h4>
-    <br />
-    <p data-bind="html: body">asd</p>
-    <!-- ko if:$parent.hasComments--><!-- only show comments if there are comments to show -->
-    <div class="container bg-light p-3"  data-bind="template: {name: 'comment-template', if: comments.length >0}"></div>
-    <!-- /ko -->
-    <h5><span data-bind="text: answers.length"></span> Answers</h5>
-    <div class="list-group" data-bind="template: {name: 'answer-template', foreach: answers}"></div>
+<div data-bind="with: postResult">
+    <div class="container pageDiv">
+        <h4 data-bind="text: title">asd</h4>
+        <br/>
+        <p data-bind="html: body">asd</p>
+        <!-- ko if:$parent.hasComments--><!-- only show comments if there are comments to show -->
+        <div class="container bg-light p-3" data-bind="template: {name: 'comment-template', if: comments.length >0}"></div>
+        <!-- /ko -->
+        <h5><span data-bind="text: answers.length"></span> Answers</h5>
+    </div>
     
-
+    <div class="list-group" data-bind="template: {name: 'answer-template', foreach: answers}"></div>
 </div>
 <!-- Comments Template -->
 <script type="text/html" id="comment-template">
