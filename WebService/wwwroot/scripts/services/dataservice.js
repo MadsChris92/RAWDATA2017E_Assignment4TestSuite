@@ -190,7 +190,8 @@ define(["jquery", "knockout"], function ($, ko) {
         getRankedWords,
         getHistory,
         markPost,
-        unmarkPost
+        unmarkPost,
+        clearHistory
     }
 });
 

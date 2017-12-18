@@ -50,6 +50,12 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             }
         };
 
+        var clearHistory = function () {
+            dat.clearHistory();
+            console.log("Clearing");
+            self.searchHistory().posts(null);
+        } 
+
         return {
             searchHistory: self.searchHistory,
             goToNext,
@@ -57,7 +63,8 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             hasNext,
             hasPrev,
             noResultsFound: self.noResultsFound,
-            postsShowing
+            postsShowing,
+            clearHistory
         };
     }
 });
