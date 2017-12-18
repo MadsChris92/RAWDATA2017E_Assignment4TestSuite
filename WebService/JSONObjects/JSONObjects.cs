@@ -30,6 +30,7 @@ namespace WebService.JSONObjects
         public List<Comment> Comments { get; set; }
         public bool Marked { get; set; }
         public string NotesUrl { get; set; }
+        public int Id { get; set; }
     }
 
     public class Answer

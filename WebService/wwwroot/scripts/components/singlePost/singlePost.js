@@ -6,9 +6,21 @@ define(['knockout', 'dataservice'], function (ko, dat) {
         var hasComments = ko.computed(function() {
             return typeof postResult().comments !== "undefined";
         }, this);
+
         var getId = (url) => {
             return url.substring(url.lastIndexOf("/")+1, url.length);
         };
+
+        this.markPost = function () {
+            if (postResult().marked === true) {
+                dat.unmarkPost(postResult().id);
+                postResult().marked = false;
+            } else {
+                dat.markPost(postResult().id);
+                postResult().marked = true;
+            }
+        };
+        
         this.notes = ko.observableArray([]);
         var getNotes = function () {
             dat.getPostNotes(postResult, (result, caller) => {
@@ -22,6 +34,7 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             getId,
             getNotes,
             notes: this.notes
+            markPost: self.markPost
         };
 
     }
