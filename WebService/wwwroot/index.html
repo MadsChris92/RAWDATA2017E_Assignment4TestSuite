@@ -43,7 +43,8 @@
 							</a>
 					    </li>
 					    <li class="nav-item">
-					        <a data-bind="click: showFavoritesView, css: {active: isCurrentView('favorites')}" class="nav-link" href="#Favorites">Favorites</a>
+					        <a data-bind="click: showFavoritesView, css: {active: isCurrentView('favorites')}" class="nav-link" href="#Favorites">
+								<i class="fa fa-star" aria-hidden="true"></i> Favorites</a>
 					    </li>
 					</ul>
 				</div>
@@ -59,7 +60,6 @@
 
 		</form>
 	</div>
-
 	<div class="container p-0 p-sm-2" data-bind="component: {name: currentView, params:{searchResult: searchResult, searchGraph: searchGraph, searchCloud: searchCloud, searchHistory: searchHistory}}">
 	</div>
 </body>

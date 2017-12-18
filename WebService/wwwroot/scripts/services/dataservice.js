@@ -29,6 +29,16 @@ define(["jquery", "knockout"], function ($, ko) {
         });
     }
 
+    const getPostNotes = function (post, callback, caller) {
+        $.ajax({
+            url: post.notesUrl,
+            success: function (result) {
+                console.log(post.notesUrl);
+                callback(result, caller);// kan ikke returnere fordi den er asyncron... Bruge en event?
+            }
+        });
+    }
+
     const getPostByTag = function(tagTitle, callback, caller) {
         $.ajax({
         url: `${postApi}/tag/${tagTitle}`,
@@ -88,6 +98,52 @@ define(["jquery", "knockout"], function ($, ko) {
             type: 'DELETE', 
             success: function (result) {
                 console.log(result);
+            }
+        });
+    }
+
+    const createNote = function (post, note, callback, caller) {
+        $.ajax({
+            url: `${post.url}/note`,
+            type: "POST",
+            data: JSON.stringify(note),
+            contentType: "application/json",
+            success: function(result) {
+                console.log(`created ${result}`);
+                callback(result, caller);
+            },
+            error: function(result) {
+                console.log("failed to create note");
+            }
+        });
+    }
+
+    const updateNote = function (post, note, callback, caller) {
+        $.ajax({
+            url: `${note.url}`,
+            type: "PUT",
+            data: JSON.stringify(note),
+            contentType: "application/json",
+            success: function (result) {
+                console.log(`created ${result}`);
+                callback(result, caller);
+            },
+            error: function (result) {
+                console.log("failed to create note");
+            }
+        });
+    }
+
+    const deleteNote = function (post, note, callback, caller) {
+        $.ajax({
+            url: `${note.url}`,
+            type: "DELETE",
+            success: function (result) {
+                console.log(`deleted note ${result}`);
+                callback(result, caller);
+            },
+            error: function (result) {
+                console.log("failed to delete note");
             }
         });
     }
@@ -192,12 +248,16 @@ define(["jquery", "knockout"], function ($, ko) {
     return {
         events,
         getPosts,
+        getPostNotes,
         getPostByTag,
         getPostsHighscore,
         getSinglePost,
         getRelatedWords,
         getRankedWords,
         getHistory,
+        createNote,
+        updateNote,
+        deleteNote,
         markPost,
         unmarkPost,
         clearHistory,

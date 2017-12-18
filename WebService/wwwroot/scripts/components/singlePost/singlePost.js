@@ -24,11 +24,54 @@ define(['knockout', 'dataservice'], function (ko, dat) {
             }
         };
         
+        this.notes = ko.observableArray();
+        var getNotes = function () {
+            dat.getPostNotes(postResult(), (result, caller) => {
+                caller.notes(result);
+            }, self);
+        }
+
+        this.newNoteText = ko.observable("");
+        var createNote = function () {
+            let note = { text: self.newNoteText() };
+            dat.createNote(postResult(), note, (result, caller) => {
+                caller.notes.push(result);
+            }, self);
+        }
+
+        var editNote = {
+            active: ko.observable(-1),
+            oldText: "",
+            Begin: function (note) {
+                editNote.active = ko.observable(note);
+            },
+            Commit: function(note) {
+                dat.editNote(self.postResult(), note, (result, caller) => {
+                    caller.
+                }, self);
+            },
+            Cancel: function() {
+                
+            }
+        }
+
+        var deleteNote = function (note) {
+            dat.deleteNote(postResult(), note, (result, caller) => {
+                caller.notes.remove(note);
+            }, self);
+        } 
+        
         return {
             postResult,
             hasComments,
             getId,
-			markPost: self.markPost,
+            getNotes,
+            notes: self.notes,
+            markPost: self.markPost,
+            newNoteText: self.newNoteText,
+            createNote,
+            editNote,
+            deleteNote,
 			postMarked
         };
 

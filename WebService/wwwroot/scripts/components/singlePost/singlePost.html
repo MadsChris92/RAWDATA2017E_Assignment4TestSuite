@@ -4,7 +4,7 @@
         <div class="row">
             <h4 class="col-10" data-bind="text: title">asd</h4>
             <hr />
-            <button type="button" class="btn btn-outline-secondary mr-1" title="Note" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></button>
+            <button data-bind="click: $component.getNotes" type="button" class="btn btn-outline-secondary mr-1" title="Note" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fa fa-sticky-note-o" aria-hidden="true"></i></button>
             <button data-bind="css: {active: $parent.postMarked}, click: $parent.markPost" type="button" class="btn btn-outline-warning" title="Favorite"><i class="fa fa-star" aria-hidden="true"></i></button>
         </div>
         <br />
@@ -47,9 +47,53 @@
 <script type="text/html" id="answer-template">
     <div class="list-group-item">
         <span data-bind="html: body"></span>
-		<small class="text-muted float-left" data-bind="text: owner.name"></small>
+        <small class="text-muted float-left" data-bind="text: owner.name"></small>
     </div>
     <div class="container bg-light p-3" data-bind="template: {name: 'comment-template', if:comments.length >0}"></div>
 
     <br />
 </script>
+
+
+<div class="modal fade bd-example-modal-sm " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Java herp derp lerp to the left</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6>Notes:</h6>
+                <div class="list-group" data-bind="foreach: notes">
+                    <div class="list-group-item">
+                        <div class="form-group" data-bind="visible:$component.editNote.index === $index">
+                            <button type="button" class="float-right btn btn-outline-primary mb-2"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
+                            <textarea data-bind="textInput: $data.text, visible:$component.editNote.index == $index" class="form-control" style="min-height: 200px;"></textarea>
+                            
+                        </div>
+                        <button data-bind="click: $component.deleteNote" type="button" class="d-inline-block float-right btn btn-outline-danger" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        <button data-bind="click: $component.editNote.Begin" type="button" class="d-inline-block float-right btn btn-outline-primary mr-1" title="Edit"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                        <p data-bind="text: $data.text"></p>
+                    </div>
+                    <div class="list-group-item">
+                    </div>
+                </div>
+
+                <hr />
+                <form>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Create new note</label>
+                        <textarea data-bind="textInput: newNoteText" class="form-control" placeholder="Write your note here..." id="message-text"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button data-bind="click: createNote" type="button" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
