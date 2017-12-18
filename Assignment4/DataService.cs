@@ -195,6 +195,21 @@ namespace DAL
             }
         }
 
+        public List<Note> GetNotes(int postId)
+        {
+            using (var db = new SovaContext())
+            {
+                if (db.Posts.Any(post => post.Id == postId))
+                {
+                    return db.Notes.Where(note => note.PostId == postId).ToList();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         public List<Note> GetNotes(int postId, int page, int pageSize, out int totalResults)
         {
             using (var db = new SovaContext())
