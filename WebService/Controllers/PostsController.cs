@@ -278,16 +278,19 @@ namespace WebService.Controllers
         [HttpPost("{id}/note", Name = nameof(CreateNote))]
         public IActionResult CreateNote(int id, [FromBody] TextGetter note)
         {
+            var resultNote = _dataService.CreateNote(id, note.Text);
+
+            if (resultNote == null) return NotFound();
 
             var result = new
             {
-                Note = _dataService.CreateNote(id, note.Text),
-                PostUrl = Url.Link(nameof(GetPost), id)
+                note.Text,
+                PostUrl = Url.Link(nameof(GetPost), new { Id = resultNote.PostId }),
+                Url = Url.Link(nameof(UpdateNote), new { pid = resultNote.PostId, id = resultNote.Id })
             };
 
 
-            return result.Note != null ?
-                (IActionResult)Ok(result) : NotFound();
+            return Ok(result);
         }
 
 
