@@ -82,6 +82,27 @@ define(["jquery", "knockout"], function ($, ko) {
         });
     }
 
+    const markPost = function(id) {
+        $.ajax({
+            url: `${postApi}/mark/${id}`,
+            success: function (result) {
+                
+                console.log("Marked: " + result);
+            }
+        });
+    }
+
+    const unmarkPost = function (id) {
+        $.ajax({
+            url: `${postApi}/mark/${id}`,
+            type: 'DELETE',
+            success: function (result) {
+
+                console.log("Unmarked: " + result);
+            }
+        });
+    }
+
     //ideen er at have et objekt der bare kan få besked om at hente den næste/forrige side, uden at bekymre sig om url'er
     function SearchResult(result) {
         const self = this;
@@ -155,7 +176,9 @@ define(["jquery", "knockout"], function ($, ko) {
         getSinglePost,
         getRelatedWords,
         getRankedWords,
-        getHistory
+        getHistory,
+        markPost,
+        unmarkPost
     }
 });
 

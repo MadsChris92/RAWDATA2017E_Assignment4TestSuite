@@ -38,6 +38,7 @@ namespace WebService.Controllers
                 Title = que.Title,
                 Closed = que.Closed,
                 Marked = marked,
+                Id = que.Id,
                 Answers = que.Answers.Select(answer => new JSONObjects.Answer
                 {
                     Url = Url.Link(nameof(GetPost), answer.Id),
